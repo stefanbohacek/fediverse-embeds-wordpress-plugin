@@ -21,7 +21,7 @@ posts.length&&posts.forEach(post=>{fetchData({action:"ftf_get_post",post:JSON.st
 //       let urlAttachmentPreviewHTML = '';
 //       // console.log('debug:data.image', data.image);
 //       if (data.image){
-//         urlAttachmentPreviewHTML += `<a href="${ post.dataset.urlAttachment }"><img loading="lazy" class="post-attachment-site-thumbnail card-img-top" src="/wp-json/ftf/media-proxy?url=${ encodeURI(data.image) }" alt="Preview image for ${post.dataset.urlAttachment}"></a>`;
+//         urlAttachmentPreviewHTML += `<a href="${ post.dataset.urlAttachment }"><img loading="lazy" class="post-attachment-site-thumbnail card-img-top" src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURI(data.image) }" alt="Preview image for ${post.dataset.urlAttachment}"></a>`;
 //       }
 //       urlAttachmentPreviewHTML += `<div class="card-body">`;
 //       urlAttachmentPreviewHTML += `<p class="card-text"><a class="stretched-link text-muted" href="${ post.dataset.urlAttachment }" target="_blank">${ tmpAnchor.hostname }</a></p>`;
