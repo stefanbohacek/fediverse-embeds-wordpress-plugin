@@ -35,7 +35,8 @@ A few examples of the plugin in use:
 
 ## How to use
 
-1. [Install the plugin.](https://wordpress.org/plugins/ftf_fediverse_embeds)
+<!-- 1. [Install the plugin.](https://wordpress.org/plugins/ftf_fediverse_embeds) -->
+1. Download and install the plugin.
 2. Add the embed code to your post.
 
 ## Supported platforms
