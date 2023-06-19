@@ -57,23 +57,32 @@ class Media_Proxy {
             echo file_get_contents($file_path);
 
         } else {
-            $remote_response = wp_remote_get($url);
+            $parse = parse_url($url);
+            $domain = $parse['host'];
 
-        //     Helpers::log_this('debug:proxy_media', array(
-        //         'url' => $url,
-        //         'file_name' => $file_name,
-        //         'remote_response' => $remote_response,
-        //    ));
+            // Helpers::log_this('debug:proxy_media', array(
+            //     'url' => $url,
+            //     'file_name' => $file_name,
+            //     'domain' => $domain,
+            //     // 'remote_response' => $remote_response,
+            // ));
 
-            if ($this->archival_mode){
-                file_put_contents($file_path, $remote_response['body']);
-            }
-    
-    
-            header('Content-Type: ' . $remote_response['headers']['content-type']);
-            echo $remote_response['body'];
+            $remote_response = wp_remote_get("https://$domain/.well-known/nodeinfo");
+            // Check if this is a fediverse server.
+
+            if (!is_wp_error($remote_response) && $remote_response['response'] && $remote_response['response']['code'] && $remote_response['response']['code'] === 200){
+                $remote_response = wp_remote_get($url);
+
+                if ($this->archival_mode){
+                    file_put_contents($file_path, $remote_response['body']);
+                }
+        
+                header('Content-Type: ' . $remote_response['headers']['content-type']);
+                echo $remote_response['body'];
+            } else {
+                echo '';
+            }     
         }
-
         exit();
     }    
 }
