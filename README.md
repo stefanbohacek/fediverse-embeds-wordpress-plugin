@@ -28,7 +28,7 @@ A few examples of the plugin in use:
 
 ![A diagonally split screenshot of an embedded post, showing a light and dark version.](./images/screenshots/dark-light-theme.png)
 
-- **Labels for bots 🤖 and server admins 👑**
+- **Labels for bots 🤖 and server admins 👑 (optional)**
 - **Labels for updated 📝 and deleted posts 🗑️** (see notes on [how deleted posts are handled](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/1))
 
 <!-- Learn more [on stefanbohacek.com](https://stefanbohacek.com/project/tweet-embeds-wordpress-plugin/). -->
