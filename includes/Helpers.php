@@ -54,14 +54,14 @@ class Helpers {
     }
 
     public static function format_bytes($size, $precision = 2){
-        $size = '0KB';
+        $size_formatted = '0KB';
 
-        if ($size){
+        if (is_numeric($size) && $size > 0){
             $base = log($size, 1024);
             $suffixes = array('', 'KB', 'MB', 'GB', 'TB');   
-            $size = round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
+            $size_formatted = round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
         }
 
-        return $size;
+        return $size_formatted;
     }
 }
