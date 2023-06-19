@@ -41,16 +41,16 @@ A few examples of the plugin in use:
 
 ## Supported platforms
 
-| **Platform**  | **Supported** |
-|---------------|---------------|
-| **Mastodon**  | ✔️            |
-| **Pleroma**   | ❌            |
-| **Akkoma**    | ❌            |
-| **Friendica** | ❌            |
-| **Misskey**   | ❌            |
-| **Calckey**   | ❌            |
-| **Peertube**  | ❌            |
-| **Pixelfed**  | ❌            |
+| **Platform**  | **Supported** | **How to embed** |
+|---------------|---------------|------------------|
+| **Mastodon**  | ✔️            | [How to embed](https://fedi.tips/how-to-embed-mastodon-posts-on-a-website/)  |
+| **Pleroma**   | ❌            |                 |
+| **Akkoma**    | ❌            |                 |
+| **Friendica** | ❌            |                 |
+| **Misskey**   | ❌            |                 |
+| **Calckey**   | ❌            |                 |
+| **Peertube**  | ❌            |                 |
+| **Pixelfed**  | ❌            |                 |
 
 - [Add support for embedding Peertube posts](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/2)
 - [Add support for embedding posts via oEmbed](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/3)
