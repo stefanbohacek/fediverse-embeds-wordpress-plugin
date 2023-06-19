@@ -68,11 +68,7 @@ class Embed_Posts {
                 $post_date = $post_data['created_at'];
                 
                 $block_content = <<<EOT
-                <blockquote
-                    data-instance="$instance"
-                    data-post-id="$post_id"
-                    class="ftf-fediverse-post-embed"
-                >
+                <blockquote data-instance="$instance" data-post-id="$post_id" class="ftf-fediverse-post-embed">
                     $post_content
                     <p class="ftf-fediverse-post-embed-author">&mdash; $account_display_name (@$account_username@$instance)
                     <a class="ftf-fediverse-post-embed-link" href="$post_url">$post_date</a>
