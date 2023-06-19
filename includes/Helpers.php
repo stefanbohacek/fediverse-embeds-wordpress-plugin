@@ -61,6 +61,7 @@ class Helpers {
             $suffixes = array('', 'KB', 'MB', 'GB', 'TB');   
             $size = round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
         }
+
         return $size;
     }
 }
