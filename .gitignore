@@ -1,6 +1,4 @@
 node_modules
-vendor
 media
 profile_images
-!src/frontend/styles/bootstrap/vendor
 .DS_Store
