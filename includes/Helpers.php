@@ -43,9 +43,13 @@ class Helpers {
 
     public static function get_directory_size($directory){
         $size = 0;
-        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)) as $file){
-            $size+=$file->getSize();
+
+        if (is_dir($directory)) {
+            foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)) as $file){
+                $size+=$file->getSize();
+            }
         }
+
         return self::format_bytes($size);
     }
 
