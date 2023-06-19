@@ -1,0 +1,18 @@
+{
+    "name": "stefan-bohacek/ftf_fediverse_embeds",
+    "description": "Embed fediverse posts on your WordPress site.",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "FTF_Fediverse_Embeds\\": "includes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Stefan Bohacek",
+            "email": "stefan@stefanbohacek.com"
+        }
+    ],
+    "require": {}
+}
