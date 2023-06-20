@@ -52,6 +52,7 @@ A few examples of the plugin in use:
 | **Peertube**  | ❌            |                 |
 | **Pixelfed**  | ❌            |                 |
 
+- [Add support for embedding Pixelfed posts](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/14)
 - [Add support for embedding Peertube posts](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/2)
 - [Add support for embedding posts via oEmbed](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/3)
 
