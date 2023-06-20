@@ -49,15 +49,15 @@ class Embed_Posts {
             $username = $url_parts[3];
             $post_id = $url_parts[4];
 
-            Helpers::log_this('debug:post', array(
-                // 'html' => $html,
-                // 'iframe' => $iframe,
-                'url' => $url,
-                'protocol' => $protocol,
-                'instance' => $instance,
-                'username' => $username,
-                'post_id' => $post_id,
-            ));
+            // Helpers::log_this('debug:post', array(
+            //     // 'html' => $html,
+            //     // 'iframe' => $iframe,
+            //     'url' => $url,
+            //     'protocol' => $protocol,
+            //     'instance' => $instance,
+            //     'username' => $username,
+            //     'post_id' => $post_id,
+            // ));
 
             $post = $this->get_post(array(
                 'instance' => $instance,
