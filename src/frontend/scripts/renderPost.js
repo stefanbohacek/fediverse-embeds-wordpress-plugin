@@ -110,7 +110,7 @@ const renderPost = (post, container) => {
 
   if (post.post_data.account.avatar_static){
     renderedPostHTML += `
-      <div class="col-2 col-sm-2 col-md-2 p-0 ps-sm-1 pe-sm-1 ps-md-2 pe-md-1 ps-lg-3 pe-lg-1">
+      <div class="fediverse-post-profile-image-wrapper col-2 col-sm-2 col-md-2 p-0 ps-sm-1 pe-sm-1 ps-md-2 pe-md-1 ps-lg-3 pe-lg-1">
         <a href="${ post.post_data.account.url }" class="text-decoration-none">
           <img
             title="Profile image"

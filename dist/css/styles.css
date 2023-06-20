@@ -32,6 +32,9 @@
      object-fit: contain;
   height: auto;
 }
+.fediverse-post.fediverse-post-rendered .fediverse-post-profile-image-wrapper {
+  max-width: 86px !important;
+}
 .fediverse-post.fediverse-post-rendered .post-body {
   line-height: 1.4;
 }
