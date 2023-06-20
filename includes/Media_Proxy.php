@@ -110,20 +110,18 @@ class Media_Proxy {
                 }     
             }
 
-            if ($can_download_media){
-                $remote_response = wp_remote_get($url, array(
-                    'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
-                ));
+            $remote_response = wp_remote_get($url, array(
+                'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
+            ));
 
+            if ($can_download_media){
                 if ($this->archival_mode){
                     file_put_contents($file_path, $remote_response['body']);
                 }
-        
-                header('Content-Type: ' . $remote_response['headers']['content-type']);
-                echo $remote_response['body'];
-            } else {
-                echo '';
             }
+
+            header('Content-Type: ' . $remote_response['headers']['content-type']);
+            echo $remote_response['body'];
         }
         exit();
     }    
