@@ -94,12 +94,12 @@ class Media_Proxy {
                     'pool.',
                 ), '', $domain);
 
-                Helpers::log_this('debug:proxy_media', array(
-                    'url' => $url,
-                    'file_name' => $file_name,
-                    'domain' => $domain,
-                    // 'remote_response' => $remote_response,
-                ));
+                // Helpers::log_this('debug:proxy_media', array(
+                //     'url' => $url,
+                //     'file_name' => $file_name,
+                //     'domain' => $domain,
+                //     // 'remote_response' => $remote_response,
+                // ));
 
                 $remote_response = wp_remote_get("https://$domain/.well-known/nodeinfo", array(
                     'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
