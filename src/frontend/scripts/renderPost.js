@@ -110,7 +110,7 @@ const renderPost = (post, container) => {
 
   if (post.post_data.account.avatar_static){
     renderedPostHTML += `
-      <div class="col-1 col-sm-2 col-md-2 p-0 ps-sm-1 pe-sm-1 ps-md-2 pe-md-1 ps-lg-3 pe-lg-1">
+      <div class="col-2 col-sm-2 col-md-2 p-0 ps-sm-1 pe-sm-1 ps-md-2 pe-md-1 ps-lg-3 pe-lg-1">
         <a href="${ post.post_data.account.url }" class="text-decoration-none">
           <img
             title="Profile image"
@@ -127,7 +127,7 @@ const renderPost = (post, container) => {
   
   renderedPostHTML += `
     <div class="post-author ${ 
-      post.post_data.account.avatar_static ? 'col-11 col-sm-10 col-md-10 pl-2' : 'col-12 col-sm-12 col-md-12'
+      post.post_data.account.avatar_static ? 'col-10 col-sm-10 col-md-10 pl-2' : 'col-12 col-sm-12 col-md-12'
     } pb-3">
       <p class="font-weight-bold mb-0 mt-0">
         <a
