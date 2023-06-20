@@ -57,6 +57,7 @@ class Media_Proxy {
             echo file_get_contents($file_path);
 
         } else {
+            global $wp_version;
             $parse = parse_url($url);
             $domain = $parse['host'];
 
@@ -67,11 +68,15 @@ class Media_Proxy {
             //     // 'remote_response' => $remote_response,
             // ));
 
-            $remote_response = wp_remote_get("https://$domain/.well-known/nodeinfo");
+            $remote_response = wp_remote_get("https://$domain/.well-known/nodeinfo", array(
+                'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
+            ));
             // Check if this is a fediverse server.
 
             if (!is_wp_error($remote_response) && $remote_response['response'] && $remote_response['response']['code'] && $remote_response['response']['code'] === 200){
-                $remote_response = wp_remote_get($url);
+                $remote_response = wp_remote_get($url, array(
+                    'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
+                ));
 
                 if ($this->archival_mode){
                     file_put_contents($file_path, $remote_response['body']);

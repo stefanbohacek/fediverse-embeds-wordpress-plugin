@@ -237,7 +237,11 @@ class Embed_Posts {
         // ));
 
         try {
-            $remote_response = wp_remote_get($req_url);
+            global $wp_version;
+
+            $remote_response = wp_remote_get($req_url, array(
+                'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
+            ));
 
             // Helpers::log_this('get_live_post_data', array(
             //     'remote_response' => $remote_response,

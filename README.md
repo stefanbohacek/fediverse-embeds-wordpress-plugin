@@ -65,3 +65,17 @@ npm run dev
 # when adding new PHP classes inside `includes`
 composer dumpautoload -o 
 ```
+
+## FAQ
+
+### How do I prevent this plugin from embedding my posts?
+
+The plugin will use the following user agent when making requests to your fediverse servers:
+
+```
+FTF: Fediverse Embeds; WordPress/VERSION; https://WEBSITE.COM
+```
+
+`VERSION` is the version of the WordPress website making the request, and `WEBSITE.COM` is its URL, this is the default user agent used by WordPress.
+
+The admin of your instance can then block any requests where the user agent contains `FTF: Fediverse Embeds`.
