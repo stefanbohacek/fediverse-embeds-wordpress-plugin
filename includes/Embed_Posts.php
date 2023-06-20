@@ -25,20 +25,39 @@ class Embed_Posts {
     }
 
     function process_embeds($block_content, $block) {
-        if (strpos($block_content, 'class="mastodon-embed"') !== false) {
-            // Handle Mastodon embeds.
+        $platform = null;
 
+        if (str_contains($block_content, 'class="mastodon-embed"')){
+            $platform = 'mastodon';
+        } elseif (str_contains($block_content, 'todo:class="pixelfed__embed"')){
+            $platform = 'pixelfed';
+        }
+
+        if ($platform){
             $html = str_get_html($block_content);
             $iframe = $html->find('iframe', 0);
             $url = $iframe->src;
-            // $url_json = str_replace('/embed', '.json', $url);
 
+            if ($platform === 'pixelfed'){
+                $url = str_replace('/p/', '/', $url);
+            }
+    
             $url_parts = explode('/', $url);
 
             $protocol = $url_parts[0];
             $instance = $url_parts[2];
             $username = $url_parts[3];
             $post_id = $url_parts[4];
+
+            Helpers::log_this('debug:post', array(
+                // 'html' => $html,
+                // 'iframe' => $iframe,
+                'url' => $url,
+                'protocol' => $protocol,
+                'instance' => $instance,
+                'username' => $username,
+                'post_id' => $post_id,
+            ));
 
             $post = $this->get_post(array(
                 'instance' => $instance,
@@ -206,23 +225,21 @@ class Embed_Posts {
     }
 
     function get_live_post_data($post){
-
-        // Helpers::log_this('get_live_post_data', array(
-        //     'post' => $post
-        // ));
-
         $response = array();
         $post_instance = $post['instance'];
         $post_id = $post['post_id'];
 
         $req_url = "https://" . $post_instance . "/api/v1/statuses/" . $post_id;
 
+        // Helpers::log_this('get_live_post_data', array(
+        //     'post' => $post,
+        //     'req_url' => $req_url,
+        // ));
+
         try {
             $remote_response = wp_remote_get($req_url);
 
             // Helpers::log_this('get_live_post_data', array(
-            //     'post' => $post,
-            //     'req_url' => $req_url,
             //     'remote_response' => $remote_response,
             // ));
 
