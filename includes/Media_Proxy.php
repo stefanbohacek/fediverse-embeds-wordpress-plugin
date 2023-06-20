@@ -27,6 +27,16 @@ class Media_Proxy {
     }
 
     public function proxy_media(\WP_REST_Request $request){
+        /*
+            At minimum, we need to make sure that the media file is being requested from a fediverse server,
+            otherwise you could load arbitrary files from anywhere. Some fediverse servers may use a different subdomain
+            for hosting their files, or a CDN.
+
+            The current solution relies heavily on keeping track of allowed domains and converting URLs.
+
+            This needs to be more robust.
+        */
+    
         $url = $request['url'];
         $folder_name = 'media';
 
@@ -55,25 +65,52 @@ class Media_Proxy {
             $image_info = getimagesize($file_path);
             header("Content-type: {$image_info['mime']}");
             echo file_get_contents($file_path);
-
         } else {
             global $wp_version;
             $parse = parse_url($url);
             $domain = $parse['host'];
 
-            // Helpers::log_this('debug:proxy_media', array(
-            //     'url' => $url,
-            //     'file_name' => $file_name,
-            //     'domain' => $domain,
-            //     // 'remote_response' => $remote_response,
-            // ));
+            $allowed_domains = array(
+                'cdn.masto.host',
+                'pool.jortage.com',
+                'social-cdn.vivaldi.net'
+            );
 
-            $remote_response = wp_remote_get("https://$domain/.well-known/nodeinfo", array(
-                'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
-            ));
-            // Check if this is a fediverse server.
+            $can_download_media = false;
 
-            if (!is_wp_error($remote_response) && $remote_response['response'] && $remote_response['response']['code'] && $remote_response['response']['code'] === 200){
+            if (str_ends_with($domain, '.files.fedi.monster')){
+                $can_download_media = true;
+
+            } elseif (in_array($domain, $allowed_domains)){
+                $can_download_media = true;
+
+            } else {
+                // Converting files.domain.social and media.domain.social to domain.social
+
+                $domain = str_replace(array(
+                    'cdn.',
+                    'files.',
+                    'media.',
+                    'pool.',
+                ), '', $domain);
+
+                Helpers::log_this('debug:proxy_media', array(
+                    'url' => $url,
+                    'file_name' => $file_name,
+                    'domain' => $domain,
+                    // 'remote_response' => $remote_response,
+                ));
+
+                $remote_response = wp_remote_get("https://$domain/.well-known/nodeinfo", array(
+                    'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
+                ));
+                // Check if this is a fediverse server.
+                if (!is_wp_error($remote_response) && $remote_response['response'] && $remote_response['response']['code'] && $remote_response['response']['code'] === 200){
+                    $can_download_media = true;
+                }     
+            }
+
+            if ($can_download_media){
                 $remote_response = wp_remote_get($url, array(
                     'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
                 ));
@@ -86,7 +123,7 @@ class Media_Proxy {
                 echo $remote_response['body'];
             } else {
                 echo '';
-            }     
+            }
         }
         exit();
     }    
