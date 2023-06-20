@@ -1,2 +1,2 @@
-const dispatchEvent=eventName=>{const event=new Event(eventName);document.dispatchEvent(event)};export{dispatchEvent};
+const dispatchEvent=(eventName,data)=>{const event=new CustomEvent(eventName,{detail:data});document.dispatchEvent(event)};export{dispatchEvent};
 //# sourceMappingURL=dispatchEvent.js.map

@@ -1,7 +1,7 @@
-const fetchData = (data, cb, done) => {
+const fetchData = async (data, cb, done) => {
   done = done || function(){ /* noop */ }
 
-  fetch(window.ftf_fediverse_embeds.ajax_url, {
+  await fetch(window.ftf_fediverse_embeds.ajax_url, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {

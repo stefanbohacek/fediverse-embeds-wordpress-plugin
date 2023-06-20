@@ -5,8 +5,7 @@ const renderPost = (post, container) => {
 
   // post.post_data = JSON.parse(post.post_data);
 
-  console.log('post.post_data', post.post_data);
-
+  // console.log('post.post_data', post.post_data);
   // console.log('debug:renderPost', {data, container});
 
   // if (post.post_data.post_id === '123456789'){
@@ -107,7 +106,7 @@ const renderPost = (post, container) => {
     <div class="row no-gutters mb-1">
   `;
 
-  console.log('debug:post', post);
+  // console.log('debug:post', post);
 
   if (post.post_data.account.avatar_static){
     renderedPostHTML += `
@@ -153,7 +152,7 @@ const renderPost = (post, container) => {
     postText += `<div data-media-length="${ post.post_data.media_attachments.length }" class="post-media row mt-3 no-gutters">`;
     
     post.post_data.media_attachments.forEach((media, index) => {
-      console.log('debug:media', media);
+      // console.log('debug:media', media);
 
       if (post.post_data.media_attachments.length === 1){
         postText += `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-12 col-lg-12">`;
@@ -326,8 +325,6 @@ const renderPost = (post, container) => {
 
     postText += '</div></div>';
   }
-
-
   
   const postDate = new Date(post.post_data.created_at);
   const postDateDate = postDate.toLocaleDateString(navigator.language, { month: 'long', year: 'numeric', day: 'numeric' });
@@ -399,6 +396,8 @@ const renderPost = (post, container) => {
     const post = document.querySelector(`[data-post-id="${ post.id }"]`);
     post.parentNode.replaceChild(renderedPost, post);
   }
+
+  return renderedPost;
 };
 
 export { renderPost };

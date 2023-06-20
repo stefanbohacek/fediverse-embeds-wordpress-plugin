@@ -69,6 +69,20 @@ composer dumpautoload -o
 
 ## FAQ
 
+### How can I run my own code after all embeds are processed?
+
+The plugin fires a custom `ftf_fediverse_embeds_posts_processed` event that passes the list of processed embeds. Here's an example of how it can be used:
+
+```js
+document.addEventListener('ftf_fediverse_embeds_posts_processed', (event) => {
+    console.log(event.detail);
+
+    event.detail.forEach(embed => {
+        // do something with each embed
+    });
+});
+```
+
 ### How do I prevent this plugin from embedding my posts?
 
 The plugin will use the following user agent when making requests to your fediverse servers:
