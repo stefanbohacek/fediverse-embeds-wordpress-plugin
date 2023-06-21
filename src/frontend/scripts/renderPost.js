@@ -135,7 +135,7 @@ const renderPost = (post, container) => {
           href="${ post.post_data.account.url }"
         >${ post.post_data.account.display_name }</a>
       </p>
-      <p class="mb-1 mb-md-2 mt-0">
+      <p class="mb-1 mb-md-2 mt-0 fs-6">
         <a class="text-muted text-decoration-none" href="${ post.post_data.account.url }">
           @${ post.post_data.account.username}@${ post.instance }
         </a>
