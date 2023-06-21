@@ -73,7 +73,7 @@ class Settings {
         <p>Please <a href="https://stefanbohacek.com/contact/">visit my contact page</a> if you have any questions or suggestions.</p>
         
         <p>
-            <a class="button" href="https://stefanbohacek.com/project/fediverse-embeds-wordpress-plugin/" target="_blank">Learn more</a>
+            <a class="button" href="https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/" target="_blank">Learn more</a>
             <a class="button" href="https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin" target="_blank">View source</a>
         </p>
         <h3 id="settings-customization">Customization</h3>

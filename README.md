@@ -31,8 +31,6 @@ A few examples of the plugin in use:
 - **Labels for bots 🤖 and server admins 👑 (optional)**
 - **Labels for updated 📝 and deleted posts 🗑️** (see notes on [how deleted posts are handled](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/1))
 
-<!-- Learn more [on stefanbohacek.com](https://stefanbohacek.com/project/tweet-embeds-wordpress-plugin/). -->
-
 ## How to use
 
 <!-- 1. [Install the plugin.](https://wordpress.org/plugins/ftf_fediverse_embeds) -->
