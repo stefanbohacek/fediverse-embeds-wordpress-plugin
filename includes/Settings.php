@@ -69,7 +69,37 @@ class Settings {
         ?>
 
         <h3 id="about">About the plugin</h3>
-        <p>Directly embed fediverse posts on your WordPress site to improve the vistors' experience.</p>
+        <p>
+            Directly embed fediverse posts on your WordPress site to improve the vistors' experience.
+        </p>
+        <p>
+            The plugin will work automatically with the default embed code from fediverse platforms that provide it, which can be added as an <a href="https://wordpress.com/support/wordpress-editor/blocks/custom-html-block/" target="_blank">HTML block</a>.
+        </p>
+        <p>
+            Here's an example for Mastodon. (Click the images to zoom in.)
+        </p>
+
+
+        <table style="width:840px" class="form-table" role="presentation">
+            <tbody>
+                <tr>
+                    <td style="vertical-align: top;">
+                        <a alt="A screenshot of a Mastodon post showing how to access the embed code."
+                            href="<?php echo plugin_dir_url(__FILE__); ?>../images/instructions/mastodon-embed.png" target="_blank">
+                            <img style="max-width: 100%" src="<?php echo plugin_dir_url(__FILE__); ?>../images/instructions/mastodon-embed.png">
+                        </a>
+
+                    </td>
+                    <td style="vertical-align: top;">
+                        <a alt="A screenshot of a custom HTML WordPress block containing the embed code."
+                            href="<?php echo plugin_dir_url(__FILE__); ?>../images/instructions/add-html-iframe.png" target="_blank">
+                            <img style="max-width: 100%" src="<?php echo plugin_dir_url(__FILE__); ?>../images/instructions/add-html-iframe.png">
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
         <p>Please <a href="https://stefanbohacek.com/contact/">visit my contact page</a> if you have any questions or suggestions.</p>
         
         <p>
