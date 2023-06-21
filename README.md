@@ -2,7 +2,7 @@
 
 # Fediverse Embeds
 
-Embed fediverse posts on your WordPress site.
+Embed fediverse posts on your WordPress site. Read about the motivation behind this project [on my blog](https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/).
 
 This plugin is ***under active development*** and will be available on wordpress.org/plugins [once ready](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/milestone/1). In the meantime, you can download it from this repo and [install it manually](https://wordpress.com/support/plugins/install-a-plugin/#install-a-plugin-with-a-zip-file).
 
