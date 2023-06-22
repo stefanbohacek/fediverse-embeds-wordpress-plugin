@@ -49,7 +49,7 @@ const renderPost = (post, container) => {
       entities = null,
       renderedPostHTML = `
         <div class="card w-100">
-          <div class="post-body-wrapper card-body pt-1 pt-md-4 pb-0">
+          <div class="post-body-wrapper card-body pt-0 pt-md-4 pb-0">
             <div class="fediverse-post-labels position-absolute top-0 end-0 mt-1 me-1">
       `;
 
