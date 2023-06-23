@@ -67,6 +67,11 @@ composer dumpautoload -o
 
 ## FAQ
 
+### Images or posts are not loading
+
+Please make sure that you're not blocking `/wp-json/ftf/*` endpoints, either via a plugin like [Disable WP REST API](I:\OneDrive\Projects\WordPress\Plugins\fediverse-embeds\git\README.md), or through server configuration.
+
+Note that individual servers have an option to prevent this plugin from loading data, see more details [below](#how-do-i-prevent-this-plugin-from-embedding-my-posts).
 ### How can I run my own code after all embeds are processed?
 
 The plugin fires a custom `ftf_fediverse_embeds_posts_processed` event that passes the list of processed embeds. Here's an example of how it can be used:
