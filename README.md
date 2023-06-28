@@ -45,10 +45,10 @@ A few examples of the plugin in use:
 | **Pleroma**   | ❌              |
 | **Akkoma**    | ❌              |
 | **Friendica** | ❌              |
-| **Misskey**   | ❌ #17          |
-| **Calckey**   | ❌ #16          |
-| **Peertube**  | ❌ #2           |
-| **Pixelfed**  | ❌ #14          |
+| **Misskey**   | ❌ [#17](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/17)          |
+| **Calckey**   | ❌ [#16](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/16)          |
+| **Peertube**  | ❌ [#2](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/2)           |
+| **Pixelfed**  | ❌ [#14](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/14)          |
 
 ## Development
 
