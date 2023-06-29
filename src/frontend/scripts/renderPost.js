@@ -117,7 +117,7 @@ const renderPost = (post, container) => {
             class="post-author-image rounded-circle border"
             width="48"
             height="48"
-            src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ post.post_data.account.avatar_static }"
+            src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURIComponent(post.post_data.account.avatar_static) }"
           >
         </a>
       </div>`;
@@ -168,32 +168,32 @@ const renderPost = (post, container) => {
       
       if (media.type === 'gifv'){
         postText += `<video class="w-100 mt-0" controls loop>
-          <source src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ media.url }" type="video/mp4">
+          <source src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURIComponent(media.url) }" type="video/mp4">
         </video>`;
 
         // <source src="${ media.url }" type="video/mp4">
-        // <source src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ media.url }" type="video/mp4">
+        // <source src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURIComponent(media.url) }" type="video/mp4">
       } else if (media.type === 'video'){
         if (media.url){
-          // src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ media.url }"
+          // src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURIComponent(media.url) }"
           // src="${ media.url }"
 
           postText += `<video class="w-100 mt-0" controls loop>
             <source
-              src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ media.url }"
+              src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURIComponent(media.url) }"
               type="video/mp4"
             >
             </video>`
         }
       } else if (media.type === 'audio'){
         if (media.url){
-          // src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ media.url }"
+          // src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURIComponent(media.url) }"
           // src="${ media.url }"
 
           postText += `
             <audio
               controls
-              src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ media.url }"
+              src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURIComponent(media.url) }"
               class="w-100 mt-3 mb-3"
             ></audio>
           `;
@@ -207,7 +207,7 @@ const renderPost = (post, container) => {
             width="${ media.width }"
             height="${ media.height }"
             class="w-100 rounded border mb-3"
-            src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ media.url }"
+            src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURIComponent(media.url) }"
           >
         </a>`;
       }
@@ -230,7 +230,7 @@ const renderPost = (post, container) => {
       postText += `
       <div class="card mb-4">
         <a href="${ post.post_data.card.url }">
-          <img src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ post.post_data.card.image }" class="card-img-top" alt="...">
+          <img src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ encodeURIComponent(post.post_data.card.image) }" class="card-img-top" alt="...">
         </a>
         <div class="card-body pb-1">
           <h5 class="card-title">
