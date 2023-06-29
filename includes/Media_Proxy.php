@@ -66,62 +66,64 @@ class Media_Proxy {
             header("Content-type: {$image_info['mime']}");
             echo file_get_contents($file_path);
         } else {
-            global $wp_version;
-            $parse = parse_url($url);
-            $domain = $parse['host'];
-
-            $allowed_domains = array(
-                'cdn.masto.host',
-                'pool.jortage.com',
-                'social-cdn.vivaldi.net'
-            );
-
-            $can_download_media = false;
-
-            if (str_ends_with($domain, '.files.fedi.monster')){
-                $can_download_media = true;
-
-            } elseif (in_array($domain, $allowed_domains)){
-                $can_download_media = true;
-
-            } else {
-                // Converting files.domain.social and media.domain.social to domain.social
-
-                $domain = str_replace(array(
-                    'cdn.',
-                    'files.',
-                    'media.',
-                    'pool.',
-                ), '', $domain);
-
-                // Helpers::log_this('debug:proxy_media', array(
-                //     'url' => $url,
-                //     'file_name' => $file_name,
-                //     'domain' => $domain,
-                //     // 'remote_response' => $remote_response,
-                // ));
-
-                $remote_response = wp_remote_get("https://$domain/.well-known/nodeinfo", array(
+            if (!empty($url)){
+                global $wp_version;
+                $parse = parse_url($url);
+                $domain = $parse['host'];
+    
+                $allowed_domains = array(
+                    'cdn.masto.host',
+                    'pool.jortage.com',
+                    'social-cdn.vivaldi.net'
+                );
+    
+                $can_download_media = false;
+    
+                if (str_ends_with($domain, '.files.fedi.monster')){
+                    $can_download_media = true;
+    
+                } elseif (in_array($domain, $allowed_domains)){
+                    $can_download_media = true;
+    
+                } else {
+                    // Converting files.domain.social and media.domain.social to domain.social
+    
+                    $domain = str_replace(array(
+                        'cdn.',
+                        'files.',
+                        'media.',
+                        'pool.',
+                    ), '', $domain);
+    
+                    // Helpers::log_this('debug:proxy_media', array(
+                    //     'url' => $url,
+                    //     'file_name' => $file_name,
+                    //     'domain' => $domain,
+                    //     // 'remote_response' => $remote_response,
+                    // ));
+    
+                    $remote_response = wp_remote_get("https://$domain/.well-known/nodeinfo", array(
+                        'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
+                    ));
+                    // Check if this is a fediverse server.
+                    if (!is_wp_error($remote_response) && $remote_response['response'] && $remote_response['response']['code'] && $remote_response['response']['code'] === 200){
+                        $can_download_media = true;
+                    }     
+                }
+    
+                $remote_response = wp_remote_get($url, array(
                     'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
                 ));
-                // Check if this is a fediverse server.
-                if (!is_wp_error($remote_response) && $remote_response['response'] && $remote_response['response']['code'] && $remote_response['response']['code'] === 200){
-                    $can_download_media = true;
-                }     
-            }
-
-            $remote_response = wp_remote_get($url, array(
-                'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),                
-            ));
-
-            if ($can_download_media){
-                if ($this->archival_mode){
-                    file_put_contents($file_path, $remote_response['body']);
+    
+                if ($can_download_media){
+                    if ($this->archival_mode){
+                        file_put_contents($file_path, $remote_response['body']);
+                    }
                 }
+    
+                header('Content-Type: ' . $remote_response['headers']['content-type']);
+                echo $remote_response['body'];
             }
-
-            header('Content-Type: ' . $remote_response['headers']['content-type']);
-            echo $remote_response['body'];
         }
         exit();
     }    
