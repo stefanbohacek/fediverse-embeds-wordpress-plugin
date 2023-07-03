@@ -41,6 +41,7 @@ class Media_Proxy {
         $folder_name = 'media';
 
         if ($this->archival_mode){
+            $url = base64_decode($url);
             $dir = plugin_dir_path(__FILE__) . "../$folder_name";
             $file_name = basename($url);
             $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
