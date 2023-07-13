@@ -35,101 +35,102 @@ class Embed_Posts {
 
         if ($platform){
             $html = str_get_html($block_content);
-            $iframe = $html->find('iframe', 0);
-            $url = $iframe->src;
 
-            if ($platform === 'pixelfed'){
-                $url = str_replace('/p/', '/', $url);
-            }
+            foreach($html->find('iframe') as $iframe){
+                $url = $iframe->src;
+
+                if ($platform === 'pixelfed'){
+                    $url = str_replace('/p/', '/', $url);
+                }
+        
+                $url_parts = explode('/', $url);
     
-            $url_parts = explode('/', $url);
-
-            $protocol = $url_parts[0];
-            $instance = $url_parts[2];
-            $username = $url_parts[3];
-            $post_id = $url_parts[4];
-
-            // Helpers::log_this('debug:post', array(
-            //     // 'html' => $html,
-            //     // 'iframe' => $iframe,
-            //     'url' => $url,
-            //     'protocol' => $protocol,
-            //     'instance' => $instance,
-            //     'username' => $username,
-            //     'post_id' => $post_id,
-            // ));
-
-            $post = $this->get_post(array(
-                'instance' => $instance,
-                'post_id' => $post_id,
-            ), true);
-
-            try {
-
+                $protocol = $url_parts[0];
+                $instance = $url_parts[2];
+                $username = $url_parts[3];
+                $post_id = $url_parts[4];
+    
                 // Helpers::log_this('debug:post', array(
+                //     'url' => $url,
+                //     'protocol' => $protocol,
+                //     'instance' => $instance,
+                //     'username' => $username,
+                //     'post_id' => $post_id,
+                // ));
+    
+                $post = $this->get_post(array(
+                    'instance' => $instance,
+                    'post_id' => $post_id,
+                ), true);
+    
+                try {
+                    // Helpers::log_this('debug:post', array(
+                    //     'post' => $post,
+                    // ));
+    
+                    if (is_string($post['post_data'])){
+                        $post_data = json_decode($post['post_data'], true);
+                    } else {
+                        $post_data = $post['post_data'];
+                    }
+    
+                    $account_display_name = isset( $post_data['account']['display_name']) ?
+                        $post_data['account']['display_name'] :
+                        "@" . $post_data['account']['username'];
+                    
+                    $account_username = $post_data['account']['username'];
+        
+                    $post_url = $post_data['url'];
+                    $post_content = $post_data['content'];
+                    $post_date = $post_data['created_at'];
+                    
+                    
+                    $iframe->outertext = <<<EOT
+                    <blockquote data-instance="$instance" data-post-id="$post_id" class="ftf-fediverse-post-embed">
+                        $post_content
+                        <p class="ftf-fediverse-post-embed-author">&mdash; $account_display_name (@$account_username@$instance)
+                        <a class="ftf-fediverse-post-embed-link" href="$post_url">$post_date</a>
+                </blockquote>
+                EOT;
+                        
+                } catch (\Exception $e) {
+                    $iframe->outertext = <<<EOT
+                    <blockquote
+                        data-instance="$instance"
+                        data-post-id="$post_id"
+                        class="ftf-fediverse-post-embed-removed"
+                    >
+                        <p>This post by $username@$instance was removed</p>
+                    </blockquote>
+                EOT;
+                }
+        
+                // if ($post->media_attachments){
+                //     $media_attachments = array_map(function($attachment) use ($instance){
+                //         return array(
+                //             'type' => $attachment->type,
+                //             // 'preview_url' => $attachment->preview_url,
+                //             'description' => $attachment->description,
+                //             'instance' => $instance,
+                //             'id' => $attachment->id,
+                //             'extension' => pathinfo($attachment->preview_url)['extension']
+                //         );
+                //     }, $post->media_attachments);
+                // }
+    
+                // Helpers::log_this('debug:post data', array(
+                //     'post_url' => $post_url,
+                //     'post_id' => $post_id,                
+                //     'account_display_name' => $account_display_name,
+                //     'account_username' => $account_username,
+                //     'domain' => $instance,
+                //     'post_date' => $post_date,
+                //     'post_content' => $post_content,
+                //     'media_attachments' => $media_attachments,
                 //     'post' => $post,
                 // ));
-
-                if (is_string($post['post_data'])){
-                    $post_data = json_decode($post['post_data'], true);
-                } else {
-                    $post_data = $post['post_data'];
-                }
-
-                $account_display_name = isset( $post_data['account']['display_name']) ?
-                    $post_data['account']['display_name'] :
-                    "@" . $post_data['account']['username'];
-                
-                $account_username = $post_data['account']['username'];
-    
-                $post_url = $post_data['url'];
-                $post_content = $post_data['content'];
-                $post_date = $post_data['created_at'];
-                
-                $block_content = <<<EOT
-                <blockquote data-instance="$instance" data-post-id="$post_id" class="ftf-fediverse-post-embed">
-                    $post_content
-                    <p class="ftf-fediverse-post-embed-author">&mdash; $account_display_name (@$account_username@$instance)
-                    <a class="ftf-fediverse-post-embed-link" href="$post_url">$post_date</a>
-            </blockquote>
-            EOT;
-                    
-            } catch (\Exception $e) {
-                $block_content = <<<EOT
-                <blockquote
-                    data-instance="$instance"
-                    data-post-id="$post_id"
-                    class="ftf-fediverse-post-embed-removed"
-                >
-                    <p>This post by $username@$instance was removed</p>
-                </blockquote>
-            EOT;
             }
-    
-            // if ($post->media_attachments){
-            //     $media_attachments = array_map(function($attachment) use ($instance){
-            //         return array(
-            //             'type' => $attachment->type,
-            //             // 'preview_url' => $attachment->preview_url,
-            //             'description' => $attachment->description,
-            //             'instance' => $instance,
-            //             'id' => $attachment->id,
-            //             'extension' => pathinfo($attachment->preview_url)['extension']
-            //         );
-            //     }, $post->media_attachments);
-            // }
-
-            // Helpers::log_this('debug:post data', array(
-            //     'post_url' => $post_url,
-            //     'post_id' => $post_id,                
-            //     'account_display_name' => $account_display_name,
-            //     'account_username' => $account_username,
-            //     'domain' => $instance,
-            //     'post_date' => $post_date,
-            //     'post_content' => $post_content,
-            //     'media_attachments' => $media_attachments,
-            //     'post' => $post,
-            // ));
+            $block_content = $html->save();
         }
 
         return $block_content;
