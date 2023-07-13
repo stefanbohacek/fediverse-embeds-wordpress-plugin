@@ -368,7 +368,7 @@ const renderPost = (post, container) => {
   renderedPostHTML += '</small></div></div>';
   
   let renderedPost = document.createElement('div');
-  renderedPost.className = `fediverse-post fediverse-post-rendered w-100 mt-5 mb-5`;
+  renderedPost.className = `fediverse-post fediverse-post-rendered w-100 mt-4 mb-4`;
 
   renderedPost.innerHTML = renderedPostHTML;
   
