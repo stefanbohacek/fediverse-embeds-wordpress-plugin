@@ -64,7 +64,7 @@ class Settings {
         $data_refresh_minutes = get_option('ftf_fediverse_embeds_data_refresh_minutes');
 
         if (empty($data_refresh_minutes)){
-            $data_refresh_minutes = 5;
+            $data_refresh_minutes = 60;
         }
         ?>
 

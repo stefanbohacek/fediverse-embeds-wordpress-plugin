@@ -141,7 +141,7 @@ class Embed_Posts {
         $response = array();
 
         if (empty($data_refresh_minutes)){
-            $data_refresh_minutes = 5;
+            $data_refresh_minutes = 60;
         }
 
         $cache_key = "post_data:" . $post['instance'] . ':' . $post['post_id'];
