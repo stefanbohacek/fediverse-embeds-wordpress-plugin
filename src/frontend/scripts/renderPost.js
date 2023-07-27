@@ -53,6 +53,12 @@ const renderPost = (post, container) => {
             <div class="fediverse-post-labels position-absolute top-0 end-0 mt-1 me-1">
       `;
 
+  if (post.post_data.emojis){
+    post.post_data.emojis.forEach(emoji => {
+      postText = postText.replaceAll(`:${emoji.shortcode}:`, `<img class="fediverse-post-emoji" src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(emoji.url) }" />`);
+    })
+  }
+
   if (postHasLabels){
     renderedPostHTML += `<span class="badge rounded-pill text-bg-light">`;
 

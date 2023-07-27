@@ -6,6 +6,11 @@
 .fediverse-post.fediverse-post-rendered .fediverse-post-labels .badge span {
   padding: 4px;
 }
+.fediverse-post.fediverse-post-rendered img.fediverse-post-emoji {
+  max-width: 24px;
+  max-height: 24px;
+  display: inline-block;
+}
 .fediverse-post.fediverse-post-rendered .card-body {
   line-height: 1.1;
 }

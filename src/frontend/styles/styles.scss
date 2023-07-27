@@ -10,7 +10,13 @@
                 padding: 4px;
             }            
         } 
-    } 
+    }
+    
+    img.fediverse-post-emoji {
+        max-width: 24px;
+        max-height: 24px;
+        display: inline-block;
+    }    
 
     .card-body{
         line-height: 1.1;
