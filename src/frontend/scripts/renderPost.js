@@ -292,12 +292,14 @@ const renderPost = (post, container) => {
 
       post.post_data.poll.options.forEach((option, index) => {
         const votesPortion = option.votes_count/votesTotal * 100;
+        const votesPercentage = post.post_data.poll.expired ? `${Math.round(option.votes_count/votesTotal * 100)}%` : '';
+
         postText += `
           <div class="col-9">
             <p class="mb-2">${ option.title }</p>
           </div>
           <div class="col-3 text-end">
-            <span class="w-100">${ Math.round(option.votes_count/votesTotal * 100) }%</span>
+            <span class="w-100">${ votesPercentage }</span>
           </div>
           <div class="col-12">
             <div
@@ -306,11 +308,11 @@ const renderPost = (post, container) => {
               }"
             >
               <div class="progress-bar ${ 
-                option.votes_count === voteCountMax ? 'bg-primary' : ''
+                post.post_data.poll.expired && option.votes_count === voteCountMax ? 'bg-primary' : ''
               }" 
                 role="progressbar" 
-                style="width: ${ votesPortion }%" 
-                aria-valuenow="${ votesPortion }" 
+                style="width: ${ post.post_data.poll.expired ? votesPortion : 0 }%" 
+                aria-valuenow="${ post.post_data.poll.expired ? votesPortion : 0 }" 
                 aria-valuemin="0" 
                 aria-valuemax="100">
               </div>
