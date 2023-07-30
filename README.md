@@ -65,6 +65,12 @@ composer dumpautoload -o
 
 ### Images or posts are not loading
 
+#### Embed code
+
+[In some cases](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/20), the `mastodon-embed` might be missing. Please make sure the embed code has it.
+
+#### API Endpoints
+
 Please make sure that you're not blocking `/wp-json/ftf/*` endpoints, either via a plugin like [Disable WP REST API](I:\OneDrive\Projects\WordPress\Plugins\fediverse-embeds\git\README.md), or through server configuration or your firewall.
 
 Note that individual servers have an option to prevent this plugin from loading data, see more details [below](#how-do-i-prevent-this-plugin-from-embedding-my-posts).
