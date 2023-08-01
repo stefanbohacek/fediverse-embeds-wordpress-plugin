@@ -30,6 +30,7 @@ class Settings {
         register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_archival_mode', 'esc_attr');
         register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_show_metrics', 'esc_attr');
         register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_show_post_labels', 'esc_attr');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_deleted_posts', 'esc_attr');
         register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_data_refresh_minutes', 'esc_attr');
 
         add_settings_section(
@@ -60,6 +61,7 @@ class Settings {
         $include_bootstrap_styles = get_option('ftf_fediverse_embeds_include_bootstrap_styles', 'on');
         $show_metrics = get_option('ftf_fediverse_embeds_show_metrics', 'on');
         $show_post_labels = get_option('ftf_fediverse_embeds_show_post_labels', 'on');
+        $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts', 'keep');
         $custom_styles = get_option('ftf_fediverse_embeds_custom_styles');
         $data_refresh_minutes = get_option('ftf_fediverse_embeds_data_refresh_minutes');
 
@@ -160,6 +162,22 @@ class Settings {
                                 </ul>
                             </li>
                         </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="ftf-fediverse-embeds-show-metrics">Deleted posts</label>
+                    </th>
+                    <td>
+                        <select id="select-id" name="ftf_fediverse_embeds_deleted_posts" id="ftf-fediverse-embeds-deleted-posts">
+                            <option value="keep" <?php selected($deleted_posts, 'keep', true);?>>Mark as deleted</option>
+                            <option value="redact" <?php selected($deleted_posts, 'redact', true);?>>Remove username and profile image</option>
+                            <option value="hide" <?php selected($deleted_posts, 'hide', true);?>>Hide</option>
+                            <!-- <option value="delete" <?php selected($deleted_posts, 'delete', true);?>>Delete from database</option> -->
+                        </select>
+                        <p class="description">
+                            How do you want to handle deleted posts? 
+                        </p>
                     </td>
                 </tr>
                 <tr>

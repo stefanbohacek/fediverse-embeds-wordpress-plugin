@@ -17,6 +17,7 @@ class Enqueue_Assets {
         $include_bootstrap_styles = get_option('ftf_fediverse_embeds_include_bootstrap_styles', 'on');
         $show_metrics = get_option('ftf_fediverse_embeds_show_metrics', 'on');
         $show_post_labels = get_option('ftf_fediverse_embeds_show_post_labels', 'on');
+        $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts', 'keep');
 
         $plugin_dir_url = plugin_dir_url(__FILE__);
         $plugin_dir_path = plugin_dir_path(__FILE__);
@@ -31,6 +32,7 @@ class Enqueue_Assets {
             'config' => array(
                 'show_metrics' => $show_metrics === 'on',
                 'show_post_labels' => $show_post_labels === 'on',
+                'deleted_posts' => $deleted_posts 
           )
       ));
 

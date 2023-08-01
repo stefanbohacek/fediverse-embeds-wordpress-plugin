@@ -26,6 +26,7 @@ class Embed_Posts {
 
     function process_embeds($block_content, $block) {
         $platform = null;
+        $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts');
 
         if (str_contains($block_content, 'class="mastodon-embed"')){
             $platform = 'mastodon';
@@ -62,7 +63,10 @@ class Embed_Posts {
                     'instance' => $instance,
                     'post_id' => $post_id,
                 ), true);
-    
+
+                // if ($live_post_data['status'] === 'deleted'){
+                // if ($saved_post_data['__status'] = 'deleted'){
+
                 try {
                     // Helpers::log_this('debug:post', array(
                     //     'post' => $post,
