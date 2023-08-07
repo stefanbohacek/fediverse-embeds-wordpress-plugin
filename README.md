@@ -15,6 +15,7 @@ Feedback and help will be very appreciated!
 
 A few examples of the plugin in use:
 
+- [alttexthalloffame.org](https://alttexthalloffame.org/)
 - [stefanbohacek.com](https://stefanbohacek.com/blog/a-netizens-guide-to-mastodon-fediverse/)
 - [botwiki.org](https://botwiki.org/blog/what-kind-of-bots-are-posting-in-the-fediverse/)
 
