@@ -11,7 +11,8 @@ class Settings {
 
         add_action('admin_init', array($this, 'settings_init'));
         add_action('admin_menu', array($this, 'add_settings_page'));
-        add_filter('plugin_action_links', array($this, 'settings_page_link'));
+        add_filter('plugin_action_links_fediverse-embeds/index.php', array($this, 'settings_page_link'));
+        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'settings_page_link'));
     }
 
     function add_settings_page(){
