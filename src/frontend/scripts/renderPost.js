@@ -347,11 +347,14 @@ const renderPost = (post, container) => {
                 }"
               >
                 <div class="progress-bar ${ 
+                  // post.post_data.poll.expired && option.votes_count === voteCountMax ? 'bg-primary' : ''
                   post.post_data.poll.expired && option.votes_count === voteCountMax ? 'bg-primary' : ''
                 }" 
                   role="progressbar" 
-                  style="width: ${ post.post_data.poll.expired ? votesPortion : 0 }%" 
-                  aria-valuenow="${ post.post_data.poll.expired ? votesPortion : 0 }" 
+                  xxxstyle="width: ${ post.post_data.poll.expired ? votesPortion : 0 }%" 
+                  xxxaria-valuenow="${ post.post_data.poll.expired ? votesPortion : 0 }" 
+                  style="width: ${ votesPortion }%" 
+                  aria-valuenow="${ votesPortion }" 
                   aria-valuemin="0" 
                   aria-valuemax="100">
                 </div>
