@@ -331,7 +331,8 @@ const renderPost = (post, container) => {
   
         post.post_data.poll.options.forEach((option, index) => {
           const votesPortion = option.votes_count/votesTotal * 100;
-          const votesPercentage = post.post_data.poll.expired ? `${Math.round(option.votes_count/votesTotal * 100)}%` : '';
+          // const votesPercentage = post.post_data.poll.expired ? `${Math.round(option.votes_count/votesTotal * 100)}%` : '';
+          const votesPercentage = `${Math.round(option.votes_count/votesTotal * 100)}%`;
   
           postText += `
             <div class="col-9">
