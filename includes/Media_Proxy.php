@@ -121,9 +121,24 @@ class Media_Proxy {
                         file_put_contents($file_path, $remote_response['body']);
                     }
                 }
-    
-                header('Content-Type: ' . $remote_response['headers']['content-type']);
-                echo $remote_response['body'];
+
+                if (!empty($remote_response)){
+                    if (is_array($remote_response)){
+                        if (key_exists('headers', $remote_response) && key_exists('content-type', $remote_response['headers'])){
+                            header('Content-Type: ' . $remote_response['headers']['content-type']);
+                        }
+
+                        if (key_exists('body', $remote_response)){
+                            echo $remote_response['body'];
+                        } else {
+                            echo '';
+                        }
+                    } else {
+                        echo '';
+                    }
+                } else {
+                    echo '';
+                }
             }
         }
         exit();
