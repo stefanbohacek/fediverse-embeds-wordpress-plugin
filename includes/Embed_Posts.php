@@ -298,7 +298,7 @@ class Embed_Posts {
     function get_post_ajax($post){
         if (array_key_exists('post', $_POST)){
             $response = array();
-            $post = $_POST[ 'post' ];
+            $post = sanitize_text_field($_POST[ 'post' ]);
 
             if (!empty($post)){
                 $post = json_decode(str_replace('\"', '"', $post), true);

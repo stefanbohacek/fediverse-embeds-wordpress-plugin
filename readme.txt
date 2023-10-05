@@ -2,7 +2,7 @@
 Contributors: stefanbohacek
 Tags: fediverse, mastodon, calckey, post, toot, embed
 Requires at least: 5.0
-Tested up to: 6.2.2
+Tested up to: 6.3
 Stable tag: 1.0.0
 Requires PHP: 8.0
 License: MIT

@@ -88,15 +88,15 @@ class Settings {
                 <tr>
                     <td style="vertical-align: top;">
                         <a alt="A screenshot of a Mastodon post showing how to access the embed code."
-                            href="<?php echo plugin_dir_url(__FILE__); ?>../images/instructions/mastodon-embed.png" target="_blank">
-                            <img style="max-width: 100%" src="<?php echo plugin_dir_url(__FILE__); ?>../images/instructions/mastodon-embed.png">
+                            href="<?php echo esc_html(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png" target="_blank">
+                            <img style="max-width: 100%" src="<?php echo esc_html(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png">
                         </a>
 
                     </td>
                     <td style="vertical-align: top;">
                         <a alt="A screenshot of a custom HTML WordPress block containing the embed code."
-                            href="<?php echo plugin_dir_url(__FILE__); ?>../images/instructions/add-html-iframe.png" target="_blank">
-                            <img style="max-width: 100%" src="<?php echo plugin_dir_url(__FILE__); ?>../images/instructions/add-html-iframe.png">
+                            href="<?php echo esc_html(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png" target="_blank">
+                            <img style="max-width: 100%" src="<?php echo esc_html(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png">
                         </a>
                     </td>
                 </tr>
@@ -122,7 +122,7 @@ class Settings {
                             type="number"
                             min="5"
                             name="ftf_fediverse_embeds_data_refresh_minutes"
-                            value="<?php echo $data_refresh_minutes; ?>"
+                            value="<?php echo esc_html($data_refresh_minutes); ?>"
                             placeholder="5"
                         >
                         <p class="description">
@@ -204,7 +204,7 @@ class Settings {
                             rows="4"
                             cols="50"
                             style="font-family: monospace;"
-                        ><?php echo $custom_styles; ?></textarea>
+                        ><?php echo esc_html($custom_styles); ?></textarea>
                         <p class="description">
                             Add additional CSS styles. <a href="https://jigsaw.w3.org/css-validator/#validate_by_input" target="_blank">Use the CSS validator</a> to make sure your CSS is valid.
                         </p>                        
@@ -233,8 +233,8 @@ class Settings {
         $media_dir_size = Helpers::get_directory_size($media_dir)
         ?>
         <ul>
-            <li>Number of saved posts: <?php echo number_format($post_count); ?></li>
-            <li>Size of downloaded media files: <?php echo $media_dir_size; ?></li>
+            <li>Number of saved posts: <?php echo esc_html(number_format($post_count)); ?></li>
+            <li>Size of downloaded media files: <?php echo esc_html($media_dir_size); ?></li>
         </ul>
     <?php }    
 
