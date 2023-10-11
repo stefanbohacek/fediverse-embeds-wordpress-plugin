@@ -328,11 +328,19 @@ const renderPost = (post, container) => {
         postText += `<div class="row">`;
   
         const pollOptionsCount = post.post_data.poll.options;
-  
+
         post.post_data.poll.options.forEach((option, index) => {
-          const votesPortion = option.votes_count/votesTotal * 100;
-          // const votesPercentage = post.post_data.poll.expired ? `${Math.round(option.votes_count/votesTotal * 100)}%` : '';
-          const votesPercentage = `${Math.round(option.votes_count/votesTotal * 100)}%`;
+          let votesPortion;
+          let votesPercentage;
+          // votesPercentage = post.post_data.poll.expired ? `${Math.round(option.votes_count/votesTotal * 100)}%` : '';
+
+          if (post.post_data.poll.multiple){
+            votesPercentage = `${Math.round(option.votes_count/post.post_data.poll.voters_count * 100)}%`;
+            votesPortion = option.votes_count/post.post_data.poll.voters_count * 100;
+          } else {
+            votesPercentage = `${Math.round(option.votes_count/votesTotal * 100)}%`;
+            votesPortion = option.votes_count/votesTotal * 100;
+          }
   
           postText += `
             <div class="col-9">
