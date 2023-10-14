@@ -94,6 +94,7 @@ class Media_Proxy {
                         'files.',
                         'media.',
                         'pool.',
+                        's3.',
                     ), '', $domain);
     
                     // Helpers::log_this('debug:proxy_media', array(
