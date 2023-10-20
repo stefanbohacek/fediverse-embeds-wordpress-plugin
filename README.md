@@ -11,8 +11,6 @@ Feedback and help will be very appreciated!
 - see [open issues](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) or [create a new one](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/new)
 - [contact](https://stefanbohacek.com/contact/)
 
-
-
 A few examples of the plugin in use:
 
 - [alttexthalloffame.org](https://alttexthalloffame.org/)
@@ -50,6 +48,12 @@ A few examples of the plugin in use:
 | **Calckey**   | ❌ [#16](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/16)          |
 | **Peertube**  | ❌ [#2](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/2)           |
 | **Pixelfed**  | ❌ [#14](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/14)          |
+
+## Privacy notice
+
+When embedding a post from a fediverse server, the content of the post needs to be fetched from that server, which is then stored in your site's database. Based on the way you configure the plugin, additional requests will be made periodically to refresh the cached data.
+
+When making requests to a third party server in general, the server will receive and may record the IP address of the server hosting your website.
 
 ## Development
 
