@@ -88,25 +88,23 @@ class Embed_Posts {
                     $post_content = $post_data['content'];
                     $post_date = $post_data['created_at'];
                     
-                    
-                    $iframe->outertext = <<<EOT
-                    <blockquote data-instance="$instance" data-post-id="$post_id" class="ftf-fediverse-post-embed">
-                        $post_content
-                        <p class="ftf-fediverse-post-embed-author">&mdash; $account_display_name (@$account_username@$instance)
-                        <a class="ftf-fediverse-post-embed-link" href="$post_url">$post_date</a>
-                </blockquote>
-                EOT;
-                        
+                    $iframe_html  = "<blockquote data-instance=\"$instance\" data-post-id=\"$post_id\" class=\"ftf-fediverse-post-embed\">";
+                    $iframe_html .= $post_content;
+                    $iframe_html .= "<p class=\"ftf-fediverse-post-embed-author\">&mdash; $account_display_name (@$account_username@$instance)";
+                    $iframe_html .= "<a class=\"ftf-fediverse-post-embed-link\" href=\"$post_url\">$post_date</a>";
+                    $iframe_html .= "</blockquote>";
+
+                    $iframe->outertext = $iframe_html;
                 } catch (\Exception $e) {
-                    $iframe->outertext = <<<EOT
-                    <blockquote
-                        data-instance="$instance"
-                        data-post-id="$post_id"
-                        class="ftf-fediverse-post-embed-removed"
-                    >
-                        <p>This post by $username@$instance was removed</p>
-                    </blockquote>
-                EOT;
+                    $iframe_html  = "<blockquote";
+                    $iframe_html .= "data-instance=\"$instance\"";
+                    $iframe_html .= "data-post-id=\"$post_id\"";
+                    $iframe_html .= "class=\"ftf-fediverse-post-embed-removed\"";
+                    $iframe_html .= ">";
+                    $iframe_html .= "<p>This post by $username@$instance was removed</p>";
+                    $iframe_html .= "</blockquote>";
+
+                    $iframe->outertext = $iframe_html;
                 }
         
                 // if ($post->media_attachments){
