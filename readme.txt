@@ -29,3 +29,9 @@ $(document).on('ftf_fediverse_embeds_processed', () => {
 });
 
 `
+
+== Privacy notice ==
+
+When embedding a post from a fediverse server, the content of the post needs to be fetched from that server, which is then stored in your site's database. Based on the way you configure the plugin, additional requests will be made periodically to refresh the cached data.
+
+When making requests to a third party server in general, the server will receive and may record the IP address of the server hosting your website. Please consult the privacy details and terms of use of each server you are embedding content from. (Example for mastodon.social: [About Mastodon](https://mastodon.social/privacy-policy), [Privacy policy](https://mastodon.social/privacy-policy))
