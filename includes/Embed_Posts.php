@@ -291,17 +291,25 @@ class Embed_Posts {
 
     function get_post_ajax($post){
         if (array_key_exists('post', $_POST)){
+            $allow_public_api_access = defined( 'FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS' ) ? FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS : false;
+
             $response = array();
             $post = sanitize_text_field($_POST[ 'post' ]);
+            $nonce = sanitize_text_field($_POST[ 'nonce' ]);
 
-            if (!empty($post)){
-                $post = json_decode(str_replace('\"', '"', $post), true);
-                $response = $this->get_post($post);
-
-                // Helpers::log_this('get_post_ajax', array(
-                //     'post' => $post,
-                //     'response' => $response,
-                // ));
+            if ($allow_public_api_access || wp_verify_nonce($nonce, 'ftf-fediverse-embeds-nonce')){
+                if (!empty($post)){
+                    $post = json_decode(str_replace('\"', '"', $post), true);
+                    $response = $this->get_post($post);
+    
+                    // Helpers::log_this('get_post_ajax', array(
+                    //     'post' => $post,
+                    //     'response' => $response,
+                    // ));
+                }
+            } else {
+                wp_send_json_error();
+                return;
             }
         }
         

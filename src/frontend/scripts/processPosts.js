@@ -21,6 +21,7 @@ const processPosts = async (fn) => {
         async post => {
       await fetchData({
         action: 'ftf_get_post',
+        nonce: ftf_fediverse_embeds.nonce,
         post: JSON.stringify(post)
       }, (response) => {
         // console.log('ftf_get_post', {post, response});

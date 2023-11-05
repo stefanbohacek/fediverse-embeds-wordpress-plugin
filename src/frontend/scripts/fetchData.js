@@ -11,7 +11,6 @@ const fetchData = async (data, cb, done) => {
       body: new URLSearchParams(data) })
       .then((response) => response.json())
       .then((response) => {
-          // console.log('response', response);
           cb(response);
       })
       .catch((error) => {
