@@ -7,11 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-    'FTF_Fediverse_Embeds\\Database' => $baseDir . '/includes/Database.php',
-    'FTF_Fediverse_Embeds\\Embed_Posts' => $baseDir . '/includes/Embed_Posts.php',
-    'FTF_Fediverse_Embeds\\Enqueue_Assets' => $baseDir . '/includes/Enqueue_Assets.php',
-    'FTF_Fediverse_Embeds\\Helpers' => $baseDir . '/includes/Helpers.php',
-    'FTF_Fediverse_Embeds\\Media_Proxy' => $baseDir . '/includes/Media_Proxy.php',
-    'FTF_Fediverse_Embeds\\Settings' => $baseDir . '/includes/Settings.php',
-    'FTF_Fediverse_Embeds\\Site_Info' => $baseDir . '/includes/Site_Info.php',
+    'simplehtmldom\\Debug' => $vendorDir . '/simplehtmldom/simplehtmldom/Debug.php',
+    'simplehtmldom\\HtmlDocument' => $vendorDir . '/simplehtmldom/simplehtmldom/HtmlDocument.php',
+    'simplehtmldom\\HtmlNode' => $vendorDir . '/simplehtmldom/simplehtmldom/HtmlNode.php',
+    'simplehtmldom\\HtmlWeb' => $vendorDir . '/simplehtmldom/simplehtmldom/HtmlWeb.php',
 );

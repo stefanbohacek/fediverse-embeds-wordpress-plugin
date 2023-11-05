@@ -1,12 +1,9 @@
 <?php
 namespace FTF_Fediverse_Embeds;
+// require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php';
+
 use FTF_Fediverse_Embeds\Helpers;
-
-$dir = plugin_dir_path(__FILE__);
-
-if (!class_exists('simple_html_dom_node')){
-    require_once $dir . 'simple_html_dom.php';
-}
 
 class Media_Proxy {
     protected $archival_mode;

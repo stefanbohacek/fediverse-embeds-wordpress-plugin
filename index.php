@@ -12,6 +12,7 @@
 
 
 defined('ABSPATH') || exit;
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 use FTF_Fediverse_Embeds\Embed_Posts;

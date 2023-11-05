@@ -22,13 +22,10 @@ class ComposerStaticInita9eb0d2b8415dc4566a0874220fbe0a1
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'FTF_Fediverse_Embeds\\Database' => __DIR__ . '/../..' . '/includes/Database.php',
-        'FTF_Fediverse_Embeds\\Embed_Posts' => __DIR__ . '/../..' . '/includes/Embed_Posts.php',
-        'FTF_Fediverse_Embeds\\Enqueue_Assets' => __DIR__ . '/../..' . '/includes/Enqueue_Assets.php',
-        'FTF_Fediverse_Embeds\\Helpers' => __DIR__ . '/../..' . '/includes/Helpers.php',
-        'FTF_Fediverse_Embeds\\Media_Proxy' => __DIR__ . '/../..' . '/includes/Media_Proxy.php',
-        'FTF_Fediverse_Embeds\\Settings' => __DIR__ . '/../..' . '/includes/Settings.php',
-        'FTF_Fediverse_Embeds\\Site_Info' => __DIR__ . '/../..' . '/includes/Site_Info.php',
+        'simplehtmldom\\Debug' => __DIR__ . '/..' . '/simplehtmldom/simplehtmldom/Debug.php',
+        'simplehtmldom\\HtmlDocument' => __DIR__ . '/..' . '/simplehtmldom/simplehtmldom/HtmlDocument.php',
+        'simplehtmldom\\HtmlNode' => __DIR__ . '/..' . '/simplehtmldom/simplehtmldom/HtmlNode.php',
+        'simplehtmldom\\HtmlWeb' => __DIR__ . '/..' . '/simplehtmldom/simplehtmldom/HtmlWeb.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

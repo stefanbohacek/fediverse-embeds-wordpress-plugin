@@ -14,5 +14,7 @@
             "email": "stefan@stefanbohacek.com"
         }
     ],
-    "require": {}
+    "require": {
+        "simplehtmldom/simplehtmldom": "2.0-RC2"
+    }
 }

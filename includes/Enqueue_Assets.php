@@ -1,11 +1,7 @@
 <?php
 namespace FTF_Fediverse_Embeds;
-
-$dir = plugin_dir_path(__FILE__);
-
-if (!class_exists('simple_html_dom_node')){
-    require_once $dir . 'simple_html_dom.php';
-}
+// require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php';
 
 class Enqueue_Assets {
     function __construct(){
