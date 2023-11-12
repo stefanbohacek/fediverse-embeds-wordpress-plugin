@@ -234,7 +234,9 @@ class Settings {
         ?>
         <ul>
             <li>Number of saved posts: <?php echo esc_html(number_format($post_count)); ?></li>
-            <li>Size of downloaded media files: <?php echo esc_html($media_dir_size); ?></li>
+            <li>Size of downloaded media files: <?php echo esc_html($media_dir_size); ?>
+                <code>(<?php echo $media_dir; ?>)</code>
+            </li>
         </ul>
     <?php }    
 
