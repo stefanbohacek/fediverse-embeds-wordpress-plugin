@@ -24,7 +24,7 @@ class Embed_Posts {
         $platform = null;
         $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts');
 
-        if (str_contains($block_content, 'class="mastodon-embed"')){
+        if (str_contains($block_content, 'class="mastodon-embed"') || str_contains($block_content, '/embed.js')){
             $platform = 'mastodon';
         } elseif (str_contains($block_content, 'todo:class="pixelfed__embed"')){
             $platform = 'pixelfed';
