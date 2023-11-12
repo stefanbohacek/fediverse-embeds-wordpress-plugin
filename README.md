@@ -72,7 +72,7 @@ composer dumpautoload -o
 
 #### Embed code
 
-[In some cases](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/20), the `mastodon-embed` class might be missing. Please make sure the embed code has it.
+Please make sure to copy the full embed code, including the `iframe` and the `script` tag.
 
 #### API Endpoints
 
