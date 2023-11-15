@@ -83,10 +83,9 @@ The plugin fires a custom `ftf_fediverse_embeds_posts_processed` event that pass
 
 ```js
 document.addEventListener('ftf_fediverse_embeds_posts_processed', (event) => {
-    console.log(event.detail);
-
+    // All embeds are ready.
     event.detail.forEach(embed => {
-        // do something with each embed
+        // Do something with each embed.
     });
 });
 ```
@@ -95,9 +94,10 @@ Or with jQuery:
 
 ```js
 $(document).on('ftf_fediverse_embeds_processed', () => {
+    // All embeds are ready.
     $('.fediverse-post').each(() => {
         const $post = $(this);
-        // Now you can do something with each post.
+        // Do something with each embed.
     });
 });
 ```
