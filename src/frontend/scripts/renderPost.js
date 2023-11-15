@@ -59,7 +59,7 @@ const renderPost = (post, container) => {
     </div>
     `;
   } else {
-    renderedPost.className = `fediverse-post fediverse-post-rendered w-100 m-0 mt-4 mb-4`;
+    renderedPost.className = `fediverse-post fediverse-post-rendered w-100 mt-4 mb-4`;
 
     if (post.post_data.edited_at){
       postIsUpdated = true;

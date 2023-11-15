@@ -24,6 +24,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.0.4 =
+* Minor styling cleanup.
+
 = 1.0.3 =
 * Fixed fatal error when the simple_html_dom class already exists.
 
