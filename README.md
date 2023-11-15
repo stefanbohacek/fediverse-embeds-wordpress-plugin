@@ -36,6 +36,8 @@ A few examples of the plugin in use:
 
 ## Supported platforms
 
+This plugin only works with fediverse platforms that provide embed code. As more platforms add this feature, this plugin will continue to get updated.
+
 | **Platform**  | **Supported**   |
 |---------------|-----------------|
 | **Mastodon**  | ✔️ [How to embed](https://fedi.tips/how-to-embed-mastodon-posts-on-a-website/) |
