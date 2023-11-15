@@ -91,6 +91,17 @@ document.addEventListener('ftf_fediverse_embeds_posts_processed', (event) => {
 });
 ```
 
+Or with jQuery:
+
+```js
+$(document).on('ftf_fediverse_embeds_processed', () => {
+    $('.fediverse-post').each(() => {
+        const $post = $(this);
+        // Now you can do something with each post.
+    });
+});
+```
+
 ### How do I prevent this plugin from embedding my posts?
 
 The plugin will use the following user agent when making requests to your fediverse servers:

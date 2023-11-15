@@ -12,22 +12,9 @@ Embed fediverse posts easily.
 
 == Description ==
 
+Please visit the GitHub repo for instructions on [how to embed posts](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin#supported-platforms) and for [general FAQ and troubleshooting tips](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin#faq).
+
 [Learn more](https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/) | [View source](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin)
-
-== FAQ and Troubleshooting ==
-
-**I need to run a script after the embeds are processed**
-
-You can use the `ftf_fediverse_embeds_processed` event. Using jQuery as an example, you could do the following:
-
-`
-$(document).on('ftf_fediverse_embeds_processed', () => {
-    $('.fediverse-post').each(() => {
-        const $post = $(this);
-        // Now you can do something with each post.
-    });
-});
-`
 
 == Privacy notice ==
 
@@ -36,6 +23,9 @@ When embedding a post from a fediverse server, the content of the post needs to 
 When making requests to a third party server in general, the server will receive and may record the IP address of the server hosting your website. Please consult the privacy details and terms of use of each server you are embedding content from. (Example for mastodon.social: [About Mastodon](https://mastodon.social/privacy-policy), [Privacy policy](https://mastodon.social/privacy-policy))
 
 == Changelog ==
+
+= 1.0.3 =
+* Fixed fatal error when the simple_html_dom class already exists.
 
 = 1.0.2 =
 * Updated WordPress compatibility version.
