@@ -19,8 +19,7 @@ const renderPost = (post, container) => {
   let accountIsBot = false;
   let accountIsOwner = false;
 
-
-  let renderedPost = document.createElement('div');
+  let renderedPost = document.createElement('blockquote');
   let renderedPostHTML = '';
 
   if (postIsDeleted && ftf_fediverse_embeds.config.deleted_posts === 'redact'){
@@ -51,16 +50,16 @@ const renderPost = (post, container) => {
     renderedPost.className = `fediverse-post fediverse-post-deleted`;
 
     renderedPostHTML += `
-    <blockquote
+    <div
       data-instance="$instance"
       data-post-id="$post_id"
       class="ftf-fediverse-post-embed-removed"
     >
       <p>This post by @${ post.post_data.account.username}@${ post.instance } was removed.</p>
-    </blockquote>
+    </div>
     `;
   } else {
-    renderedPost.className = `fediverse-post fediverse-post-rendered w-100 mt-4 mb-4`;
+    renderedPost.className = `fediverse-post fediverse-post-rendered w-100 m-0 mt-4 mb-4`;
 
     if (post.post_data.edited_at){
       postIsUpdated = true;
