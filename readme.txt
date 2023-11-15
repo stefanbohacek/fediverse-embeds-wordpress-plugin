@@ -24,6 +24,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.0.5 =
+* Include the plugin version for easier debugging.
+
 = 1.0.4 =
 * Minor styling cleanup.
 

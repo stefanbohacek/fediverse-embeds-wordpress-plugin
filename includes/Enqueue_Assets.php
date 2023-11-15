@@ -23,6 +23,9 @@ class Enqueue_Assets {
         $js_url = $plugin_dir_url . '../dist/js/scripts.js';
         $js_path = $plugin_dir_path . '../dist/js/scripts.js';
 
+        $plugin_data = get_file_data(__DIR__ . '/../index.php', array('Version' => 'Version'), false);
+        $plugin_version = $plugin_data['Version'];
+        
         wp_register_script('ftf-fediverse-embeds-frontend-js', $js_url, array(), filemtime($js_path), true);
         wp_localize_script('ftf-fediverse-embeds-frontend-js', 'ftf_fediverse_embeds', array(
             'ajax_url' => admin_url('admin-ajax.php'),
@@ -32,7 +35,8 @@ class Enqueue_Assets {
                 'show_metrics' => $show_metrics === 'on',
                 'show_post_labels' => $show_post_labels === 'on',
                 'deleted_posts' => $deleted_posts 
-          )
+            ),
+            'version' => $plugin_version
       ));
 
         wp_enqueue_script('ftf-fediverse-embeds-frontend-js');
