@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Fediverse Embeds
- * Plugin URI: https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin
+ * Plugin URI: https://wordpress.org/plugins/fediverse-embeds/
  * Description: Embed posts from the fediverse.
  * Version: 1.0.0
  * Author: stefanbohacek

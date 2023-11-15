@@ -12,7 +12,7 @@ Embed fediverse posts easily.
 
 == Description ==
 
-[Learn more](https://stefanbohacek.com/project/fediverse-embeds-wordpress-plugin/) | [View source](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin)
+[Learn more](https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/) | [View source](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin)
 
 == FAQ and Troubleshooting ==
 

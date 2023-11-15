@@ -12,7 +12,7 @@
     "WordPress",
     "block"
   ],
-  "homepage": "https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/",
+  "homepage": "https://wordpress.org/plugins/fediverse-embeds/",
   "repository": "git+https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin.git",
   "bugs": {
     "url": "https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues"

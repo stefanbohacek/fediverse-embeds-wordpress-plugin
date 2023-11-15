@@ -279,7 +279,7 @@ const renderPost = (post, container) => {
           </a>
           <div class="card-body pb-1">
             <h5 class="card-title">
-              <a href="${ post.post_data.card.title }">
+              <a href="${ post.post_data.card.url }">
                 ${ post.post_data.card.title }
               </a>
             </h5>
@@ -296,7 +296,7 @@ const renderPost = (post, container) => {
         <div class="card mb-4">
         <div class="card-body pb-1">
             <h5 class="card-title">
-              <a href="${ post.post_data.card.title }">
+              <a href="${ post.post_data.card.url }">
                 ${ post.post_data.card.title }
               </a>
             </h5>
