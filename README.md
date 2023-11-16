@@ -36,7 +36,9 @@ A few examples of the plugin in use:
 
 ## Supported platforms
 
-This plugin only works with fediverse platforms that provide embed code. As more platforms add this feature, this plugin will continue to get updated.
+This plugin only works with fediverse platforms that provide embed code. This way, if you ever decide to stop using the plugin, your embeds will still work.
+
+As more platforms add this feature, this plugin will continue to get updated.
 
 | **Platform**  | **Supported**   |
 |---------------|-----------------|
