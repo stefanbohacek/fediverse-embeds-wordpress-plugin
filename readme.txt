@@ -1,5 +1,5 @@
 === Fediverse Embeds ===
-Contributors: stefanbohacek
+Contributors: fourtonfish
 Tags: fediverse, mastodon, calckey, post, toot, embed
 Requires at least: 5.0
 Tested up to: 6.4
@@ -12,6 +12,8 @@ Embed fediverse posts easily.
 
 == Description ==
 
+This plugin lets you optimize and customize embedded posts from fediverse platform that support this feature.
+
 Please visit the GitHub repo for instructions on [how to embed posts](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin#supported-platforms) and for [general FAQ and troubleshooting tips](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin#faq).
 
 [Learn more](https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/) | [View source](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin)
@@ -23,6 +25,9 @@ When embedding a post from a fediverse server, the content of the post needs to 
 When making requests to a third party server in general, the server will receive and may record the IP address of the server hosting your website. Please consult the privacy details and terms of use of each server you are embedding content from. (Example for mastodon.social: [About Mastodon](https://mastodon.social/privacy-policy), [Privacy policy](https://mastodon.social/privacy-policy))
 
 == Changelog ==
+
+= 1.0.6 =
+* Display attached images in full height.
 
 = 1.0.5 =
 * Include the plugin version for easier debugging.

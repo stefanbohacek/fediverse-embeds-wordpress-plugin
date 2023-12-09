@@ -106,25 +106,6 @@
   white-space: normal;
   margin-top: 2rem;
 }
-.fediverse-post.fediverse-post-rendered .post-media img {
-  height: 160px !important;
-  -o-object-fit: cover !important;
-     object-fit: cover !important;
-}
-.fediverse-post.fediverse-post-rendered .post-media .col-lg-12 img {
-  height: 360px !important;
-}
-.fediverse-post.fediverse-post-rendered .post-media[data-media-length] .col-lg-12 img {
-  height: 260px !important;
-}
-.fediverse-post.fediverse-post-rendered .post-media[data-media-length="2"] [data-media-type=photo] img {
-  height: 320px !important;
-}
-.fediverse-post.fediverse-post-rendered .post-media[data-media-length="1"] [data-media-type=photo] img {
-  height: unset !important;
-  -o-object-fit: contain !important;
-     object-fit: contain !important;
-}
 .fediverse-post.fediverse-post-rendered .post-media [data-media-type=video] .post-video-placeholder img {
   height: 360px !important;
 }

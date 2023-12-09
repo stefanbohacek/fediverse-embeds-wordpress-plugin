@@ -125,43 +125,6 @@
     }
 
     .post-media{
-        img{
-            height: 160px !important;
-            object-fit: cover !important;
-        }
-
-
-        .col-lg-12{
-            img{
-                height: 360px !important;
-            }
-        }
-
-        &[data-media-length]{
-            .col-lg-12{
-                img{
-                    height: 260px !important;
-                }
-            }
-        }
-
-        &[data-media-length="2"]{
-            [data-media-type="photo"]{
-                img{
-                    height: 320px !important;
-                }
-            }
-        }
-
-        &[data-media-length="1"]{
-            [data-media-type="photo"]{
-                img{
-                    height: unset !important;
-                    object-fit: contain !important;
-                }
-            }
-        }
-
         [data-media-type="video"]{
             .post-video-placeholder{
                 img{
@@ -181,7 +144,7 @@
         }
 
         img.post-attachment-site-thumbnail{
-            height: 300px !important;
+            height: 360px !important;
             object-fit: cover !important;
         }
     }
