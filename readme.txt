@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.0.7 =
+* Temporarily skip Pixelfed embeds.
+
 = 1.0.6 =
 * Display attached images in full height.
 
