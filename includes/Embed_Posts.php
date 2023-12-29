@@ -76,17 +76,21 @@ class Embed_Posts {
                     } else {
                         $post_data = $post['post_data'];
                     }
-    
-                    $account_display_name = isset( $post_data['account']['display_name']) ?
-                        $post_data['account']['display_name'] :
-                        "@" . $post_data['account']['username'];
                     
-                    $account_username = $post_data['account']['username'];
-        
-                    $post_url = $post_data['url'];
-                    $post_content = $post_data['content'];
-                    $post_date = $post_data['created_at'];
-                    
+                    if (!empty($post_data)){
+                        if (!empty($post_data['account'])){
+                            $account_display_name = isset( $post_data['account']['display_name']) ?
+                                $post_data['account']['display_name'] :
+                                "@" . $post_data['account']['username'];
+                            
+                            $account_username = $post_data['account']['username'];
+                        }
+            
+                        $post_url = $post_data['url'];
+                        $post_content = $post_data['content'];
+                        $post_date = $post_data['created_at'];
+                    }
+
                     $iframe_html  = "<blockquote data-instance=\"$instance\" data-post-id=\"$post_id\" class=\"ftf-fediverse-post-embed\">";
                     $iframe_html .= $post_content;
                     $iframe_html .= "<p class=\"ftf-fediverse-post-embed-author\">&mdash; $account_display_name (@$account_username@$instance)";
@@ -264,7 +268,7 @@ class Embed_Posts {
                             //     'created_at' => $live_post_data_json->created_at,
                             // ));
         
-                            if ($live_post_data_json['id'] && $live_post_data_json['created_at']){
+                            if (!empty($live_post_data_json) && !empty($live_post_data_json['id']) && !empty($live_post_data_json['created_at'])){
                                 $response = $live_post_data_json;
 
                                 $this->db->save_post($post_instance, $post_id, $live_post_data);            
