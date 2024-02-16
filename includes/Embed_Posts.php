@@ -91,12 +91,15 @@ class Embed_Posts {
                         $post_date = $post_data['created_at'];
                     }
 
-                    $iframe_html  = "<blockquote data-instance=\"$instance\" data-post-id=\"$post_id\" class=\"ftf-fediverse-post-embed\">";
-                    $iframe_html .= $post_content;
-                    $iframe_html .= "<p class=\"ftf-fediverse-post-embed-author\">&mdash; $account_display_name (@$account_username@$instance)";
-                    $iframe_html .= "<a class=\"ftf-fediverse-post-embed-link\" href=\"$post_url\">$post_date</a>";
-                    $iframe_html .= "</blockquote>";
+                    $iframe_html = "";
 
+                    if ($post_content && $account_display_name && $account_username && $post_url && $post_date ){
+                        $iframe_html  = "<blockquote data-instance=\"$instance\" data-post-id=\"$post_id\" class=\"ftf-fediverse-post-embed\">";
+                        $iframe_html .= $post_content;
+                        $iframe_html .= "<p class=\"ftf-fediverse-post-embed-author\">&mdash; $account_display_name (@$account_username@$instance)";
+                        $iframe_html .= "<a class=\"ftf-fediverse-post-embed-link\" href=\"$post_url\">$post_date</a>";
+                        $iframe_html .= "</blockquote>";
+                    }
                     $iframe->outertext = $iframe_html;
                 } catch (\Exception $e) {
                     $iframe_html  = "<blockquote";
@@ -106,7 +109,6 @@ class Embed_Posts {
                     $iframe_html .= ">";
                     $iframe_html .= "<p>This post by $username@$instance was removed</p>";
                     $iframe_html .= "</blockquote>";
-
                     $iframe->outertext = $iframe_html;
                 }
         
