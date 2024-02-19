@@ -67,6 +67,12 @@ class Embed_Posts {
                 // if ($saved_post_data['__status'] = 'deleted'){
 
                 try {
+                    $post_content = false;
+                    $account_display_name = false;
+                    $account_username = false;
+                    $post_url = false;
+                    $post_date = false;
+                    
                     // Helpers::log_this('debug:post', array(
                     //     'post' => $post,
                     // ));
