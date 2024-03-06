@@ -244,9 +244,10 @@ const renderPost = (post, container) => {
           }
   
         } else if (media.type === 'image'){
+          console.log("debug:media", media);
           postText += `<a href="${ postUrl }" target="_blank">
             <img
-              alt="${ media.alt_text || '' }"
+              alt="${ media.alt_text || media.description || '' }"
               loading="lazy"
               width="${ media.width }"
               height="${ media.height }"

@@ -116,7 +116,7 @@
   text-decoration: underline !important;
 }
 .fediverse-post.fediverse-post-rendered .post-attachment-preview img.post-attachment-site-thumbnail {
-  height: 300px !important;
+  height: 360px !important;
   -o-object-fit: cover !important;
      object-fit: cover !important;
 }
