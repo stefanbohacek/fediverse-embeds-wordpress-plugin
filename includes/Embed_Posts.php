@@ -92,9 +92,9 @@ class Embed_Posts {
                             $account_username = $post_data['account']['username'];
                         }
             
-                        $post_url = $post_data['url'];
-                        $post_content = $post_data['content'];
-                        $post_date = $post_data['created_at'];
+                        $post_url = !empty($post_data['url']) ? $post_data['url'] : "";
+                        $post_content = !empty($post_data['content']) ? $post_data['content'] : "";
+                        $post_date = !empty($post_data['created_at']) ? $post_data['created_at'] : "";
                     }
 
                     $iframe_html = "";
