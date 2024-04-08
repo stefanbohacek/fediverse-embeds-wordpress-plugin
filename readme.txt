@@ -3,7 +3,7 @@ Contributors: fourtonfish
 Tags: fediverse, mastodon, calckey, post, toot, embed
 Requires at least: 5.0
 Tested up to: 6.5
-Stable tag: 1.0.14
+Stable tag: 1.0.15
 Requires PHP: 8.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -25,6 +25,9 @@ When embedding a post from a fediverse server, the content of the post needs to 
 When making requests to a third party server in general, the server will receive and may record the IP address of the server hosting your website. Please consult the privacy details and terms of use of each server you are embedding content from. (Example for mastodon.social: [About Mastodon](https://mastodon.social/privacy-policy), [Privacy policy](https://mastodon.social/privacy-policy))
 
 == Changelog ==
+
+= 1.0.15 =
+* Fixed posts that contain only attachments and no content not rendering.
 
 = 1.0.14 =
 * Fixed blank display name preventing posts from rendering.

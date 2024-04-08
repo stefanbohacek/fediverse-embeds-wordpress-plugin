@@ -99,9 +99,16 @@ class Embed_Posts {
                         $post_date = !empty($post_data['created_at']) ? $post_data['created_at'] : "";
                     }
 
+                    Helpers::log_this(array(
+                        "account_username" => $account_username,
+                        "post_url" => $post_url,
+                        "post_content" => $post_content,
+                        "post_data" => $post_data,
+                    ));
+
                     $iframe_html = "";
 
-                    if ($post_content && $account_display_name && $account_username && $post_url && $post_date ){
+                    if (($post_content || !empty($post_data['media_attachments'])) && $account_display_name && $account_username && $post_url && $post_date ){
                         $iframe_html  = "<blockquote data-instance=\"$instance\" data-post-id=\"$post_id\" class=\"ftf-fediverse-post-embed\">";
                         $iframe_html .= $post_content;
                         $iframe_html .= "<p class=\"ftf-fediverse-post-embed-author\">&mdash; $account_display_name (@$account_username@$instance)";
