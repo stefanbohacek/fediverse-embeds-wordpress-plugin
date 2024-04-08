@@ -85,10 +85,12 @@ class Embed_Posts {
                     
                     if (!empty($post_data)){
                         if (!empty($post_data['account'])){
-                            $account_display_name = isset( $post_data['account']['display_name']) ?
-                                $post_data['account']['display_name'] :
-                                "@" . $post_data['account']['username'];
-                            
+                            if (isset( $post_data['account']['display_name']) && !empty(trim($post_data['account']['display_name']))){
+                                $account_display_name = $post_data['account']['display_name'];
+                            } else {
+                                $account_display_name = "@" . $post_data['account']['username'];
+                            }
+
                             $account_username = $post_data['account']['username'];
                         }
             
