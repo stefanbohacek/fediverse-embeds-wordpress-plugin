@@ -126,6 +126,11 @@
   display: none;
 }
 
+.ftf-fediverse-post-alt-text {
+  right: 20px !important;
+  bottom: 20px !important;
+}
+
 body[data-bs-theme=dark] .fediverse-post.fediverse-post-rendered .text-dark {
   color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1)) !important;
 }

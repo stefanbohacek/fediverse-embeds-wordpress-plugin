@@ -49,7 +49,7 @@ const renderPost = (post, container) => {
   if (postIsDeleted && ftf_fediverse_embeds.config.deleted_posts === 'hide'){
     renderedPost.className = `fediverse-post fediverse-post-deleted`;
 
-    renderedPostHTML += `
+    renderedPostHTML += /*html*/ `
     <div
       data-instance="$instance"
       data-post-id="$post_id"
@@ -70,7 +70,7 @@ const renderPost = (post, container) => {
         postUrl = post.post_data.url,
         entities = null;
 
-    renderedPostHTML += `
+    renderedPostHTML += /*html*/ `
           <div class="card w-100">
             <div class="post-body-wrapper card-body pt-4 pb-0">
               <div class="fediverse-post-labels position-absolute top-0 end-0 mt-1 me-1">
@@ -83,10 +83,10 @@ const renderPost = (post, container) => {
     }
   
     if (postHasLabels){
-      renderedPostHTML += `<span class="badge rounded-pill text-bg-light">`;
+      renderedPostHTML += /*html*/ `<span class="badge rounded-pill text-bg-light">`;
   
       if (postIsUpdated){
-        renderedPostHTML += `
+        renderedPostHTML += /*html*/ `
         <span
           class="p-0"
           title="This post was updated."
@@ -95,7 +95,7 @@ const renderPost = (post, container) => {
       `
       }
       if (postIsDeleted){
-        renderedPostHTML += `
+        renderedPostHTML += /*html*/ `
         <span
           class="p-0"
           title="This post was deleted."
@@ -105,7 +105,7 @@ const renderPost = (post, container) => {
       }
   
       if (accountIsBot){
-        renderedPostHTML += `
+        renderedPostHTML += /*html*/ `
         <span
           class="p-0"
           title="This is a bot account."
@@ -115,7 +115,7 @@ const renderPost = (post, container) => {
       }
   
       if (accountIsOwner){
-        renderedPostHTML += `
+        renderedPostHTML += /*html*/ `
         <span
           class="p-0"
           title="This is an admin account."
@@ -124,10 +124,10 @@ const renderPost = (post, container) => {
       `
       }
   
-      renderedPostHTML += `</span>`;
+      renderedPostHTML += /*html*/ `</span>`;
     }
           
-    renderedPostHTML += `
+    renderedPostHTML += /*html*/ `
       </div>
       <div class="card-text">
       <div class="row no-gutters mb-1">
@@ -139,7 +139,7 @@ const renderPost = (post, container) => {
       if (postIsDeleted && ftf_fediverse_embeds.config.deleted_posts === 'redact'){
         // noop
       } else {
-        renderedPostHTML += `
+        renderedPostHTML += /*html*/ `
         <div class="fediverse-post-profile-image-wrapper col-2 col-sm-2 col-md-2 p-2 pt-0 ps-sm-1 pe-sm-1 ps-md-2 pe-md-1 ps-lg-3 pe-lg-1">
           <a href="${ post.post_data.account.url }" class="text-decoration-none">
             <img
@@ -157,13 +157,13 @@ const renderPost = (post, container) => {
     }
   
     if (postIsDeleted && ftf_fediverse_embeds.config.deleted_posts === 'redact'){
-      renderedPostHTML += `
+      renderedPostHTML += /*html*/ `
       <div class="post-authorcol-12 col-sm-12 col-md-12 pb-3">
         <p class="font-weight-bold mb-0 mt-0"></p>
       </div>
     `;
     } else {
-      renderedPostHTML += `
+      renderedPostHTML += /*html*/ `
       <div class="post-author ${ 
         post.post_data.account.avatar_static ? 'col-10 col-sm-10 col-md-10 pl-2' : 'col-12 col-sm-12 col-md-12'
       } pb-3">
@@ -182,7 +182,7 @@ const renderPost = (post, container) => {
     `;
     }
   
-    renderedPostHTML += `
+    renderedPostHTML += /*html*/ `
     </div>
     <div class="post-body">`;
   
@@ -191,27 +191,27 @@ const renderPost = (post, container) => {
     }
     
     if (post.post_data.media_attachments && post.post_data.media_attachments.length){
-      postText += `<div data-media-length="${ post.post_data.media_attachments.length }" class="post-media row mt-3 no-gutters">`;
+      postText += /*html*/ `<div data-media-length="${ post.post_data.media_attachments.length }" class="post-media row mt-3 no-gutters">`;
       
       post.post_data.media_attachments.forEach((media, index) => {
         // console.log('debug:media', media);
   
         if (post.post_data.media_attachments.length === 1){
-          postText += `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-12 col-lg-12">`;
+          postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-12 col-lg-12">`;
         } else if (post.post_data.media_attachments.length === 3){
           if (index === 2){
-            postText += `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-12 col-lg-12">`;
+            postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-12 col-lg-12">`;
           } else {
-            postText += `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-6 col-lg-6">`;
+            postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-6 col-lg-6">`;
           }
         } else if (post.post_data.media_attachments.length > 1 && post.post_data.media_attachments.length < 5){
-          postText += `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-6 col-lg-6">`;
+          postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-6 col-lg-6">`;
         } else {
-          postText += `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-3 col-lg-3">`;
+          postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-3 col-lg-3">`;
         }
         
         if (media.type === 'gifv'){
-          postText += `<video class="w-100 mt-0" controls loop>
+          postText += /*html*/ `<video class="w-100 mt-0" controls loop>
             <source src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }" type="video/mp4">
           </video>`;
   
@@ -222,7 +222,7 @@ const renderPost = (post, container) => {
             // src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }"
             // src="${ media.url }"
   
-            postText += `<video class="w-100 mt-0" controls loop>
+            postText += /*html*/ `<video class="w-100 mt-0" controls loop>
               <source
                 src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }"
                 type="video/mp4"
@@ -234,7 +234,7 @@ const renderPost = (post, container) => {
             // src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }"
             // src="${ media.url }"
   
-            postText += `
+            postText += /*html*/ `
               <audio
                 controls
                 src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }"
@@ -244,23 +244,41 @@ const renderPost = (post, container) => {
           }
   
         } else if (media.type === 'image'){
+          const altText = media.alt_text || media.description || '';
+          let altTextBadge = "";
+
+          if (altText && altText.length){
+            altTextBadge = /* html */ `
+            <span
+              class="ftf-fediverse-post-alt-text position-absolute badge rounded-pill text-bg-dark"
+              title="${altText}"
+              onClick="alert('${altText.trim()}'); return false;"
+            >
+              ALT
+            </span>
+            
+            `;
+          }
+
           console.log("debug:media", media);
-          postText += `<a href="${ postUrl }" target="_blank">
+          postText += /*html*/ `<a href="${ postUrl }" target="_blank">
             <img
-              alt="${ media.alt_text || media.description || '' }"
+              alt="${ altText }"
               loading="lazy"
               width="${ media.width }"
               height="${ media.height }"
               class="w-100 rounded border mb-3"
               src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }"
             >
-          </a>`;
+            ${altTextBadge}            
+         </a> 
+          `;
         }
         
-        postText += '</div>';
+        postText += /*html*/ '</div>';
       });
       
-      postText += '</div>';
+      postText += /*html*/ '</div>';
     } else if (post.post_data.card){
       let cardSource;
   
@@ -270,9 +288,9 @@ const renderPost = (post, container) => {
       }
   
       if (post.post_data.card.html){
-        postText += `<div class="ratio ratio-16x9">${ post.post_data.card.html}</div>`;
+        postText += /*html*/ `<div class="ratio ratio-16x9">${ post.post_data.card.html}</div>`;
       } else if (post.post_data.card.image){
-        postText += `
+        postText += /*html*/ `
         <div class="card mb-4">
           <a href="${ post.post_data.card.url }">
             <img src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(post.post_data.card.image) }" class="card-img-top" alt="...">
@@ -292,7 +310,7 @@ const renderPost = (post, container) => {
         </div>
         `
       } else {
-        postText += `
+        postText += /*html*/ `
         <div class="card mb-4">
         <div class="card-body pb-1">
             <h5 class="card-title">
@@ -312,7 +330,7 @@ const renderPost = (post, container) => {
     }
     
     if (post.post_data.poll){
-      postText += '<div class="mt-0 post-poll-results">';
+      postText += /*html*/ '<div class="mt-0 post-poll-results">';
   
       if (post.post_data.poll.options && post.post_data.poll.options.length){
           
@@ -325,7 +343,7 @@ const renderPost = (post, container) => {
           return total + num;
         });
         
-        postText += `<div class="row">`;
+        postText += /*html*/ `<div class="row">`;
   
         const pollOptionsCount = post.post_data.poll.options;
 
@@ -342,7 +360,7 @@ const renderPost = (post, container) => {
             votesPortion = option.votes_count/votesTotal * 100;
           }
   
-          postText += `
+          postText += /*html*/ `
             <div class="col-9">
               <p class="mb-2">${ option.title }</p>
             </div>
@@ -371,7 +389,7 @@ const renderPost = (post, container) => {
             </div>
         `;
         });
-        postText += `<div class="col-12 mt-3">
+        postText += /*html*/ `<div class="col-12 mt-3">
           <p class="text-muted">
             <small>
               ${ votesTotal.toLocaleString() } votes | ${ post.post_data.poll.expired ? 'Closed' : 'Open'}
@@ -380,7 +398,7 @@ const renderPost = (post, container) => {
         </div>`;
       }    
   
-      postText += '</div></div>';
+      postText += /*html*/ '</div></div>';
     }
     
     const postDate = new Date(post.post_data.created_at);
@@ -396,7 +414,7 @@ const renderPost = (post, container) => {
       editDateText = `Updated on ${ editDateDate } at ${ editDateTime }`
     }
     
-    renderedPostHTML += postText + `</div>
+    renderedPostHTML += /*html*/ postText + `</div>
         </div>
       </div>
     <div class="card-footer pb-3"><small>`;
@@ -406,7 +424,7 @@ const renderPost = (post, container) => {
   
         if (postIsDeleted && ftf_fediverse_embeds.config.deleted_posts === 'redact'){
         } else {
-          renderedPostHTML += `
+          renderedPostHTML += /*html*/ `
           <small>
             <span class="post-icon" role="img" aria-label="Reposts">🔁</span>
             <span class="text-muted">${ post.post_data.reblogs_count.toLocaleString() }</span>
@@ -423,20 +441,20 @@ const renderPost = (post, container) => {
     // }
   
     if (postIsDeleted && ftf_fediverse_embeds.config.deleted_posts === 'redact'){
-      renderedPostHTML += `
+      renderedPostHTML += /*html*/ `
       <small>
         This post was deleted.
       </small>
     `;
     } else {
-      renderedPostHTML += `<a class="text-muted" href="${ postUrl }" target="_blank">
+      renderedPostHTML += /*html*/ `<a class="text-muted" href="${ postUrl }" target="_blank">
         <small title="${ editDate ? editDateText : '' }">
           ${ postDateDate } at ${ postDateTime }${ editDate ? '*' :'' }
         </small>
       </a>`;
     }
     
-    renderedPostHTML += '</small></div></div>';
+    renderedPostHTML += /*html*/ '</small></div></div>';
   }
 
   renderedPost.innerHTML = renderedPostHTML;
