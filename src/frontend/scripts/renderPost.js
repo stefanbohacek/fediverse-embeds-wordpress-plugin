@@ -252,11 +252,9 @@ const renderPost = (post, container) => {
             <span
               class="ftf-fediverse-post-alt-text position-absolute badge rounded-pill text-bg-dark"
               title="${altText}"
-              onClick="alert('${altText.trim()}'); return false;"
             >
               ALT
             </span>
-            
             `;
           }
 

@@ -30,6 +30,20 @@ const processPosts = async (fn) => {
       });
     }));
 
+    const altTextBadges = document.getElementsByClassName("ftf-fediverse-post-alt-text");
+
+    if (altTextBadges && altTextBadges.length){
+      [...altTextBadges].forEach(el => {
+        el.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          if (ev.target.title){
+            alert(ev.target.title);
+          }
+          return false;
+        });
+      })
+    }
+
     dispatchEvent('ftf_fediverse_embeds_posts_processed', renderedPostElements);
   }
 };
