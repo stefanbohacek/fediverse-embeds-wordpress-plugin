@@ -250,6 +250,7 @@ const renderPost = (post, container) => {
           if (altText && altText.length){
             altTextBadge = /* html */ `
             <span
+              aria-hidden="true"
               class="ftf-fediverse-post-alt-text position-absolute badge rounded-pill text-bg-dark"
               title="${altText}"
             >
