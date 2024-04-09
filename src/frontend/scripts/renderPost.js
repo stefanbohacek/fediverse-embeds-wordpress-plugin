@@ -197,23 +197,41 @@ const renderPost = (post, container) => {
         // console.log('debug:media', media);
   
         if (post.post_data.media_attachments.length === 1){
-          postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-12 col-lg-12">`;
+          postText += /*html*/ `<div data-media-type="${ media.type }" class="position-relative text-center col-sm-12 col-md-12 col-lg-12">`;
         } else if (post.post_data.media_attachments.length === 3){
           if (index === 2){
-            postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-12 col-lg-12">`;
+            postText += /*html*/ `<div data-media-type="${ media.type }" class="position-relative text-center col-sm-12 col-md-12 col-lg-12">`;
           } else {
-            postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-6 col-lg-6">`;
+            postText += /*html*/ `<div data-media-type="${ media.type }" class="position-relative text-center col-sm-12 col-md-6 col-lg-6">`;
           }
         } else if (post.post_data.media_attachments.length > 1 && post.post_data.media_attachments.length < 5){
-          postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-6 col-lg-6">`;
+          postText += /*html*/ `<div data-media-type="${ media.type }" class="position-relative text-center col-sm-12 col-md-6 col-lg-6">`;
         } else {
-          postText += /*html*/ `<div data-media-type="${ media.type }" class="text-center col-sm-12 col-md-3 col-lg-3">`;
+          postText += /*html*/ `<div data-media-type="${ media.type }" class="position-relative text-center col-sm-12 col-md-3 col-lg-3">`;
         }
+
+        const altText = media.alt_text || media.description || '';
+        let altTextBadge = "";
+
+        if (altText && altText.length){
+          altTextBadge = /* html */ `
+          <span
+            aria-hidden="true"
+            class="ftf-fediverse-post-alt-text position-absolute badge rounded-pill text-bg-dark"
+            title="${altText}"
+          >
+            ALT
+          </span>
+          `;
+        }        
+
         
         if (media.type === 'gifv'){
           postText += /*html*/ `<video class="w-100 mt-0" controls loop>
             <source src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }" type="video/mp4">
-          </video>`;
+          </video>
+          ${altTextBadge}
+          `;
   
           // <source src="${ media.url }" type="video/mp4">
           // <source src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }" type="video/mp4">
@@ -227,7 +245,9 @@ const renderPost = (post, container) => {
                 src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }"
                 type="video/mp4"
               >
-              </video>`
+              </video>
+              ${altTextBadge}              
+              `
           }
         } else if (media.type === 'audio'){
           if (media.url){
@@ -244,21 +264,6 @@ const renderPost = (post, container) => {
           }
   
         } else if (media.type === 'image'){
-          const altText = media.alt_text || media.description || '';
-          let altTextBadge = "";
-
-          if (altText && altText.length){
-            altTextBadge = /* html */ `
-            <span
-              aria-hidden="true"
-              class="ftf-fediverse-post-alt-text position-absolute badge rounded-pill text-bg-dark"
-              title="${altText}"
-            >
-              ALT
-            </span>
-            `;
-          }
-
           console.log("debug:media", media);
           postText += /*html*/ `<a href="${ postUrl }" target="_blank">
             <img
@@ -269,7 +274,7 @@ const renderPost = (post, container) => {
               class="w-100 rounded border mb-3"
               src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${ window.btoa(media.url) }"
             >
-            ${altTextBadge}            
+            ${altTextBadge}
          </a> 
           `;
         }
