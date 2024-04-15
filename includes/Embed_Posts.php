@@ -99,12 +99,12 @@ class Embed_Posts {
                         $post_date = !empty($post_data['created_at']) ? $post_data['created_at'] : "";
                     }
 
-                    Helpers::log_this(array(
-                        "account_username" => $account_username,
-                        "post_url" => $post_url,
-                        "post_content" => $post_content,
-                        "post_data" => $post_data,
-                    ));
+                    // Helpers::log_this(array(
+                    //     "account_username" => $account_username,
+                    //     "post_url" => $post_url,
+                    //     "post_content" => $post_content,
+                    //     "post_data" => $post_data,
+                    // ));
 
                     $iframe_html = "";
 
