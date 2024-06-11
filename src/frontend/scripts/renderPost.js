@@ -264,7 +264,7 @@ const renderPost = (post, container) => {
           }
   
         } else if (media.type === 'image'){
-          console.log("debug:media", media);
+          // console.log("debug:media", media);
           postText += /*html*/ `<a href="${ postUrl }" target="_blank">
             <img
               alt="${ altText }"
