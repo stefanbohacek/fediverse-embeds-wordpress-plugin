@@ -210,7 +210,7 @@ const renderPost = (post, container) => {
           postText += /*html*/ `<div data-media-type="${ media.type }" class="position-relative text-center col-sm-12 col-md-3 col-lg-3">`;
         }
 
-        const altText = media.alt_text || media.description || '';
+        const altText = (media.alt_text || media.description || '').replace(/"/g, "&quot;");
         let altTextBadge = "";
 
         if (altText && altText.length){
