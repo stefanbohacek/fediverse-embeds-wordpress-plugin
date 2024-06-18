@@ -27,10 +27,10 @@ When making requests to a third party server in general, the server will receive
 == Changelog ==
 
 = 1.1.8 =
-* Fixed image alt text with quotes not displaying in full.
+* Moved the main script to the footer to resolve an issue with import maps with classic themes.
 
 = 1.1.7 =
-* Moved the main script to the footer to resolve an issue with import maps with classic themes.
+* Fixed image alt text with quotes not displaying in full.
 
 = 1.1.6 =
 * Removed debug statement intended for testing.
