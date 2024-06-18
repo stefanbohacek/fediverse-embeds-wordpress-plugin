@@ -28,6 +28,7 @@ class Enqueue_Assets {
         
         wp_register_script('ftf-fediverse-embeds-frontend-js', $js_url, array(), filemtime($js_path), array(
             'strategy'  => 'defer',
+            'in_footer' => true
         ));
 
         wp_localize_script('ftf-fediverse-embeds-frontend-js', 'ftf_fediverse_embeds', array(

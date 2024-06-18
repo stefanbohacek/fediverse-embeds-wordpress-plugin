@@ -3,7 +3,7 @@ Contributors: fourtonfish
 Tags: fediverse, mastodon, calckey, post, toot, embed
 Requires at least: 5.0
 Tested up to: 6.5
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 Requires PHP: 8.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -26,8 +26,11 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
-= 1.1.7 =
+= 1.1.8 =
 * Fixed image alt text with quotes not displaying in full.
+
+= 1.1.7 =
+* Moved the main script to the footer to resolve an issue with import maps with classic themes.
 
 = 1.1.6 =
 * Removed debug statement intended for testing.
