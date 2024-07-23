@@ -282,6 +282,7 @@ class Embed_Posts
 
             if (
                 $remote_response &&
+                !is_wp_error($remote_response) &&
                 $remote_response['response'] &&
                 $remote_response['response']['code']
             ) {
