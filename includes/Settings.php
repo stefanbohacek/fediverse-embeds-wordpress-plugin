@@ -130,7 +130,7 @@ class Settings
                             <option value="dark" <?php selected($theme, 'dark', true); ?>>Dark</option>
                         </select>
                         <p class="description">
-                            Use an automatic, or always light or always dark theme.
+                            Use an automatic, always light, or always dark theme.
                         </p>
                     </td>
                 </tr>
