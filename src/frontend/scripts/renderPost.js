@@ -24,7 +24,9 @@ const renderPost = (post, container) => {
   let renderedPost = document.createElement("blockquote");
   let renderedPostHTML = "";
 
-  if (ftf_fediverse_embeds.config.theme !== "automatic") {
+  if (ftf_fediverse_embeds.config.theme === "automatic" && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    renderedPost.dataset["bsTheme"] = "dark";
+  } else {
     renderedPost.dataset["bsTheme"] = ftf_fediverse_embeds.config.theme;
   }
 
