@@ -29,6 +29,7 @@ class Embed_Posts
     {
         $platform = null;
         $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts');
+        $theme = get_option('ftf_fediverse_embeds_theme', 'automatic');
 
         if (str_contains($block_content, 'class="pixelfed__embed"')) {
             // TODO handle Pixelfed embeds
@@ -113,8 +114,13 @@ class Embed_Posts
                     $iframe_html = "";
 
                     if (($post_content || !empty($post_data['media_attachments'])) && $account_display_name && $account_username && $post_url && $post_date) {
+                        $theme_data_attribute = "";
+                        if ($theme !== "automatic"){
+                            $theme_data_attribute = "data-bs-theme='$theme'";
+                        }
+
                         $iframe_html = <<<HTML
-                            <blockquote data-instance="$instance" data-post-id="$post_id" class="ftf-fediverse-post-embed">
+                            <blockquote $theme_data_attribute data-instance="$instance" data-post-id="$post_id" class="ftf-fediverse-post-embed">
                                 $post_content
                                 <p class="ftf-fediverse-post-embed-author">
                                     &mdash; $account_display_name (@$account_username@$instance) 
@@ -126,9 +132,10 @@ class Embed_Posts
                     $iframe->outertext = $iframe_html;
                 } catch (\Exception $e) {
                     $iframe_html  = "<blockquote";
-                    $iframe_html .= "data-instance=\"$instance\"";
-                    $iframe_html .= "data-post-id=\"$post_id\"";
-                    $iframe_html .= "class=\"ftf-fediverse-post-embed-removed\"";
+                    $iframe_html .= " " . $theme_data_attribute;
+                    $iframe_html .= " data-instance=\"$instance\"";
+                    $iframe_html .= " data-post-id=\"$post_id\"";
+                    $iframe_html .= " class=\"ftf-fediverse-post-embed-removed\"";
                     $iframe_html .= ">";
                     $iframe_html .= "<p>This post by $username@$instance was removed</p>";
                     $iframe_html .= "</blockquote>";

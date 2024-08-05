@@ -136,12 +136,15 @@ video ~ .ftf-fediverse-post-alt-text {
   bottom: auto !important;
 }
 
-body[data-bs-theme=dark] .fediverse-post.fediverse-post-rendered .text-dark {
+body[data-bs-theme=dark] .fediverse-post.fediverse-post-rendered .text-dark,
+blockquote[data-bs-theme=dark].fediverse-post.fediverse-post-rendered .text-dark {
   color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1)) !important;
 }
-body[data-bs-theme=dark] .fediverse-post.fediverse-post-rendered .card .card-footer {
+body[data-bs-theme=dark] .fediverse-post.fediverse-post-rendered .card .card-footer,
+blockquote[data-bs-theme=dark].fediverse-post.fediverse-post-rendered .card .card-footer {
   background-color: var(--bs-card-bg) !important;
 }
-body[data-bs-theme=dark] .fediverse-post.fediverse-post-rendered .badge.text-bg-light {
+body[data-bs-theme=dark] .fediverse-post.fediverse-post-rendered .badge.text-bg-light,
+blockquote[data-bs-theme=dark].fediverse-post.fediverse-post-rendered .badge.text-bg-light {
   background: none !important;
 }

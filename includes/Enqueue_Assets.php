@@ -13,6 +13,7 @@ class Enqueue_Assets {
 
     function enqueue_scripts(){
         $include_bootstrap_styles = get_option('ftf_fediverse_embeds_include_bootstrap_styles', 'on');
+        $theme = get_option('ftf_fediverse_embeds_theme', 'on');
         $show_metrics = get_option('ftf_fediverse_embeds_show_metrics', 'on');
         $show_post_labels = get_option('ftf_fediverse_embeds_show_post_labels', 'on');
         $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts', 'keep');
@@ -36,6 +37,7 @@ class Enqueue_Assets {
             'blog_url' => get_site_url(),
             'nonce' => wp_create_nonce('ftf-fediverse-embeds-nonce'),
             'config' => array(
+                'theme' => $theme,
                 'show_metrics' => $show_metrics === 'on',
                 'show_post_labels' => $show_post_labels === 'on',
                 'deleted_posts' => $deleted_posts 
