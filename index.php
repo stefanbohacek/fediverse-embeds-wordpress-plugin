@@ -3,7 +3,7 @@
  * Plugin Name: Fediverse Embeds
  * Plugin URI: https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/
  * Description: Embed posts from the fediverse.
- * Version: 1.1.9
+ * Version: 1.2.0
  * Author: stefanbohacek
  * Text Domain: ftf_fediverse_embeds
  *
@@ -13,7 +13,15 @@
 
 defined('ABSPATH') || exit;
 
+/* External dependencies */
+
 require_once __DIR__ . '/vendor/autoload.php';
+
+/* Polyfills */
+
+require_once __DIR__ . '/includes/polyfills.php';
+
+/* Internal elper classes */
 
 use FTF_Fediverse_Embeds\Embed_Posts;
 use FTF_Fediverse_Embeds\Enqueue_Assets;
