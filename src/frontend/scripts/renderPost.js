@@ -24,7 +24,10 @@ const renderPost = (post, container) => {
   let renderedPost = document.createElement("blockquote");
   let renderedPostHTML = "";
 
-  if (ftf_fediverse_embeds.config.theme === "automatic" && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  if (
+    ftf_fediverse_embeds.config.theme === "automatic" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
     renderedPost.dataset["bsTheme"] = "dark";
   } else {
     renderedPost.dataset["bsTheme"] = ftf_fediverse_embeds.config.theme;
@@ -146,7 +149,9 @@ const renderPost = (post, container) => {
     renderedPostHTML += /*html*/ `
       </div>
       <div class="card-text">
-      <div class="row no-gutters mb-1">
+        <div class="row no-gutters mb-1">
+          <div class="d-flex">
+            <div class="flex-shrink-0">
     `;
 
     // console.log('debug:post', post);
@@ -159,28 +164,33 @@ const renderPost = (post, container) => {
         // noop
       } else {
         renderedPostHTML += /*html*/ `
-        <div class="fediverse-post-profile-image-wrapper col-2 col-sm-2 col-md-2 p-2 pt-0 ps-sm-1 pe-sm-1 ps-md-2 pe-md-1 ps-lg-3 pe-lg-1">
-          <a href="${post.post_data.account.url}" class="text-decoration-none">
-            <img
-              title="Profile image"
-              alt="Profile image of @${
+            <a href="${post.post_data.account.url}" class="text-decoration-none">
+              <img
+                title="Profile image"
+                alt="Profile image of @${
                 post.post_data.account.display_name ||
                 post.post_data.account.username
-              }"
-              loading="lazy"
-              class="post-author-image rounded-circle border"
-              width="48"
-              height="48"
-              src="${
-                window.ftf_fediverse_embeds.blog_url
-              }/wp-json/ftf/media-proxy?url=${window.btoa(
-          post.post_data.account.avatar_static
-        )}"
-            >
-          </a>
-        </div>`;
+                }"
+                loading="lazy"
+                class="post-author-image rounded-circle border"
+                width="48"
+                height="48"
+                src="${
+                  window.ftf_fediverse_embeds.blog_url
+                }/wp-json/ftf/media-proxy?url=${window.btoa(
+                post.post_data.account.avatar_static
+              )}"
+              >
+            </a>
+        `;
       }
     }
+
+
+    renderedPostHTML += /*html*/ `
+    </div>
+    <div class="flex-grow-1 ms-3">  
+    `
 
     if (
       postIsDeleted &&
@@ -193,18 +203,14 @@ const renderPost = (post, container) => {
     `;
     } else {
       renderedPostHTML += /*html*/ `
-      <div class="post-author ${
-        post.post_data.account.avatar_static
-          ? "col-10 col-sm-10 col-md-10 pl-2"
-          : "col-12 col-sm-12 col-md-12"
-      } pb-3">
+      <div class="post-author pb-3">
         <p class="font-weight-bold mb-0 mt-0">
           <a
             class="text-dark text-decoration-none"
             href="${post.post_data.account.url}"
           >${post.post_data.account.display_name}</a>
         </p>
-        <p class="mb-1 mb-md-2 mt-0 fs-6">
+        <p class="mb-1 mb-md-2 mt-0 fs-6 text-break">
           <a class="text-muted text-decoration-none" href="${
             post.post_data.account.url
           }">
@@ -216,6 +222,8 @@ const renderPost = (post, container) => {
     }
 
     renderedPostHTML += /*html*/ `
+        </div>
+      </div>
     </div>
     <div class="post-body">`;
 
