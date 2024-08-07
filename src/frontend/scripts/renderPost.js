@@ -1,4 +1,5 @@
 const renderPost = (post, container) => {
+  console.log(post);
   if (!container) {
     container = document.querySelector(
       `blockquote[data-instance="${post.instance}"][data-post-id="${post.post_id}"]`
@@ -24,6 +25,18 @@ const renderPost = (post, container) => {
   let renderedPost = document.createElement("blockquote");
   let renderedPostHTML = "";
 
+  if (post.post_data.account.bot) {
+    accountIsBot = true;
+    postHasLabels = true;
+  }
+
+  if (post.__status) {
+    if (post.__status === "deleted") {
+      postIsDeleted = true;
+      postHasLabels = true;
+    }
+  }
+
   if (
     ftf_fediverse_embeds.config.theme === "automatic" &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -44,18 +57,6 @@ const renderPost = (post, container) => {
     const accountRoles = post.post_data.account.roles.map((role) => role.name);
     if (accountRoles.includes("Owner")) {
       accountIsOwner = true;
-      postHasLabels = true;
-    }
-  }
-
-  if (post.post_data.account.bot) {
-    accountIsBot = true;
-    postHasLabels = true;
-  }
-
-  if (post.__status) {
-    if (post.__status === "deleted") {
-      postIsDeleted = true;
       postHasLabels = true;
     }
   }
