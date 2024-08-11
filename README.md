@@ -74,7 +74,7 @@ composer dumpautoload -o
 
 #### Embed code
 
-Please make sure to copy the full embed code, including the `iframe` and the `script` tag.
+Please make sure to copy the full embed code from the original URL of the post, including the `iframe` and the `script` tag.
 
 #### API Endpoints
 
