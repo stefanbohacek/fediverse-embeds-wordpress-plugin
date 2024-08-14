@@ -3,7 +3,7 @@
  * Plugin Name: Fediverse Embeds
  * Plugin URI: https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/
  * Description: Embed posts from the fediverse.
- * Version: 1.3.1
+ * Version: 1.4.0
  * Author: stefanbohacek
  * Text Domain: ftf_fediverse_embeds
  *

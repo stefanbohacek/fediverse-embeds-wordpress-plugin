@@ -27,16 +27,9 @@ class Embed_Posts
 
     function process_embeds($block_content, $block)
     {
-        $platform = null;
+        $platform = Helpers::get_embed_platform($block_content);
         $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts');
         $theme = get_option('ftf_fediverse_embeds_theme', 'automatic');
-
-        if (str_contains($block_content, 'class="pixelfed__embed"')) {
-            // TODO handle Pixelfed embeds
-            // $platform = 'pixelfed';
-        } elseif (str_contains($block_content, 'class="mastodon-embed"') || str_contains($block_content, '/embed.js')) {
-            $platform = 'mastodon';
-        }
 
         if ($platform) {
             $html = str_get_html($block_content);
@@ -115,7 +108,7 @@ class Embed_Posts
 
                     if (($post_content || !empty($post_data['media_attachments'])) && $account_display_name && $account_username && $post_url && $post_date) {
                         $theme_data_attribute = "";
-                        if ($theme !== "automatic"){
+                        if ($theme !== "automatic") {
                             $theme_data_attribute = "data-bs-theme='$theme'";
                         }
 
