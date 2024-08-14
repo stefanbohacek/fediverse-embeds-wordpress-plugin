@@ -332,6 +332,7 @@ const renderPost = (post, container) => {
               src="${
                 window.ftf_fediverse_embeds.blog_url
               }/wp-json/ftf/media-proxy?url=${window.btoa(media.url)}"
+              onerror="this.src='${window.ftf_fediverse_embeds.plugin_url}../images/images/broken-image.png'"
             >
             ${altTextBadge}
          </a> 

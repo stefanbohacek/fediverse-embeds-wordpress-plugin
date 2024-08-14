@@ -35,6 +35,7 @@ class Enqueue_Assets {
         wp_localize_script('ftf-fediverse-embeds-frontend-js', 'ftf_fediverse_embeds', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'blog_url' => get_site_url(),
+            'plugin_url' => plugin_dir_url(__FILE__),
             'nonce' => wp_create_nonce('ftf-fediverse-embeds-nonce'),
             'config' => array(
                 'theme' => $theme,

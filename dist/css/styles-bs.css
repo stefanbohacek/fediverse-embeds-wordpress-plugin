@@ -127,6 +127,8 @@
 }
 
 .ftf-fediverse-post-alt-text {
+  font-size: 0.75rem;
+  padding: 5px;
   right: 20px !important;
   bottom: 20px !important;
 }

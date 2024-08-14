@@ -68,6 +68,10 @@ npm run dev
 composer dumpautoload -o 
 ```
 
+## Attributions
+
+- "Broken image" icon by Hea Poh Lin https://thenounproject.com/icon/broken-image-583402/
+
 ## FAQ
 
 ### Images or posts are not loading
