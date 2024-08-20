@@ -27,92 +27,94 @@ class Embed_Posts
 
     function process_embeds($block_content, $block)
     {
-        $platform = Helpers::get_embed_platform($block_content);
-        $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts');
-        $theme = get_option('ftf_fediverse_embeds_theme', 'automatic');
+        if ($block["blockName"] === "core/html") {
 
-        if ($platform) {
-            $html = str_get_html($block_content);
+            $platform = Helpers::get_embed_platform($block_content);
+            $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts');
+            $theme = get_option('ftf_fediverse_embeds_theme', 'automatic');
 
-            foreach ($html->find('iframe') as $iframe) {
-                $url = $iframe->src;
+            if ($platform) {
+                $html = str_get_html($block_content);
 
-                if ($platform === 'pixelfed') {
-                    $url = str_replace('/p/', '/', $url);
-                }
+                foreach ($html->find('iframe') as $iframe) {
+                    $url = $iframe->src;
 
-                $url_parts = explode('/', $url);
+                    if ($platform === 'pixelfed') {
+                        $url = str_replace('/p/', '/', $url);
+                    }
 
-                $protocol = $url_parts[0];
-                $instance = $url_parts[2];
-                $username = $url_parts[3];
-                $post_id = $url_parts[4];
+                    $url_parts = explode('/', $url);
 
-                // Helpers::log_this('debug:post', array(
-                //     'url' => $url,
-                //     'protocol' => $protocol,
-                //     'instance' => $instance,
-                //     'username' => $username,
-                //     'post_id' => $post_id,
-                // ));
-
-                $post = $this->get_post(array(
-                    'instance' => $instance,
-                    'post_id' => $post_id,
-                ), true);
-
-                // if ($live_post_data['status'] === 'deleted'){
-                // if ($saved_post_data['__status'] = 'deleted'){
-
-                try {
-                    $post_content = false;
-                    $account_display_name = false;
-                    $account_username = false;
-                    $post_url = false;
-                    $post_date = false;
+                    $protocol = $url_parts[0];
+                    $instance = $url_parts[2];
+                    $username = $url_parts[3];
+                    $post_id = $url_parts[4];
 
                     // Helpers::log_this('debug:post', array(
-                    //     'post' => $post,
+                    //     'url' => $url,
+                    //     'protocol' => $protocol,
+                    //     'instance' => $instance,
+                    //     'username' => $username,
+                    //     'post_id' => $post_id,
                     // ));
 
-                    if (is_string($post['post_data'])) {
-                        $post_data = json_decode($post['post_data'], true);
-                    } else {
-                        $post_data = $post['post_data'];
-                    }
+                    $post = $this->get_post(array(
+                        'instance' => $instance,
+                        'post_id' => $post_id,
+                    ), true);
 
-                    if (!empty($post_data)) {
-                        if (!empty($post_data['account'])) {
-                            if (isset($post_data['account']['display_name']) && !empty(trim($post_data['account']['display_name']))) {
-                                $account_display_name = $post_data['account']['display_name'];
-                            } else {
-                                $account_display_name = "@" . $post_data['account']['username'];
+                    // if ($live_post_data['status'] === 'deleted'){
+                    // if ($saved_post_data['__status'] = 'deleted'){
+
+                    try {
+                        $post_content = false;
+                        $account_display_name = false;
+                        $account_username = false;
+                        $post_url = false;
+                        $post_date = false;
+
+                        // Helpers::log_this('debug:post', array(
+                        //     'post' => $post,
+                        // ));
+
+                        if (is_string($post['post_data'])) {
+                            $post_data = json_decode($post['post_data'], true);
+                        } else {
+                            $post_data = $post['post_data'];
+                        }
+
+                        if (!empty($post_data)) {
+                            if (!empty($post_data['account'])) {
+                                if (isset($post_data['account']['display_name']) && !empty(trim($post_data['account']['display_name']))) {
+                                    $account_display_name = $post_data['account']['display_name'];
+                                } else {
+                                    $account_display_name = "@" . $post_data['account']['username'];
+                                }
+
+                                $account_username = $post_data['account']['username'];
                             }
 
-                            $account_username = $post_data['account']['username'];
+                            $post_url = !empty($post_data['url']) ? $post_data['url'] : "";
+                            $post_content = !empty($post_data['content']) ? $post_data['content'] : "";
+                            $post_date = !empty($post_data['created_at']) ? $post_data['created_at'] : "";
                         }
 
-                        $post_url = !empty($post_data['url']) ? $post_data['url'] : "";
-                        $post_content = !empty($post_data['content']) ? $post_data['content'] : "";
-                        $post_date = !empty($post_data['created_at']) ? $post_data['created_at'] : "";
-                    }
+                        // Helpers::log_this(array(
+                        //     "account_username" => $account_username,
+                        //     "post_url" => $post_url,
+                        //     "post_content" => $post_content,
+                        //     "post_data" => $post_data,
+                        // ));
 
-                    // Helpers::log_this(array(
-                    //     "account_username" => $account_username,
-                    //     "post_url" => $post_url,
-                    //     "post_content" => $post_content,
-                    //     "post_data" => $post_data,
-                    // ));
+                        $iframe_html = "";
 
-                    $iframe_html = "";
+                        if (($post_content || !empty($post_data['media_attachments'])) && $account_display_name && $account_username && $post_url && $post_date) {
+                            $theme_data_attribute = "";
+                            if ($theme !== "automatic") {
+                                $theme_data_attribute = "data-bs-theme='$theme'";
+                            }
 
-                    if (($post_content || !empty($post_data['media_attachments'])) && $account_display_name && $account_username && $post_url && $post_date) {
-                        $theme_data_attribute = "";
-                        if ($theme !== "automatic") {
-                            $theme_data_attribute = "data-bs-theme='$theme'";
-                        }
-
-                        $iframe_html = <<<HTML
+                            $iframe_html = <<<HTML
                             <blockquote $theme_data_attribute data-instance="$instance" data-post-id="$post_id" class="ftf-fediverse-post-embed">
                                 $post_content
                                 <p class="ftf-fediverse-post-embed-author">
@@ -121,46 +123,47 @@ class Embed_Posts
                                 </p>
                             </blockquote>
                         HTML;
+                        }
+                        $iframe->outertext = $iframe_html;
+                    } catch (\Exception $e) {
+                        $iframe_html  = "<blockquote";
+                        $iframe_html .= " " . $theme_data_attribute;
+                        $iframe_html .= " data-instance=\"$instance\"";
+                        $iframe_html .= " data-post-id=\"$post_id\"";
+                        $iframe_html .= " class=\"ftf-fediverse-post-embed-removed\"";
+                        $iframe_html .= ">";
+                        $iframe_html .= "<p>This post by $username@$instance was removed</p>";
+                        $iframe_html .= "</blockquote>";
+                        $iframe->outertext = $iframe_html;
                     }
-                    $iframe->outertext = $iframe_html;
-                } catch (\Exception $e) {
-                    $iframe_html  = "<blockquote";
-                    $iframe_html .= " " . $theme_data_attribute;
-                    $iframe_html .= " data-instance=\"$instance\"";
-                    $iframe_html .= " data-post-id=\"$post_id\"";
-                    $iframe_html .= " class=\"ftf-fediverse-post-embed-removed\"";
-                    $iframe_html .= ">";
-                    $iframe_html .= "<p>This post by $username@$instance was removed</p>";
-                    $iframe_html .= "</blockquote>";
-                    $iframe->outertext = $iframe_html;
+
+                    // if ($post->media_attachments){
+                    //     $media_attachments = array_map(function($attachment) use ($instance){
+                    //         return array(
+                    //             'type' => $attachment->type,
+                    //             // 'preview_url' => $attachment->preview_url,
+                    //             'description' => $attachment->description,
+                    //             'instance' => $instance,
+                    //             'id' => $attachment->id,
+                    //             'extension' => pathinfo($attachment->preview_url)['extension']
+                    //         );
+                    //     }, $post->media_attachments);
+                    // }
+
+                    // Helpers::log_this('debug:post data', array(
+                    //     'post_url' => $post_url,
+                    //     'post_id' => $post_id,                
+                    //     'account_display_name' => $account_display_name,
+                    //     'account_username' => $account_username,
+                    //     'domain' => $instance,
+                    //     'post_date' => $post_date,
+                    //     'post_content' => $post_content,
+                    //     'media_attachments' => $media_attachments,
+                    //     'post' => $post,
+                    // ));
                 }
-
-                // if ($post->media_attachments){
-                //     $media_attachments = array_map(function($attachment) use ($instance){
-                //         return array(
-                //             'type' => $attachment->type,
-                //             // 'preview_url' => $attachment->preview_url,
-                //             'description' => $attachment->description,
-                //             'instance' => $instance,
-                //             'id' => $attachment->id,
-                //             'extension' => pathinfo($attachment->preview_url)['extension']
-                //         );
-                //     }, $post->media_attachments);
-                // }
-
-                // Helpers::log_this('debug:post data', array(
-                //     'post_url' => $post_url,
-                //     'post_id' => $post_id,                
-                //     'account_display_name' => $account_display_name,
-                //     'account_username' => $account_username,
-                //     'domain' => $instance,
-                //     'post_date' => $post_date,
-                //     'post_content' => $post_content,
-                //     'media_attachments' => $media_attachments,
-                //     'post' => $post,
-                // ));
+                $block_content = $html->save();
             }
-            $block_content = $html->save();
         }
 
         return $block_content;
