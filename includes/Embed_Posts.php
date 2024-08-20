@@ -2,6 +2,7 @@
 
 namespace FTF_Fediverse_Embeds;
 // require_once __DIR__ . '/../vendor/autoload.php';
+require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 if (!class_exists('simple_html_dom_node')) {
     require_once __DIR__ . '/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php';
 }
@@ -27,7 +28,7 @@ class Embed_Posts
 
     function process_embeds($block_content, $block)
     {
-        if ($block["blockName"] === "core/html") {
+        if ($block["blockName"] === "core/html" || is_plugin_active("classic-editor/classic-editor.php")) {
 
             $platform = Helpers::get_embed_platform($block_content);
             $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts');
