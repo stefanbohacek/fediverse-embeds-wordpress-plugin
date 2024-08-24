@@ -85,6 +85,7 @@ Please make sure to copy the full embed code from the original URL of the post, 
 Please make sure that you're not blocking `/wp-json/ftf/*` endpoints, either via a plugin like [Disable WP REST API](I:\OneDrive\Projects\WordPress\Plugins\fediverse-embeds\git\README.md), or through server configuration or your firewall.
 
 Note that individual servers have an option to prevent this plugin from loading data, see more details [below](#how-do-i-prevent-this-plugin-from-embedding-my-posts).
+
 ### How can I run my own code after all embeds are processed?
 
 The plugin fires a custom `ftf_fediverse_embeds_posts_processed` event that passes the list of processed embeds. Here's an example of how it can be used:
@@ -108,6 +109,25 @@ $(document).on('ftf_fediverse_embeds_processed', () => {
         // Do something with each embed.
     });
 });
+```
+
+### How can I ensure that the plugin's JS and CSS files are always loaded?
+
+The JS and CSS files are only loaded when needed. If you for some reason need to include them on every page, you can use the `FTF_FE_ALWAYS_ENQUEUE` environmental variable.
+
+```php
+define( 'FTF_FE_ALWAYS_ENQUEUE', true );
+```
+
+An example use case would be if you want to use some of the internal functions, eg:
+
+```php
+if (class_exists('\FTF_Fediverse_Embeds\Embed_Posts')){
+    $fediverse_embeds = new \FTF_Fediverse_Embeds\Embed_Posts();
+    $embed = $fediverse_embeds->process_embeds($iframe, array(
+        "blockName" => "core/html"
+    ));
+}
 ```
 
 ### How do I prevent this plugin from embedding my posts?
