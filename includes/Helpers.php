@@ -59,6 +59,11 @@ class Helpers
 
     public static function should_embed_assets()
     {
+
+        if (defined("FTF_FE_ALWAYS_ENQUE")) {
+            return true;
+        }
+
         global $wp_query;
 
         if (
