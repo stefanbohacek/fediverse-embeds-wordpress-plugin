@@ -27,7 +27,7 @@ When making requests to a third party server in general, the server will receive
 == Changelog ==
 
 = 1.4.4 =
-* Added internal environmental variable "FTF_FE_ALWAYS_ENQUE" for overriding the "should_embed_assets" function.
+* Added internal environmental variable "FTF_FE_ALWAYS_ENQUEUE" for overriding the "should_embed_assets" function.
 
 = 1.4.3 =
 * Scaled down the "broken image" placeholder image.

@@ -60,7 +60,7 @@ class Helpers
     public static function should_embed_assets()
     {
 
-        if (defined("FTF_FE_ALWAYS_ENQUE")) {
+        if (defined("FTF_FE_ALWAYS_ENQUEUE")) {
             return true;
         }
 
