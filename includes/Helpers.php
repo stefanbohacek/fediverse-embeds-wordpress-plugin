@@ -49,7 +49,11 @@ class Helpers
             if (str_contains($content, 'class="pixelfed__embed"')) {
                 // TODO handle Pixelfed embeds
                 // $platform = 'pixelfed';
-            } elseif (str_contains($content, 'class="mastodon-embed"') || str_contains($content, '/embed.js')) {
+            } elseif (
+                str_contains($content, 'class="mastodon-embed"') ||
+                str_contains($content, '/embed.js') ||
+                str_contains($content, 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms')
+            ) {
                 $platform = 'mastodon';
             }
         }
