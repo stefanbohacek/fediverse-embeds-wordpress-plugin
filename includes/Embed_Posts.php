@@ -37,8 +37,12 @@ class Embed_Posts
             if ($platform) {
                 $html = str_get_html($block_content);
 
-                foreach ($html->find('iframe') as $iframe) {
-                    $url = $iframe->src;
+                foreach ($html->find('iframe, blockquote') as $iframe) {
+                    if ($iframe->tag === "iframe"){
+                        $url = $iframe->src;
+                    } elseif ($iframe->tag === "blockquote"){
+                        $url = $iframe->getAttribute("data-embed-url");
+                    }
 
                     if ($platform === 'pixelfed') {
                         $url = str_replace('/p/', '/', $url);
