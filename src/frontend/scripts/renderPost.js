@@ -176,6 +176,7 @@ const renderPost = (post, container) => {
                 class="post-author-image rounded-circle border"
                 width="48"
                 height="48"
+                onerror="this.src='${window.ftf_fediverse_embeds.plugin_url}../images/images/blank.png'"
                 src="${
                   window.ftf_fediverse_embeds.blog_url
                 }/wp-json/ftf/media-proxy?url=${window.btoa(
@@ -361,7 +362,7 @@ const renderPost = (post, container) => {
               window.ftf_fediverse_embeds.blog_url
             }/wp-json/ftf/media-proxy?url=${window.btoa(
           post.post_data.card.image
-        )}" class="card-img-top" alt="...">
+        )}" class="card-img-top">
           </a>
           <div class="card-body pb-1">
             <h5 class="card-title">
