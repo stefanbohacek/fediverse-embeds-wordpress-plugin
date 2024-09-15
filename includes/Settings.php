@@ -38,6 +38,7 @@ class Settings
         register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_show_metrics', 'esc_attr');
         register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_show_post_labels', 'esc_attr');
         register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_deleted_posts', 'esc_attr');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_data_refresh_enabled', 'esc_attr');
         register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_data_refresh_minutes', 'esc_attr');
 
         add_settings_section(
@@ -73,6 +74,7 @@ class Settings
         $show_post_labels = get_option('ftf_fediverse_embeds_show_post_labels', 'on');
         $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts', 'keep');
         $custom_styles = get_option('ftf_fediverse_embeds_custom_styles');
+        $data_refresh_enabled = get_option('ftf_fediverse_embeds_data_refresh_enabled', 'on');
         $data_refresh_minutes = get_option('ftf_fediverse_embeds_data_refresh_minutes');
 
         if (empty($data_refresh_minutes)) {
@@ -136,12 +138,23 @@ class Settings
                 </tr>
                 <tr>
                     <th scope="row">
-                        <label for="ftf-fediverse-embeds-data_refresh_minutes">Data refresh frequency (in minutes)</label>
+                        <label for="ftf-fediverse-embeds-data_refresh_enabled">Enable data refresh</label>
+                    </th>
+                    <td>
+                        <input type="checkbox" <?php checked($data_refresh_enabled, 'on'); ?> name="ftf_fediverse_embeds_data_refresh_enabled" id="ftf-fediverse-embeds-data_refresh_enabled">
+                        <p class="description">
+                            Periodically refresh embedded posts, including the number of likes and boosts.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="ftf-fediverse-embeds-data_refresh_minutes">Data refresh frequency</label>
                     </th>
                     <td>
                         <input id="ftf-fediverse-embeds-data_refresh_minutes" type="number" min="5" name="ftf_fediverse_embeds_data_refresh_minutes" value="<?php echo esc_html($data_refresh_minutes); ?>" placeholder="5">
                         <p class="description">
-                            How often should the post data be refreshed?
+                            How often (in minutes) should the post data be refreshed?
                         </p>
                     </td>
                 </tr>
