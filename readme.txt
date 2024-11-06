@@ -3,7 +3,7 @@ Contributors: fourtonfish
 Tags: fediverse, mastodon, post, toot, embed
 Requires at least: 5.0
 Tested up to: 6.6
-Stable tag: 1.5.1
+Stable tag: trunk
 Requires PHP: 7.4
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -25,6 +25,9 @@ When embedding a post from a fediverse server, the content of the post needs to 
 When making requests to a third party server in general, the server will receive and may record the IP address of the server hosting your website. Please consult the privacy details and terms of use of each server you are embedding content from. (Example for mastodon.social: [About Mastodon](https://mastodon.social/privacy-policy), [Privacy policy](https://mastodon.social/privacy-policy))
 
 == Changelog ==
+
+= 1.5.2 =
+* Check MIME type of proxied media files before saving to disk.
 
 = 1.5.1 =
 * Removed extra plugin tag to comply with WordPress Plugin Directory's requirement of maximum 5 tags.

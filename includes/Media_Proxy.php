@@ -119,6 +119,41 @@ class Media_Proxy
                     'user-agent' => 'FTF: Fediverse Embeds; WordPress/' . $wp_version . '; ' . get_bloginfo('url'),
                 ));
 
+
+                $content_type = wp_remote_retrieve_header($remote_response, 'content-type');
+
+                if (!in_array($content_type, array(
+                    // Safe media MIME types
+                    "image/apng",
+                    "image/avif",
+                    "image/bmp",
+                    "image/gif",
+                    "image/vnd.microsoft.icon",
+                    "image/jpeg",
+                    "image/png",
+                    "image/svg+xml",
+                    "image/tiff",
+                    "image/webp",
+                    "video/x-msvideo",
+                    "video/mp4",
+                    "video/mpeg",
+                    "video/ogg",
+                    "video/mp2t",
+                    "video/webm",
+                    "video/3gpp",
+                    "audio/3gpp",
+                    "video/3gpp2",
+                    "audio/3gpp2",
+                    "audio/aac",
+                    "audio/midi, audio/x-midi",
+                    "audio/mpeg",
+                    "audio/ogg",
+                    "audio/wav",
+                    "audio/webm",
+                ))) {
+                    $can_download_media = false;
+                }
+
                 if ($can_download_media) {
                     if ($this->archival_mode) {
                         file_put_contents($file_path, $remote_response['body']);
