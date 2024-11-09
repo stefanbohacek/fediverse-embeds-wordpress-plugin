@@ -121,9 +121,7 @@ class Media_Proxy
 
 
                 $content_type = wp_remote_retrieve_header($remote_response, 'content-type');
-
-                if (!in_array($content_type, array(
-                    // Safe media MIME types
+                $mime_types_safe = array(
                     "image/apng",
                     "image/avif",
                     "image/bmp",
@@ -150,13 +148,20 @@ class Media_Proxy
                     "audio/ogg",
                     "audio/wav",
                     "audio/webm",
-                ))) {
+                );
+
+                if (!in_array($content_type, $mime_types_safe)) {
                     $can_download_media = false;
                 }
 
                 if ($can_download_media) {
                     if ($this->archival_mode) {
                         file_put_contents($file_path, $remote_response['body']);
+                        $validate = wp_check_filetype_and_ext($file_path, $file_name);
+                        
+                        if (!in_array($validate["type"], $mime_types_safe)){
+                            unlink($file_path);
+                        }
                     }
                 }
 

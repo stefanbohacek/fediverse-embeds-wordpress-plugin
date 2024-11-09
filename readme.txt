@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.5.3 =
+* Check MIME type of proxied media files after saving to disk, delete if unsafe.
+
 = 1.5.2 =
 * Check MIME type of proxied media files before saving to disk.
 
