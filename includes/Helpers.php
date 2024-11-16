@@ -108,4 +108,17 @@ class Helpers
 
         return $size_formatted;
     }
+
+    public static function generate_random_string($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters_length = strlen($characters);
+        $random_string = '';
+    
+        for ($i = 0; $i < $length; $i++) {
+            $random_string .= $characters[random_int(0, $characters_length - 1)];
+        }
+    
+        return $random_string;
+    }
+    
 }
