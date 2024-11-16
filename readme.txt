@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.5.5 =
+* Prevent listing files inside the media upload directory.
+
 = 1.5.4 =
 * Improved secure downloading of embedded media files.
 

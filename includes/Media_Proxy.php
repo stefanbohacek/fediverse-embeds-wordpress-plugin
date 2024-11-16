@@ -59,6 +59,10 @@ class Media_Proxy
             if (!is_dir($dir)) {
                 mkdir($dir);
             }
+
+            if (!file_exists("$dir/index.html")) {
+                file_put_contents("$dir/index.html", "");
+            }
         }
 
         if ($this->archival_mode && file_exists($file_path)) {
