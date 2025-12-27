@@ -1,5 +1,5 @@
 const renderPost = (post, container) => {
-  console.log(post);
+  // console.log(post);
   if (!container) {
     container = document.querySelector(
       `blockquote[data-instance="${post.instance}"][data-post-id="${post.post_id}"]`

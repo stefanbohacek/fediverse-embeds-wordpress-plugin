@@ -1,4 +1,4 @@
-const renderPost=(post,container)=>{console.log(post),container||(container=document.querySelector("blockquote[data-instance=\"".concat(post.instance,"\"][data-post-id=\"").concat(post.post_id,"\"]")));// post.post_data = JSON.parse(post.post_data);
+const renderPost=(post,container)=>{container||(container=document.querySelector("blockquote[data-instance=\"".concat(post.instance,"\"][data-post-id=\"").concat(post.post_id,"\"]")));// post.post_data = JSON.parse(post.post_data);
 // console.log('post.post_data', post.post_data);
 // console.log('debug:renderPost', {data, container});
 // if (post.post_data.post_id === '123456789'){
