@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.5.7 =
+* Removed debug logs.
+
 = 1.5.6 =
 * Removed debug logs.
 
