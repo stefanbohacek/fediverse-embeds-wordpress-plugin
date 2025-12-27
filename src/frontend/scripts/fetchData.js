@@ -14,7 +14,7 @@ const fetchData = async (data, cb, done) => {
           cb(response);
       })
       .catch((error) => {
-          console.error('ftf_fediverse_embeds_error', error);
+        //   console.error('ftf_fediverse_embeds_error', error);
       })
       .then(done);  
 };
