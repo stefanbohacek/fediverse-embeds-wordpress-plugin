@@ -73,16 +73,28 @@ class Media_Proxy
                 $allowed_domains = array(
                     "cdn.masto.host",
                     "pool.jortage.com",
-                    "social-cdn.vivaldi.net"
+                    "social-cdn.vivaldi.net",
+                    "cdn.hosted.spacebear.ee",
+                    "m.f-h.co"
                 );
 
-                $can_download_media = false;
+                $allowed_suffixes = array(
+                    ".files.fedi.monster",
+                    ".digitaloceanspaces.com"
+                );
 
-                if (str_ends_with($domain, ".files.fedi.monster")) {
-                    $can_download_media = true;
-                } elseif (in_array($domain, $allowed_domains)) {
-                    $can_download_media = true;
-                } else {
+                $can_download_media = in_array($domain, $allowed_domains);
+
+                if (!$can_download_media) {
+                    foreach ($allowed_suffixes as $suffix) {
+                        if (str_ends_with($domain, $suffix)) {
+                            $can_download_media = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!$can_download_media) {
                     // Converting files.domain.social and media.domain.social to domain.social
 
                     $stripped_domain = str_replace(array(
