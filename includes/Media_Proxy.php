@@ -14,7 +14,7 @@ class Media_Proxy
 
     function __construct()
     {
-        // $this->archival_mode = get_option("ftf_fediverse_embeds_archival_mode") === "on" ? true : false; 
+        // $this->archival_mode = get_option("ftf_fediverse_embeds_archival_mode") === "on" ? true : false;
         $this->archival_mode = true;
         add_action("rest_api_init", array($this, "register_media_proxy_endpoint"));
         add_action("wp_ajax_nopriv_ftf_media_proxy", array($this, "media_proxy"), 1000);
@@ -29,18 +29,57 @@ class Media_Proxy
         ));
     }
 
+    private function is_safe_host(string $host): bool
+    {
+        $host = trim($host, "[]");
+
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            return (bool) filter_var(
+                $host,
+                FILTER_VALIDATE_IP,
+                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+            );
+        }
+
+        $a_records    = dns_get_record($host, DNS_A)    ?: [];
+        $aaaa_records = dns_get_record($host, DNS_AAAA) ?: [];
+        $all_records  = array_merge($a_records, $aaaa_records);
+
+        if (empty($all_records)) {
+            return false;
+        }
+
+        foreach ($all_records as $record) {
+            $ip = $record["ip"] ?? $record["ipv6"] ?? null;
+            if ($ip === null) {
+                return false;
+            }
+            if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function is_safe_url(string $url): bool
+    {
+        $parsed = parse_url($url);
+
+        if (!in_array($parsed["scheme"] ?? "", ["http", "https"], true)) {
+            return false;
+        }
+
+        $host = $parsed["host"] ?? "";
+        if ($host === "") {
+            return false;
+        }
+
+        return $this->is_safe_host($host);
+    }
+
     public function proxy_media(\WP_REST_Request $request)
     {
-        /*
-            At minimum, we need to make sure that the media file is being requested from a fediverse server,
-            otherwise you could load arbitrary files from anywhere. Some fediverse servers may use a different subdomain
-            for hosting their files, or a CDN.
-
-            The current solution relies heavily on keeping track of allowed domains and converting URLs.
-
-            This needs to be more robust.
-        */
-
         $url = $request["url"];
         $folder_name = "media";
 
@@ -63,6 +102,11 @@ class Media_Proxy
             if (!file_exists("$dir/index.html")) {
                 file_put_contents("$dir/index.html", "");
             }
+        }
+
+        if (empty($url) || !$this->is_safe_url($url)) {
+            status_header(403);
+            exit();
         }
 
         if ($this->archival_mode && file_exists($file_path)) {
@@ -90,7 +134,7 @@ class Media_Proxy
                 } else {
                     // Converting files.domain.social and media.domain.social to domain.social
 
-                    $domain = str_replace(array(
+                    $stripped_domain = str_replace(array(
                         "cdn.",
                         "files.",
                         "media.",
@@ -98,19 +142,25 @@ class Media_Proxy
                         "s3.",
                     ), "", $domain);
 
-                    $remote_response = wp_remote_get("https://$domain/.well-known/nodeinfo", array(
-                        "user-agent" => "FTF: Fediverse Embeds; WordPress/" . $wp_version . "; " . get_bloginfo("url"),
-                    ));
-                    // Check if this is a fediverse server.
-                    if (!is_wp_error($remote_response) && $remote_response["response"] && $remote_response["response"]["code"] && $remote_response["response"]["code"] === 200) {
-                        $can_download_media = true;
+                    if ($this->is_safe_host($stripped_domain)) {
+                        $remote_response = wp_remote_get("https://$stripped_domain/.well-known/nodeinfo", array(
+                            "user-agent" => "FTF: Fediverse Embeds; WordPress/" . $wp_version . "; " . get_bloginfo("url"),
+                        ));
+                        // Check if this is a fediverse server.
+                        if (!is_wp_error($remote_response) && $remote_response["response"] && $remote_response["response"]["code"] && $remote_response["response"]["code"] === 200) {
+                            $can_download_media = true;
+                        }
                     }
+                }
+
+                if (!$can_download_media) {
+                    status_header(403);
+                    exit();
                 }
 
                 $remote_response = wp_remote_get($url, array(
                     "user-agent" => "FTF: Fediverse Embeds; WordPress/" . $wp_version . "; " . get_bloginfo("url"),
                 ));
-
 
                 $content_type = wp_remote_retrieve_header($remote_response, "content-type");
                 $mime_types_safe = array(
@@ -143,20 +193,19 @@ class Media_Proxy
                 );
 
                 if (!in_array($content_type, $mime_types_safe)) {
-                    $can_download_media = false;
+                    status_header(403);
+                    exit();
                 }
 
-                if ($can_download_media) {
-                    if ($this->archival_mode) {
-                        // file_put_contents($file_path, $remote_response["body"]);
-                        file_put_contents($file_path_hashed, $remote_response["body"]);
-                        $validate = wp_check_filetype_and_ext($file_path, $file_name);
-                        
-                        if (!in_array($validate["type"], $mime_types_safe)){
-                            unlink($file_path_hashed);
-                        } else {
-                            rename($file_path_hashed, $file_path);
-                        }
+                if ($this->archival_mode) {
+                    // file_put_contents($file_path, $remote_response["body"]);
+                    file_put_contents($file_path_hashed, $remote_response["body"]);
+                    $validate = wp_check_filetype_and_ext($file_path, $file_name);
+
+                    if (!in_array($validate["type"], $mime_types_safe)) {
+                        unlink($file_path_hashed);
+                    } else {
+                        rename($file_path_hashed, $file_path);
                     }
                 }
 
