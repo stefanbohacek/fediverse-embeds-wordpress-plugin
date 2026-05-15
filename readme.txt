@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.5.8 =
+* Improved security of the media proxy and site info endpoints.
+
 = 1.5.7 =
 * Removed debug logs.
 
