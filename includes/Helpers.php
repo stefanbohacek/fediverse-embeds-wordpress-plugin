@@ -109,6 +109,55 @@ class Helpers
         return $size_formatted;
     }
 
+    public static function is_safe_host(string $host): bool
+    {
+        $host = trim($host, '[]');
+
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            return (bool) filter_var(
+                $host,
+                FILTER_VALIDATE_IP,
+                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+            );
+        }
+
+        $a_records    = dns_get_record($host, DNS_A)    ?: [];
+        $aaaa_records = dns_get_record($host, DNS_AAAA) ?: [];
+        $all_records  = array_merge($a_records, $aaaa_records);
+
+        if (empty($all_records)) {
+            return false;
+        }
+
+        foreach ($all_records as $record) {
+            $ip = $record['ip'] ?? $record['ipv6'] ?? null;
+            if ($ip === null) {
+                return false;
+            }
+            if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static function is_safe_url(string $url): bool
+    {
+        $parsed = parse_url($url);
+
+        if (!in_array($parsed['scheme'] ?? '', ['http', 'https'], true)) {
+            return false;
+        }
+
+        $host = $parsed['host'] ?? '';
+        if ($host === '') {
+            return false;
+        }
+
+        return self::is_safe_host($host);
+    }
+
     public static function generate_random_string($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $characters_length = strlen($characters);

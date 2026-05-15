@@ -30,6 +30,11 @@ class Site_Info
             $description = '';
 
             if ($site_data === false) {
+                if (!Helpers::is_safe_url($site_url)) {
+                    wp_send_json_error();
+                    return;
+                }
+
                 $site_html = file_get_html($site_url);
 
                 if ($site_html) {

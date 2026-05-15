@@ -29,55 +29,6 @@ class Media_Proxy
         ));
     }
 
-    private function is_safe_host(string $host): bool
-    {
-        $host = trim($host, "[]");
-
-        if (filter_var($host, FILTER_VALIDATE_IP)) {
-            return (bool) filter_var(
-                $host,
-                FILTER_VALIDATE_IP,
-                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
-            );
-        }
-
-        $a_records    = dns_get_record($host, DNS_A)    ?: [];
-        $aaaa_records = dns_get_record($host, DNS_AAAA) ?: [];
-        $all_records  = array_merge($a_records, $aaaa_records);
-
-        if (empty($all_records)) {
-            return false;
-        }
-
-        foreach ($all_records as $record) {
-            $ip = $record["ip"] ?? $record["ipv6"] ?? null;
-            if ($ip === null) {
-                return false;
-            }
-            if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private function is_safe_url(string $url): bool
-    {
-        $parsed = parse_url($url);
-
-        if (!in_array($parsed["scheme"] ?? "", ["http", "https"], true)) {
-            return false;
-        }
-
-        $host = $parsed["host"] ?? "";
-        if ($host === "") {
-            return false;
-        }
-
-        return $this->is_safe_host($host);
-    }
-
     public function proxy_media(\WP_REST_Request $request)
     {
         $url = $request["url"];
@@ -104,7 +55,7 @@ class Media_Proxy
             }
         }
 
-        if (empty($url) || !$this->is_safe_url($url)) {
+        if (empty($url) || !Helpers::is_safe_url($url)) {
             status_header(403);
             exit();
         }
@@ -142,7 +93,7 @@ class Media_Proxy
                         "s3.",
                     ), "", $domain);
 
-                    if ($this->is_safe_host($stripped_domain)) {
+                    if (Helpers::is_safe_host($stripped_domain)) {
                         $remote_response = wp_remote_get("https://$stripped_domain/.well-known/nodeinfo", array(
                             "user-agent" => "FTF: Fediverse Embeds; WordPress/" . $wp_version . "; " . get_bloginfo("url"),
                         ));
