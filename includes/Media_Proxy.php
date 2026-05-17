@@ -76,7 +76,7 @@ class Media_Proxy
             if (!empty($url)) {
                 global $wp_version;
                 $parse = parse_url($url);
-                $domain = $parse["host"];
+                $domain = $parse["host"] ?? "";
 
                 $allowed_domains = array(
                     "cdn.masto.host",
