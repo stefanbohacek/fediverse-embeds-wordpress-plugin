@@ -33,14 +33,16 @@ use FTF_Fediverse_Embeds\Settings;
 use FTF_Fediverse_Embeds\Site_Info;
 use FTF_Fediverse_Embeds\Database;
 
-$embed_posts_init = new Embed_Posts();
-$enqueue_assets_init = new Enqueue_Assets();
-$media_proxy_init = new Media_Proxy();
-$settings_init = new Settings();
-if (is_admin()) {
-    $post_manager_init = new Post_Manager();
-}
-$site_info_init = new Site_Info();
+add_action('plugins_loaded', function () {
+    new Embed_Posts();
+    new Enqueue_Assets();
+    new Media_Proxy();
+    new Settings();
+    if (is_admin()) {
+        new Post_Manager();
+    }
+    new Site_Info();
+});
 
 register_activation_hook(__FILE__, function(){
     $db = new Database();
