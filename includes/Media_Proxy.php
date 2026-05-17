@@ -41,8 +41,10 @@ class Media_Proxy
                 exit();
             }
             $dir = plugin_dir_path(__FILE__) . "../$folder_name";
-            $file_name = basename($url);
-            $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
+            $file_name = basename(parse_url($url, PHP_URL_PATH));
+            $raw_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            $allowed_extensions = ["jpg", "jpeg", "png", "gif", "webp", "avif", "bmp", "ico", "tiff", "mp4", "webm", "ogg", "mpeg", "avi", "mp2t", "3gp", "aac", "mp3", "wav", "midi"];
+            $file_extension = in_array($raw_extension, $allowed_extensions, true) ? $raw_extension : "bin";
 
             $file_name = md5($url) . "." . $file_extension;
             $file_path = "$dir/$file_name";
