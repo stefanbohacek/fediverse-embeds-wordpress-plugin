@@ -4,7 +4,7 @@ const renderPost = (post, container) => {
   // console.log(post);
   if (!container) {
     container = document.querySelector(
-      `blockquote[data-instance="${post.instance}"][data-post-id="${post.post_id}"]`
+      `blockquote[data-instance="${post.instance}"][data-post-id="${post.post_id}"]`,
     );
   }
 
@@ -95,12 +95,17 @@ const renderPost = (post, container) => {
 
     if (post.post_data.emojis) {
       post.post_data.emojis.forEach((emoji) => {
-        postText = postText.replaceAll(
-          `:${emoji.shortcode}:`,
-          `<img class="fediverse-post-emoji" src="${
-            window.ftf_fediverse_embeds.blog_url
-          }/wp-json/ftf/media-proxy?url=${window.btoa(emoji.url)}" />`
-        );
+        const safeEmojiUrl = safeURL(emoji.url);
+        if (!safeEmojiUrl) return;
+        try {
+          const encodedUrl = window.btoa(safeEmojiUrl);
+          postText = postText.replaceAll(
+            `:${emoji.shortcode}:`,
+            `<img class="fediverse-post-emoji" src="${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${encodedUrl}" />`,
+          );
+        } catch {
+          // noop
+        }
       });
     }
 
@@ -171,8 +176,8 @@ const renderPost = (post, container) => {
               <img
                 title="Profile image"
                 alt="Profile image of @${escapeText(
-                post.post_data.account.display_name ||
-                post.post_data.account.username
+                  post.post_data.account.display_name ||
+                    post.post_data.account.username,
                 )}"
                 loading="lazy"
                 class="post-author-image rounded-circle border"
@@ -182,19 +187,18 @@ const renderPost = (post, container) => {
                 src="${
                   window.ftf_fediverse_embeds.blog_url
                 }/wp-json/ftf/media-proxy?url=${window.btoa(
-                post.post_data.account.avatar_static
-              )}"
+                  post.post_data.account.avatar_static,
+                )}"
               >
             </a>
         `;
       }
     }
 
-
     renderedPostHTML += /*html*/ `
     </div>
     <div class="flex-grow-1 ms-3">  
-    `
+    `;
 
     if (
       postIsDeleted &&
@@ -215,9 +219,9 @@ const renderPost = (post, container) => {
           >${escapeText(post.post_data.account.display_name)}</a>
         </p>
         <p class="mb-1 mb-md-2 mt-0 fs-6 text-break">
-          <a class="text-muted text-decoration-none" href="${
-            safeURL(post.post_data.account.url)
-          }">
+          <a class="text-muted text-decoration-none" href="${safeURL(
+            post.post_data.account.url,
+          )}">
             @${escapeText(post.post_data.account.username)}@${escapeText(post.instance)}
           </a>
         </p>
@@ -281,8 +285,8 @@ const renderPost = (post, container) => {
             <source src="${
               window.ftf_fediverse_embeds.blog_url
             }/wp-json/ftf/media-proxy?url=${window.btoa(
-            media.url
-          )}" type="video/mp4">
+              media.url,
+            )}" type="video/mp4">
           </video>
           ${altTextBadge}
           `;
@@ -360,8 +364,8 @@ const renderPost = (post, container) => {
             <img src="${
               window.ftf_fediverse_embeds.blog_url
             }/wp-json/ftf/media-proxy?url=${window.btoa(
-          post.post_data.card.image
-        )}" class="card-img-top">
+              post.post_data.card.image,
+            )}" class="card-img-top">
           </a>
           <div class="card-body pb-1">
             <h5 class="card-title">
@@ -369,9 +373,9 @@ const renderPost = (post, container) => {
                 ${escapeText(post.post_data.card.title)}
               </a>
             </h5>
-            <p class="card-text"><small>${
-              escapeText(post.post_data.card.description)
-            }</small></p>
+            <p class="card-text"><small>${escapeText(
+              post.post_data.card.description,
+            )}</small></p>
           </div>
           <div class="card-footer pb-3 pt-0">
             <small class="text-muted">
@@ -423,13 +427,13 @@ const renderPost = (post, container) => {
 
           if (post.post_data.poll.multiple) {
             votesPercentage = `${Math.round(
-              (option.votes_count / post.post_data.poll.voters_count) * 100
+              (option.votes_count / post.post_data.poll.voters_count) * 100,
             )}%`;
             votesPortion =
               (option.votes_count / post.post_data.poll.voters_count) * 100;
           } else {
             votesPercentage = `${Math.round(
-              (option.votes_count / votesTotal) * 100
+              (option.votes_count / votesTotal) * 100,
             )}%`;
             votesPortion = (option.votes_count / votesTotal) * 100;
           }
@@ -474,8 +478,8 @@ const renderPost = (post, container) => {
           <p class="text-muted">
             <small>
               ${votesTotal.toLocaleString()} votes | ${
-          post.post_data.poll.expired ? "Closed" : "Open"
-        }
+                post.post_data.poll.expired ? "Closed" : "Open"
+              }
             </small>
           </p>
         </div>`;
@@ -582,7 +586,9 @@ const renderPost = (post, container) => {
     const postContainer = container.querySelector(".post-body a:last-of-type");
     container.parentNode.replaceChild(renderedPost, container);
   } else {
-    const postElement = document.querySelector(`[data-post-id="${post.post_id}"]`);
+    const postElement = document.querySelector(
+      `[data-post-id="${post.post_id}"]`,
+    );
     if (postElement) {
       postElement.parentNode.replaceChild(renderedPost, postElement);
     }
