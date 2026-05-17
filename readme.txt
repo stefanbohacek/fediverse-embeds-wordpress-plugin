@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.6.1 =
+* Added fallback image for broken preview card thumbnails.
+
 = 1.6.0 =
 * Added tools for managing posts.
 * Added advanced settings for managing allowed domains for loading media files.

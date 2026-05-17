@@ -374,7 +374,7 @@ const renderPost = (post, container) => {
               window.ftf_fediverse_embeds.blog_url
             }/wp-json/ftf/media-proxy?url=${window.btoa(
               post.post_data.card.image,
-            )}" class="card-img-top">
+            )}" class="card-img-top" onerror="this.src='${window.ftf_fediverse_embeds.plugin_url}../images/images/broken-image.png'">
           </a>
           <div class="card-body pb-1">
             <h5 class="card-title">
