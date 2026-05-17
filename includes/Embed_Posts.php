@@ -133,7 +133,7 @@ class Embed_Posts
                         if (($post_content || !empty($post_data["media_attachments"])) && $account_display_name && $account_username && $post_url && $post_date) {
                             $theme_data_attribute = "";
                             if ($theme !== "automatic") {
-                                $theme_data_attribute = "data-bs-theme='" . esc_attr( $theme ) . "'";
+                                $theme_data_attribute = 'data-bs-theme="' . esc_attr( $theme ) . '"';
                             }
 
                             $iframe_html = <<<HTML
