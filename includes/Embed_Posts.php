@@ -50,6 +50,10 @@ class Embed_Posts
 
                     $url_parts = explode("/", $url);
 
+                    if (count($url_parts) < 5) {
+                        continue;
+                    }
+
                     $protocol = $url_parts[0];
                     $instance = $url_parts[2];
                     $username = $url_parts[3];
