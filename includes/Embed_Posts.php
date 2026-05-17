@@ -366,6 +366,10 @@ class Embed_Posts
             if ($allow_public_api_access || wp_verify_nonce($nonce, "ftf-fediverse-embeds-nonce")) {
                 if (!empty($post)) {
                     $post = json_decode(str_replace('\"', '"', $post), true);
+                    if (!is_array($post) || empty($post['instance']) || empty($post['post_id'])) {
+                        wp_send_json_error();
+                        return;
+                    }
                     $response = $this->get_post($post);
 
                     // Helpers::log_this("get_post_ajax", array(
