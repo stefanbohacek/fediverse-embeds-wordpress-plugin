@@ -71,6 +71,11 @@ class Embed_Posts
                     // if ($live_post_data["status"] === "deleted"){
                     // if ($saved_post_data["__status"] = "deleted"){
 
+                    $instance_attr  = esc_attr( $instance );
+                    $instance_html  = esc_html( $instance );
+                    $post_id_attr   = esc_attr( $post_id );
+                    $username_html  = esc_html( $username );
+
                     try {
                         $post_content = false;
                         $account_display_name = false;
@@ -122,14 +127,14 @@ class Embed_Posts
                         if (($post_content || !empty($post_data["media_attachments"])) && $account_display_name && $account_username && $post_url && $post_date) {
                             $theme_data_attribute = "";
                             if ($theme !== "automatic") {
-                                $theme_data_attribute = "data-bs-theme='$theme'";
+                                $theme_data_attribute = "data-bs-theme='" . esc_attr( $theme ) . "'";
                             }
 
                             $iframe_html = <<<HTML
-                            <blockquote $theme_data_attribute data-instance="$instance" data-post-id="$post_id" class="ftf-fediverse-post-embed">
+                            <blockquote $theme_data_attribute data-instance="$instance_attr" data-post-id="$post_id_attr" class="ftf-fediverse-post-embed">
                                 $post_content
                                 <p class="ftf-fediverse-post-embed-author">
-                                    &mdash; $account_display_name (@$account_username@$instance) 
+                                    &mdash; $account_display_name (@$account_username@$instance_html)
                                     <a class="ftf-fediverse-post-embed-link" href="$post_url">$post_date</a>
                                 </p>
                             </blockquote>
@@ -139,11 +144,11 @@ class Embed_Posts
                     } catch (\Exception $e) {
                         $iframe_html  = "<blockquote";
                         $iframe_html .= " " . $theme_data_attribute;
-                        $iframe_html .= " data-instance=\"$instance\"";
-                        $iframe_html .= " data-post-id=\"$post_id\"";
+                        $iframe_html .= " data-instance=\"$instance_attr\"";
+                        $iframe_html .= " data-post-id=\"$post_id_attr\"";
                         $iframe_html .= " class=\"ftf-fediverse-post-embed-removed\"";
                         $iframe_html .= ">";
-                        $iframe_html .= "<p>This post by $username@$instance was removed</p>";
+                        $iframe_html .= "<p>This post by $username_html@$instance_html was removed</p>";
                         $iframe_html .= "</blockquote>";
                         $iframe->outertext = $iframe_html;
                     }
