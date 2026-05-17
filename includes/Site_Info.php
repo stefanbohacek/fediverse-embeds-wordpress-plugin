@@ -35,7 +35,18 @@ class Site_Info
                     return;
                 }
 
-                $site_html = file_get_html($site_url);
+                global $wp_version;
+                $remote_response = wp_remote_get($site_url, array(
+                    "timeout"    => 10,
+                    "user-agent" => "FTF: Fediverse Embeds; WordPress/" . $wp_version . "; " . get_bloginfo("url"),
+                ));
+
+                if (is_wp_error($remote_response) || wp_remote_retrieve_response_code($remote_response) !== 200) {
+                    wp_send_json_error();
+                    return;
+                }
+
+                $site_html = str_get_html(wp_remote_retrieve_body($remote_response));
 
                 if ($site_html) {
                     $meta_image = $site_html->find('meta[name="twitter:image"]');
