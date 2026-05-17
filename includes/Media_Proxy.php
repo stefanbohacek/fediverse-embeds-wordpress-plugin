@@ -51,7 +51,14 @@ class Media_Proxy
 
             $file_name_hashed = Helpers::generate_random_string(12) . time();
             $file_path_hashed = "$dir/$file_name_hashed";
+        }
 
+        if (empty($url) || !Helpers::is_safe_url($url)) {
+            status_header(403);
+            exit();
+        }
+
+        if ($this->archival_mode) {
             if (!is_dir($dir)) {
                 wp_mkdir_p($dir);
             }
@@ -59,11 +66,6 @@ class Media_Proxy
             if (!file_exists("$dir/index.html")) {
                 file_put_contents("$dir/index.html", "");
             }
-        }
-
-        if (empty($url) || !Helpers::is_safe_url($url)) {
-            status_header(403);
-            exit();
         }
 
         if ($this->archival_mode && file_exists($file_path)) {
