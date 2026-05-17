@@ -322,7 +322,7 @@ const renderPost = (post, container) => {
           }
         } else if (media.type === "image") {
           // console.log("debug:media", media);
-          postText += /*html*/ `<a href="${safeURL(postUrl)}" target="_blank">
+          postText += /*html*/ `<a href="${safeURL(postUrl)}" target="_blank" rel="noopener noreferrer">
             <img
               alt="${altText}"
               loading="lazy"
@@ -545,7 +545,7 @@ const renderPost = (post, container) => {
       </small>
     `;
     } else {
-      renderedPostHTML += /*html*/ `<a class="text-muted" href="${safeURL(postUrl)}" target="_blank">
+      renderedPostHTML += /*html*/ `<a class="text-muted" href="${safeURL(postUrl)}" target="_blank" rel="noopener noreferrer">
         <small title="${editDate ? editDateText : ""}">
           ${postDateDate} at ${postDateTime}${editDate ? "*" : ""}
         </small>
