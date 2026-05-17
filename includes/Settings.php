@@ -36,15 +36,15 @@ class Settings
 
     function settings_init()
     {
-        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_custom_styles', 'esc_attr');
-        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_include_bootstrap_styles', 'esc_attr');
-        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_theme', 'esc_attr');
-        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_archival_mode', 'esc_attr');
-        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_show_metrics', 'esc_attr');
-        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_show_post_labels', 'esc_attr');
-        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_deleted_posts', 'esc_attr');
-        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_data_refresh_enabled', 'esc_attr');
-        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_data_refresh_minutes', 'esc_attr');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_custom_styles', 'sanitize_text_field');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_include_bootstrap_styles', 'sanitize_text_field');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_theme', 'sanitize_text_field');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_archival_mode', 'sanitize_text_field');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_show_metrics', 'sanitize_text_field');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_show_post_labels', 'sanitize_text_field');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_deleted_posts', 'sanitize_text_field');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_data_refresh_enabled', 'sanitize_text_field');
+        register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_data_refresh_minutes', 'absint');
 
         add_settings_section(
             'ftf_fediverse_embeds_settings',
