@@ -2,16 +2,10 @@
 
 namespace FTF_Fediverse_Embeds;
 
-use FTF_Fediverse_Embeds\Database;
-
 class Settings
 {
-    protected $db;
-
     function __construct()
     {
-        $this->db = new Database();
-
         add_action('admin_init', array($this, 'settings_init'));
         add_action('admin_menu', array($this, 'add_settings_page'));
         add_filter('plugin_action_links_fediverse-embeds/index.php', array($this, 'settings_page_link'));
@@ -20,9 +14,20 @@ class Settings
 
     function add_settings_page()
     {
-        add_options_page(
-            'Settings for the Fediverse Embeds plugin',
+        add_menu_page(
             'Fediverse Embeds',
+            'Fediverse Embeds',
+            'manage_options',
+            'ftf-fediverse-embeds',
+            array($this, 'render_settings_page'),
+            'dashicons-excerpt-view',
+            80
+        );
+
+        add_submenu_page(
+            'ftf-fediverse-embeds',
+            'Settings',
+            'Settings',
             'manage_options',
             'ftf-fediverse-embeds',
             array($this, 'render_settings_page')
@@ -253,20 +258,6 @@ class Settings
             </tbody>
         </table>
 
-        <h3 id="fediverse-posts-stats">Stats</h3>
-        <?php
-        $post_count = $this->db->get_post_count();
-
-        $media_dir = plugin_dir_path(__FILE__) . "../media";
-        $media_dir_size = Helpers::get_directory_size($media_dir)
-        ?>
-        <ul>
-            <li>Number of saved posts: <?php echo esc_html(number_format($post_count)); ?></li>
-            <li>Size of downloaded media files: <?php echo esc_html($media_dir_size); ?>
-                <code>(<?php echo esc_html($media_dir); ?>)</code>
-                <br><small>This information is cached for up to 5 minutes for performance reasons.</small>
-            </li>
-        </ul>
 <?php }
 
     function settings_page_link($links)

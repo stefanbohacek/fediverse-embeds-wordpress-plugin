@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.6.0 =
+* Added Manage Posts page for managing fediverse posts and downloaded media files.
+
 = 1.5.15 =
 * Fixed a compatibility issue with the database migration.
 

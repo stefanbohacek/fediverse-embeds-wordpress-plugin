@@ -28,6 +28,7 @@ class Database
             `post_id` BIGINT,
             `post_data` VARCHAR(12000),
             `last_updated` BIGINT,
+            `status` VARCHAR(20) DEFAULT NULL,
             INDEX `instance_post_id` (`instance`(100), `post_id`)
        ) $charset_collate;";
 
@@ -100,5 +101,113 @@ class Database
         $post_count = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
 
         return $post_count;
+    }
+
+    function get_all_posts($page = 1, $per_page = 20, $instance_filter = "")
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->table_name;
+        $offset = ($page - 1) * $per_page;
+
+        if ($instance_filter) {
+            return $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT instance, post_id, post_data, last_updated FROM $table_name WHERE (status IS NULL OR status != 'removed') AND instance = %s ORDER BY last_updated DESC LIMIT %d OFFSET %d",
+                    $instance_filter,
+                    $per_page,
+                    $offset
+                ),
+                ARRAY_A
+            );
+        }
+
+        return $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT instance, post_id, post_data, last_updated FROM $table_name WHERE (status IS NULL OR status != 'removed') ORDER BY last_updated DESC LIMIT %d OFFSET %d",
+                $per_page,
+                $offset
+            ),
+            ARRAY_A
+        );
+    }
+
+    function get_post_count_filtered($instance_filter = "")
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->table_name;
+
+        if ($instance_filter) {
+            return (int) $wpdb->get_var(
+                $wpdb->prepare("SELECT COUNT(*) FROM $table_name WHERE (status IS NULL OR status != 'removed') AND instance = %s", $instance_filter)
+            );
+        }
+
+        return (int) $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE (status IS NULL OR status != 'removed')");
+    }
+
+    function get_instances()
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->table_name;
+        return $wpdb->get_col("SELECT DISTINCT instance FROM $table_name ORDER BY instance ASC");
+    }
+
+    function delete_post($instance, $post_id)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->table_name;
+        return $wpdb->delete(
+            $table_name,
+            array("instance" => $instance, "post_id" => $post_id),
+            array("%s", "%d")
+        );
+    }
+
+    function restore_post($instance, $post_id)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->table_name;
+        return $wpdb->query(
+            $wpdb->prepare(
+                "UPDATE `$table_name` SET `status` = NULL WHERE `instance` = %s AND `post_id` = %d",
+                $instance,
+                $post_id
+            )
+        );
+    }
+
+    function soft_delete_post($instance, $post_id)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->table_name;
+        return $wpdb->update(
+            $table_name,
+            array("status" => "removed"),
+            array("instance" => $instance, "post_id" => $post_id),
+            array("%s"),
+            array("%s", "%d")
+        );
+    }
+
+    function get_removed_posts()
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->table_name;
+        return $wpdb->get_results(
+            "SELECT instance, post_id, post_data, last_updated FROM $table_name WHERE status = 'removed' ORDER BY last_updated DESC",
+            ARRAY_A
+        );
+    }
+
+    function hard_delete_post($instance, $post_id)
+    {
+        return $this->delete_post($instance, $post_id);
+    }
+
+    function hard_delete_all_removed()
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->table_name;
+        return $wpdb->delete($table_name, array("status" => "removed"), array("%s"));
     }
 }

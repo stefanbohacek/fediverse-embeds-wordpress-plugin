@@ -71,8 +71,10 @@ class Embed_Posts
                         "post_id" => $post_id,
                     ), true);
 
-                    // if ($live_post_data["status"] === "deleted"){
-                    // if ($saved_post_data["__status"] = "deleted"){
+                    if (($post["status"] ?? null) === "removed") {
+                        $iframe->outertext = "";
+                        continue;
+                    }
 
                     $instance_attr  = esc_attr( $instance );
                     $instance_html  = esc_html( $instance );
@@ -216,8 +218,12 @@ class Embed_Posts
                 $saved_post_data["post_data"] = json_decode($saved_post_data["post_data"], true);
 
                 // Helpers::log_this("get_post:db", array(
-                //     "saved_post_data" => $saved_post_data,                
-                // ));  
+                //     "saved_post_data" => $saved_post_data,
+                // ));
+
+                if (($saved_post_data["status"] ?? null) === "removed") {
+                    return $saved_post_data;
+                }
 
                 if (!$skip_cache) {
                     $time_now = time();

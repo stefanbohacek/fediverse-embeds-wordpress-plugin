@@ -3,7 +3,7 @@
  * Plugin Name: Fediverse Embeds
  * Plugin URI: https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/
  * Description: Embed posts from the fediverse.
- * Version: 1.5.15
+ * Version: 1.6.0
  * Author: stefanbohacek
  * Text Domain: ftf_fediverse_embeds
  *
@@ -12,6 +12,8 @@
 
 
 defined('ABSPATH') || exit;
+
+define('FTF_FEDIVERSE_EMBEDS_VERSION', '1.6.0');
 
 /* External dependencies */
 
@@ -26,6 +28,7 @@ require_once __DIR__ . '/includes/polyfills.php';
 use FTF_Fediverse_Embeds\Embed_Posts;
 use FTF_Fediverse_Embeds\Enqueue_Assets;
 use FTF_Fediverse_Embeds\Media_Proxy;
+use FTF_Fediverse_Embeds\Post_Manager;
 use FTF_Fediverse_Embeds\Settings;
 use FTF_Fediverse_Embeds\Site_Info;
 use FTF_Fediverse_Embeds\Database;
@@ -34,6 +37,9 @@ $embed_posts_init = new Embed_Posts();
 $enqueue_assets_init = new Enqueue_Assets();
 $media_proxy_init = new Media_Proxy();
 $settings_init = new Settings();
+if (is_admin()) {
+    $post_manager_init = new Post_Manager();
+}
 $site_info_init = new Site_Info();
 
 register_activation_hook(__FILE__, function(){
@@ -43,9 +49,9 @@ register_activation_hook(__FILE__, function(){
 
 add_action('admin_init', function(){
     $stored_version = get_option('ftf_fediverse_embeds_version');
-    if ($stored_version !== '1.5.15') {
+    if ($stored_version !== FTF_FEDIVERSE_EMBEDS_VERSION) {
         $db = new Database();
         $db->create_database();
-        update_option('ftf_fediverse_embeds_version', '1.5.15');
+        update_option('ftf_fediverse_embeds_version', FTF_FEDIVERSE_EMBEDS_VERSION);
     }
 });
