@@ -44,7 +44,9 @@ class Site_Info
                         $image = $meta_image[0]->content;
                     } else {
                         $meta_image = $site_html->find('meta[property="og:image"]');
-                        $image = $meta_image[0]->content;
+                        if (!empty($meta_image)) {
+                            $image = $meta_image[0]->content;
+                        }
                     }
 
                     $meta_title = $site_html->find('meta[name="title"]');
@@ -58,7 +60,9 @@ class Site_Info
                             $title = $meta_title[0]->content;
                         } else {
                             $meta_title = $site_html->find('meta[property="og:title"]');
-                            $title = $meta_title[0]->content;
+                            if (!empty($meta_title)) {
+                                $title = $meta_title[0]->content;
+                            }
                         }
                     }
 
@@ -67,17 +71,17 @@ class Site_Info
                     if (!empty($meta_description)) {
                         $description = $meta_description[0]->content;
                     } else {
-                        $meta_description = $site_html->find('meta[name="twitter:title"]');
+                        $meta_description = $site_html->find('meta[name="twitter:description"]');
 
                         if (!empty($meta_description)) {
                             $description = $meta_description[0]->content;
                         } else {
-                            $meta_description = $site_html->find('meta[property="og:title"]');
-                            $description = $meta_description[0]->content;
+                            $meta_description = $site_html->find('meta[property="og:description"]');
+                            if (!empty($meta_description)) {
+                                $description = $meta_description[0]->content;
+                            }
                         }
                     }
-
-                    $description = $meta_description[0]->content;
                 }
 
                 $site_data = array(
