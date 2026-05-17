@@ -68,8 +68,8 @@ const renderPost = (post, container) => {
 
     renderedPostHTML += /*html*/ `
     <div
-      data-instance="$instance"
-      data-post-id="$post_id"
+      data-instance="${escapeText(post.instance)}"
+      data-post-id="${escapeText(post.post_id)}"
       class="ftf-fediverse-post-embed-removed"
     >
       <p>This post by @${escapeText(post.post_data.account.username)}@${escapeText(post.instance)} was removed.</p>
