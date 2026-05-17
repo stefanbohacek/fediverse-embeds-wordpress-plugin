@@ -103,17 +103,10 @@ class Media_Proxy
                 }
 
                 if (!$can_download_media) {
-                    // Converting files.domain.social and media.domain.social to domain.social
+                    // Converting e.g. files.domain.social to domain.social, only strip one leading prefix.
+                    $stripped_domain = preg_replace('/^(cdn|files|media|pool|s3)\./i', '', $domain);
 
-                    $stripped_domain = str_replace(array(
-                        "cdn.",
-                        "files.",
-                        "media.",
-                        "pool.",
-                        "s3.",
-                    ), "", $domain);
-
-                    if (Helpers::is_safe_host($stripped_domain)) {
+                    if ($stripped_domain !== $domain && Helpers::is_safe_host($stripped_domain)) {
                         $remote_response = wp_remote_get("https://$stripped_domain/.well-known/nodeinfo", array(
                             "user-agent" => "FTF: Fediverse Embeds; WordPress/" . $wp_version . "; " . get_bloginfo("url"),
                         ));
