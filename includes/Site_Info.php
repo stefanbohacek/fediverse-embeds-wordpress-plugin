@@ -22,8 +22,8 @@ class Site_Info
 
         if ($allow_public_api_access || wp_verify_nonce($nonce, 'ftf-fediverse-embeds-nonce')) {
 
-            $cache_key = 'site_data:' . $site_url;
-            $site_data = wp_cache_get($cache_key, 'ftf_fediverse_embeds_post');
+            $cache_key = "ftf_site_data_" . md5($site_url);
+            $site_data = get_transient($cache_key);
 
             $image = '';
             $title = '';
@@ -95,7 +95,7 @@ class Site_Info
                 //     'site_data' => $site_data,
                 // ));
 
-                wp_cache_set($cache_key, $site_data, 'ftf_fediverse_embeds_post', (60 * MINUTE_IN_SECONDS));
+                set_transient($cache_key, $site_data, HOUR_IN_SECONDS);
             }
             // error_log(print_r($site_data, true));
             wp_send_json($site_data);
