@@ -288,6 +288,10 @@ class Embed_Posts
 
         $req_url = "https://" . $post_instance . "/api/v1/statuses/" . $post_id;
 
+        if (!Helpers::is_safe_url($req_url)) {
+            return $response;
+        }
+
         // Helpers::log_this("get_live_post_data", array(
         //     "post" => $post,
         //     "req_url" => $req_url,
