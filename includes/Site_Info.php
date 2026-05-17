@@ -17,8 +17,8 @@ class Site_Info
     function get_site_info()
     {
         $allow_public_api_access = defined('FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS') ? FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS : false;
-        $site_url = sanitize_text_field($_POST['url']);
-        $nonce = sanitize_text_field($_POST['nonce']);
+        $site_url = sanitize_text_field($_POST['url'] ?? '');
+        $nonce = sanitize_text_field($_POST['nonce'] ?? '');
 
         if ($allow_public_api_access || wp_verify_nonce($nonce, 'ftf-fediverse-embeds-nonce')) {
 
