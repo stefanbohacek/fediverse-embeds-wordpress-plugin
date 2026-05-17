@@ -169,7 +169,7 @@ class Media_Proxy
                     "audio/webm",
                 );
 
-                if (!in_array($content_type, $mime_types_safe)) {
+                if (!in_array(strtolower($content_type), $mime_types_safe)) {
                     status_header(403);
                     exit();
                 }
