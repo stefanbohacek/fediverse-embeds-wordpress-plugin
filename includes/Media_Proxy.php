@@ -66,6 +66,10 @@ class Media_Proxy
 
         if ($this->archival_mode && file_exists($file_path)) {
             $image_info = getimagesize($file_path);
+            if ($image_info === false) {
+                status_header(500);
+                exit();
+            }
             header("Content-type: {$image_info['mime']}");
             echo file_get_contents($file_path);
         } else {
