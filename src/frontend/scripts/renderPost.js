@@ -582,8 +582,10 @@ const renderPost = (post, container) => {
     const postContainer = container.querySelector(".post-body a:last-of-type");
     container.parentNode.replaceChild(renderedPost, container);
   } else {
-    const post = document.querySelector(`[data-post-id="${post.id}"]`);
-    post.parentNode.replaceChild(renderedPost, post);
+    const postElement = document.querySelector(`[data-post-id="${post.post_id}"]`);
+    if (postElement) {
+      postElement.parentNode.replaceChild(renderedPost, postElement);
+    }
   }
 
   return renderedPost;
