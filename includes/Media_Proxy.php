@@ -133,6 +133,11 @@ class Media_Proxy
                     "user-agent" => "FTF: Fediverse Embeds; WordPress/" . $wp_version . "; " . get_bloginfo("url"),
                 ));
 
+                if (is_wp_error($remote_response)) {
+                    status_header(502);
+                    exit();
+                }
+
                 $content_type = wp_remote_retrieve_header($remote_response, "content-type");
                 $mime_types_safe = array(
                     "image/apng",
