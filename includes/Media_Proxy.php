@@ -51,7 +51,7 @@ class Media_Proxy
             $file_path_hashed = "$dir/$file_name_hashed";
 
             if (!is_dir($dir)) {
-                mkdir($dir);
+                wp_mkdir_p($dir);
             }
 
             if (!file_exists("$dir/index.html")) {
