@@ -103,14 +103,14 @@ class Settings
             <tbody>
                 <tr>
                     <td style="vertical-align: top;">
-                        <a alt="A screenshot of a Mastodon post showing how to access the embed code." href="<?php echo esc_html(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png" target="_blank">
-                            <img style="max-width: 100%" src="<?php echo esc_html(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png">
+                        <a alt="A screenshot of a Mastodon post showing how to access the embed code." href="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png" target="_blank">
+                            <img style="max-width: 100%" src="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png">
                         </a>
 
                     </td>
                     <td style="vertical-align: top;">
-                        <a alt="A screenshot of a custom HTML WordPress block containing the embed code." href="<?php echo esc_html(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png" target="_blank">
-                            <img style="max-width: 100%" src="<?php echo esc_html(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png">
+                        <a alt="A screenshot of a custom HTML WordPress block containing the embed code." href="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png" target="_blank">
+                            <img style="max-width: 100%" src="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png">
                         </a>
                     </td>
                 </tr>
