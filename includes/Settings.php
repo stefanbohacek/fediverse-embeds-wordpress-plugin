@@ -126,7 +126,7 @@ class Settings
                         <label for="ftf-fediverse-embeds-theme">Theme</label>
                     </th>
                     <td>
-                        <select id="select-id" name="ftf_fediverse_embeds_theme" id="ftf-fediverse-embeds-theme">
+                        <select name="ftf_fediverse_embeds_theme" id="ftf-fediverse-embeds-theme">
                             <option value="automatic" <?php selected($theme, 'automatic', true); ?>>Automatic</option>
                             <option value="light" <?php selected($theme, 'light', true); ?>>Light</option>
                             <option value="dark" <?php selected($theme, 'dark', true); ?>>Dark</option>
@@ -198,7 +198,7 @@ class Settings
                         <label for="ftf-fediverse-embeds-show-metrics">Deleted posts</label>
                     </th>
                     <td>
-                        <select id="select-id" name="ftf_fediverse_embeds_deleted_posts" id="ftf-fediverse-embeds-deleted-posts">
+                        <select name="ftf_fediverse_embeds_deleted_posts" id="ftf-fediverse-embeds-deleted-posts">
                             <option value="keep" <?php selected($deleted_posts, 'keep', true); ?>>Mark as deleted</option>
                             <option value="redact" <?php selected($deleted_posts, 'redact', true); ?>>Remove username and profile image</option>
                             <option value="hide" <?php selected($deleted_posts, 'hide', true); ?>>Hide</option>
