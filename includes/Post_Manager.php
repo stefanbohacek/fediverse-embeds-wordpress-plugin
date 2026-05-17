@@ -293,10 +293,11 @@ class Post_Manager
             return;
         }
 
+        $excluded = [".htaccess", "index.html", "index.php"];
         $files = glob(trailingslashit($media_dir) . "*");
         if ($files) {
             foreach ($files as $file) {
-                if (is_file($file) && basename($file) !== ".htaccess") {
+                if (is_file($file) && !in_array(basename($file), $excluded, true)) {
                     unlink($file);
                 }
             }
@@ -508,7 +509,10 @@ class Post_Manager
             $media_dir_size = Helpers::get_directory_size($media_dir);
             $media_files = array_filter(
                 glob(trailingslashit($media_dir) . "*") ?: [],
-                function ($f) { return is_file($f) && basename($f) !== ".htaccess"; }
+                function ($f) {
+                    $excluded = [".htaccess", "index.html", "index.php"];
+                    return is_file($f) && !in_array(basename($f), $excluded, true);
+                }
             );
 
             $media_file_count = count($media_files);
