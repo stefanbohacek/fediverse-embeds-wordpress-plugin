@@ -162,7 +162,8 @@ class Media_Proxy
                     "audio/webm",
                 );
 
-                if (!in_array(strtolower($content_type), $mime_types_safe)) {
+                $content_type_base = strtolower(trim(explode(";", $content_type)[0]));
+                if (!in_array($content_type_base, $mime_types_safe)) {
                     status_header(403);
                     exit();
                 }
@@ -179,7 +180,7 @@ class Media_Proxy
                     }
                 }
 
-                header("Content-Type: " . $content_type);
+                header("Content-Type: " . $content_type_base);
                 echo $remote_response["body"];
             }
         }
