@@ -47,7 +47,6 @@ As more platforms add this feature, this plugin will continue to get updated.
 | **Akkoma**    | ❌              |
 | **Friendica** | ❌              |
 | **Misskey**   | ❌ [#17](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/17)          |
-| **Calckey**   | ❌ [#16](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/16)          |
 | **Peertube**  | ❌ [#2](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/2)           |
 | **Pixelfed**  | ❌ [#14](https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin/issues/14)          |
 
