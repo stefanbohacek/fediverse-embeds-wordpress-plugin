@@ -50,7 +50,7 @@ class Embed_Posts
 
                     $url_parts = explode("/", $url);
 
-                    if (count($url_parts) < 5) {
+                    if (count($url_parts) < 5 || empty($url_parts[2]) || empty($url_parts[4])) {
                         continue;
                     }
 
