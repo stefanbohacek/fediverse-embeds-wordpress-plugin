@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.5.13 =
+* Security improvements across post embedding, the media proxy, and link preview fetching.
+
 = 1.5.12 =
 * Improved security of embedded post rendering.
 
