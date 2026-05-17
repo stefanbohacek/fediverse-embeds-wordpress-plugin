@@ -7,12 +7,14 @@ class Settings
     function __construct()
     {
         add_action('admin_init', array($this, 'settings_init'));
-        add_action('admin_menu', array($this, 'add_settings_page'));
+        add_action('admin_menu', array($this, 'add_menu'), 10);
+        add_action('admin_menu', array($this, 'add_advanced_submenu'), 30);
+        add_action('admin_post_ftf_reset_allowlists', array($this, 'reset_allowlists'));
         add_filter('plugin_action_links_fediverse-embeds/index.php', array($this, 'settings_page_link'));
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'settings_page_link'));
     }
 
-    function add_settings_page()
+    function add_menu()
     {
         add_menu_page(
             'Fediverse Embeds',
@@ -43,6 +45,20 @@ class Settings
         );
     }
 
+    function add_advanced_submenu()
+    {
+        if (defined('FTF_SHOW_ADVANCED_SETTINGS') && \FTF_SHOW_ADVANCED_SETTINGS) {
+            add_submenu_page(
+                'ftf-fediverse-embeds',
+                'Advanced',
+                'Advanced',
+                'manage_options',
+                'ftf-fediverse-embeds-advanced',
+                array($this, 'render_advanced_page')
+            );
+        }
+    }
+
     function settings_init()
     {
         register_setting('ftf_fediverse_embeds', 'ftf_fediverse_embeds_custom_styles', 'sanitize_text_field');
@@ -60,6 +76,16 @@ class Settings
             __('', 'wordpress'),
             array($this, 'render_settings_form'),
             'ftf_fediverse_embeds'
+        );
+
+        register_setting('ftf_fediverse_embeds_advanced', 'ftf_fediverse_embeds_allowed_domains', 'sanitize_textarea_field');
+        register_setting('ftf_fediverse_embeds_advanced', 'ftf_fediverse_embeds_allowed_suffixes', 'sanitize_textarea_field');
+
+        add_settings_section(
+            'ftf_fediverse_embeds_advanced_settings',
+            __('', 'wordpress'),
+            array($this, 'render_advanced_form'),
+            'ftf_fediverse_embeds_advanced'
         );
     }
 
@@ -271,6 +297,126 @@ class Settings
         </table>
 
 <?php }
+
+    function render_advanced_page()
+    {
+        $reset = isset($_GET['reset']) && $_GET['reset'] === '1';
+        $saved_domains = get_option('ftf_fediverse_embeds_allowed_domains');
+        $saved_suffixes = get_option('ftf_fediverse_embeds_allowed_suffixes');
+        $domains_empty = $saved_domains !== false && trim($saved_domains) === '';
+        $suffixes_empty = $saved_suffixes !== false && trim($saved_suffixes) === '';
+        ?>
+        <div class="wrap">
+            <h1>Fediverse Embeds &rsaquo; Advanced</h1>
+
+            <?php if ($reset): ?>
+            <div class="notice notice-success is-dismissible">
+                <p>Allowlists have been reset to defaults.</p>
+            </div>
+            <?php endif; ?>
+
+            <?php if ($domains_empty || $suffixes_empty): ?>
+            <div class="notice notice-info">
+                <p>
+                    <?php if ($domains_empty && $suffixes_empty): ?>
+                        <strong>Note:</strong> Both allowlists are empty. Only media from automatically detected fediverse servers will be loaded; CDN and shared media hosting domains will be blocked.
+                    <?php elseif ($domains_empty): ?>
+                        <strong>Note:</strong> The allowed domains list is empty. Only suffixes and automatically detected fediverse servers will be used to allow media.
+                    <?php else: ?>
+                        <strong>Note:</strong> The allowed suffixes list is empty. Only exact domains and automatically detected fediverse servers will be used to allow media.
+                    <?php endif; ?>
+                </p>
+            </div>
+            <?php endif; ?>
+
+            <div class="notice notice-warning">
+                <p><strong>Warning:</strong> Incorrect changes to these settings can introduce security vulnerabilities or break media loading. Only modify these settings if you know what you're doing.</p>
+            </div>
+
+            <form action='options.php' method='post'>
+                <?php
+                settings_fields('ftf_fediverse_embeds_advanced');
+                do_settings_sections('ftf_fediverse_embeds_advanced');
+                submit_button('Save Changes');
+                ?>
+            </form>
+
+            <hr>
+
+            <h2>Reset to Defaults</h2>
+            <p>Restore the built-in default allowlists. Unlike saving empty fields (which blocks all CDN domains), this re-enables the default list of trusted domains and suffixes.</p>
+            <form method='post' action='<?php echo esc_url(admin_url('admin-post.php')); ?>'>
+                <input type='hidden' name='action' value='ftf_reset_allowlists'>
+                <?php wp_nonce_field('ftf_reset_allowlists'); ?>
+                <?php submit_button('Reset to Defaults', 'secondary', 'submit', false); ?>
+            </form>
+        </div>
+        <?php
+    }
+
+    function render_advanced_form()
+    {
+        $default_domains = implode("\n", Helpers::get_default_allowed_domains());
+        $default_suffixes = implode("\n", Helpers::get_default_allowed_suffixes());
+
+        $allowed_domains = get_option('ftf_fediverse_embeds_allowed_domains', $default_domains);
+        $allowed_suffixes = get_option('ftf_fediverse_embeds_allowed_suffixes', $default_suffixes);
+        ?>
+        <table class="form-table" role="presentation">
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        <label for="ftf-fediverse-embeds-allowed-domains">Allowed domains</label>
+                    </th>
+                    <td>
+                        <textarea
+                            id="ftf-fediverse-embeds-allowed-domains"
+                            name="ftf_fediverse_embeds_allowed_domains"
+                            rows="8"
+                            cols="50"
+                            style="font-family: monospace;"
+                        ><?php echo esc_textarea($allowed_domains); ?></textarea>
+                        <p class="description">
+                            One domain per line, without protocol or path (e.g. <code>cdn.example.com</code>). These domains are always allowed to serve media.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="ftf-fediverse-embeds-allowed-suffixes">Allowed domain suffixes</label>
+                    </th>
+                    <td>
+                        <textarea
+                            id="ftf-fediverse-embeds-allowed-suffixes"
+                            name="ftf_fediverse_embeds_allowed_suffixes"
+                            rows="4"
+                            cols="50"
+                            style="font-family: monospace;"
+                        ><?php echo esc_textarea($allowed_suffixes); ?></textarea>
+                        <p class="description">
+                            One suffix per line, starting with a dot (e.g. <code>.example.com</code>). Any domain ending with these suffixes is allowed to serve media.
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <?php
+    }
+
+    function reset_allowlists()
+    {
+        check_admin_referer('ftf_reset_allowlists');
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have permission to perform this action.'));
+        }
+        delete_option('ftf_fediverse_embeds_allowed_domains');
+        delete_option('ftf_fediverse_embeds_allowed_suffixes');
+        wp_redirect(add_query_arg(
+            array('page' => 'ftf-fediverse-embeds-advanced', 'reset' => '1'),
+            admin_url('admin.php')
+        ));
+        exit();
+    }
 
     function settings_page_link($links)
     {

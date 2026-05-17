@@ -167,7 +167,7 @@ class Post_Manager
     function __construct()
     {
         $this->db = new Database();
-        add_action("admin_menu", array($this, "add_posts_page"));
+        add_action("admin_menu", array($this, "add_posts_page"), 20);
         add_action("admin_init", array($this, "handle_actions"));
     }
 

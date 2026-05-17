@@ -82,18 +82,32 @@ class Media_Proxy
                 $parse = parse_url($url);
                 $domain = $parse["host"] ?? "";
 
-                $allowed_domains = array(
-                    "cdn.masto.host",
-                    "pool.jortage.com",
-                    "social-cdn.vivaldi.net",
-                    "cdn.hosted.spacebear.ee",
-                    "m.f-h.co"
-                );
+                $default_allowed_domains = Helpers::get_default_allowed_domains();
+                $default_allowed_suffixes = Helpers::get_default_allowed_suffixes();
 
-                $allowed_suffixes = array(
-                    ".files.fedi.monster",
-                    ".digitaloceanspaces.com"
-                );
+                $saved_domains = get_option("ftf_fediverse_embeds_allowed_domains");
+                $saved_suffixes = get_option("ftf_fediverse_embeds_allowed_suffixes");
+
+                // false = option never saved or was reset → fall back to hardcoded defaults.
+                // "" = explicitly cleared by admin → use empty list.
+                $allowed_domains = ($saved_domains === false)
+                    ? $default_allowed_domains
+                    : array_values(array_filter(array_map(function ($entry) {
+                        $entry = trim($entry);
+                        $entry = preg_replace('#^https?://#i', '', $entry);
+                        $entry = explode("/", $entry)[0];
+                        return strtolower($entry);
+                    }, explode("\n", $saved_domains))));
+
+                $allowed_suffixes = ($saved_suffixes === false)
+                    ? $default_allowed_suffixes
+                    : array_values(array_filter(array_map(function ($entry) {
+                        $entry = strtolower(trim($entry));
+                        if ($entry !== "" && $entry[0] !== ".") {
+                            $entry = "." . $entry;
+                        }
+                        return $entry;
+                    }, explode("\n", $saved_suffixes))));
 
                 $can_download_media = in_array($domain, $allowed_domains);
 

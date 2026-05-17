@@ -179,6 +179,25 @@ class Helpers
         return self::is_safe_host($host);
     }
 
+    public static function get_default_allowed_domains(): array
+    {
+        return array(
+            "cdn.masto.host",
+            "pool.jortage.com",
+            "social-cdn.vivaldi.net",
+            "cdn.hosted.spacebear.ee",
+            "m.f-h.co",
+        );
+    }
+
+    public static function get_default_allowed_suffixes(): array
+    {
+        return array(
+            ".files.fedi.monster",
+            ".digitaloceanspaces.com",
+        );
+    }
+
     public static function generate_random_string($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $characters_length = strlen($characters);

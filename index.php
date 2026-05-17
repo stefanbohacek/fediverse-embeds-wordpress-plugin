@@ -15,6 +15,10 @@ defined('ABSPATH') || exit;
 
 define('FTF_FEDIVERSE_EMBEDS_VERSION', '1.6.0');
 
+if (!defined('FTF_SHOW_ADVANCED_SETTINGS')) {
+    define('FTF_SHOW_ADVANCED_SETTINGS', true);
+}
+
 /* External dependencies */
 
 require_once __DIR__ . '/vendor/autoload.php';
