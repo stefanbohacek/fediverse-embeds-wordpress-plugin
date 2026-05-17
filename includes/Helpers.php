@@ -121,24 +121,35 @@ class Helpers
             );
         }
 
+        $cache_key = "ftf_safe_host_" . md5($host);
+        $cached = get_transient($cache_key);
+
+        if ($cached !== false) {
+            return (bool) $cached;
+        }
+
         $a_records    = dns_get_record($host, DNS_A)    ?: [];
         $aaaa_records = dns_get_record($host, DNS_AAAA) ?: [];
         $all_records  = array_merge($a_records, $aaaa_records);
 
         if (empty($all_records)) {
+            set_transient($cache_key, 0, HOUR_IN_SECONDS);
             return false;
         }
 
         foreach ($all_records as $record) {
-            $ip = $record['ip'] ?? $record['ipv6'] ?? null;
+            $ip = $record["ip"] ?? $record["ipv6"] ?? null;
             if ($ip === null) {
+                set_transient($cache_key, 0, HOUR_IN_SECONDS);
                 return false;
             }
             if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                set_transient($cache_key, 0, HOUR_IN_SECONDS);
                 return false;
             }
         }
 
+        set_transient($cache_key, 1, HOUR_IN_SECONDS);
         return true;
     }
 
