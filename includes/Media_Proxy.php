@@ -169,15 +169,16 @@ class Media_Proxy
                 }
 
                 if ($this->archival_mode) {
-                    // file_put_contents($file_path, $remote_response["body"]);
                     file_put_contents($file_path_hashed, $remote_response["body"]);
                     $validate = wp_check_filetype_and_ext($file_path_hashed, $file_name);
 
                     if (!in_array($validate["type"], $mime_types_safe)) {
                         unlink($file_path_hashed);
-                    } else {
-                        rename($file_path_hashed, $file_path);
+                        status_header(403);
+                        exit();
                     }
+
+                    rename($file_path_hashed, $file_path);
                 }
 
                 header("Content-Type: " . $content_type_base);
