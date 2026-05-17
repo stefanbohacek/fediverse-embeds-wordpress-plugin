@@ -20,6 +20,18 @@ const isTrustedIframeOrigin = (src) => {
   }
 };
 
+const escapeText = (str) => DOMPurify.sanitize(str || "", { ALLOWED_TAGS: [] });
+
+const safeURL = (url) => {
+  if (!url) return "";
+  try {
+    const { protocol } = new URL(url);
+    return protocol === "http:" || protocol === "https:" ? url : "";
+  } catch {
+    return "";
+  }
+};
+
 const sanitizeHTML = (html, allowIframes = false) => {
   if (!html) return "";
 
@@ -38,4 +50,4 @@ const sanitizeHTML = (html, allowIframes = false) => {
   return DOMPurify.sanitize(html);
 };
 
-export { sanitizeHTML };
+export { sanitizeHTML, escapeText, safeURL };

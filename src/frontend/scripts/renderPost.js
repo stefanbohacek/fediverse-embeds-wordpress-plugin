@@ -1,4 +1,4 @@
-import { sanitizeHTML } from "./sanitizeHTML.js";
+import { sanitizeHTML, escapeText, safeURL } from "./sanitizeHTML.js";
 
 const renderPost = (post, container) => {
   // console.log(post);
@@ -72,7 +72,7 @@ const renderPost = (post, container) => {
       data-post-id="$post_id"
       class="ftf-fediverse-post-embed-removed"
     >
-      <p>This post by @${post.post_data.account.username}@${post.instance} was removed.</p>
+      <p>This post by @${escapeText(post.post_data.account.username)}@${escapeText(post.instance)} was removed.</p>
     </div>
     `;
   } else {
@@ -167,13 +167,13 @@ const renderPost = (post, container) => {
         // noop
       } else {
         renderedPostHTML += /*html*/ `
-            <a href="${post.post_data.account.url}" class="text-decoration-none">
+            <a href="${safeURL(post.post_data.account.url)}" class="text-decoration-none">
               <img
                 title="Profile image"
-                alt="Profile image of @${
+                alt="Profile image of @${escapeText(
                 post.post_data.account.display_name ||
                 post.post_data.account.username
-                }"
+                )}"
                 loading="lazy"
                 class="post-author-image rounded-circle border"
                 width="48"
@@ -211,14 +211,14 @@ const renderPost = (post, container) => {
         <p class="font-weight-bold mb-0 mt-0">
           <a
             class="text-dark text-decoration-none"
-            href="${post.post_data.account.url}"
-          >${post.post_data.account.display_name}</a>
+            href="${safeURL(post.post_data.account.url)}"
+          >${escapeText(post.post_data.account.display_name)}</a>
         </p>
         <p class="mb-1 mb-md-2 mt-0 fs-6 text-break">
           <a class="text-muted text-decoration-none" href="${
-            post.post_data.account.url
+            safeURL(post.post_data.account.url)
           }">
-            @${post.post_data.account.username}@${post.instance}
+            @${escapeText(post.post_data.account.username)}@${escapeText(post.instance)}
           </a>
         </p>
       </div>
@@ -261,10 +261,7 @@ const renderPost = (post, container) => {
           postText += /*html*/ `<div data-media-type="${media.type}" class="position-relative text-center col-sm-12 col-md-3 col-lg-3">`;
         }
 
-        const altText = (media.alt_text || media.description || "").replace(
-          /"/g,
-          "&quot;"
-        );
+        const altText = escapeText(media.alt_text || media.description || "");
         let altTextBadge = "";
 
         if (altText && altText.length) {
@@ -325,7 +322,7 @@ const renderPost = (post, container) => {
           }
         } else if (media.type === "image") {
           // console.log("debug:media", media);
-          postText += /*html*/ `<a href="${postUrl}" target="_blank">
+          postText += /*html*/ `<a href="${safeURL(postUrl)}" target="_blank">
             <img
               alt="${altText}"
               loading="lazy"
@@ -359,7 +356,7 @@ const renderPost = (post, container) => {
       } else if (post.post_data.card.image) {
         postText += /*html*/ `
         <div class="card mb-4">
-          <a href="${post.post_data.card.url}">
+          <a href="${safeURL(post.post_data.card.url)}">
             <img src="${
               window.ftf_fediverse_embeds.blog_url
             }/wp-json/ftf/media-proxy?url=${window.btoa(
@@ -368,17 +365,17 @@ const renderPost = (post, container) => {
           </a>
           <div class="card-body pb-1">
             <h5 class="card-title">
-              <a href="${post.post_data.card.url}">
-                ${post.post_data.card.title}
+              <a href="${safeURL(post.post_data.card.url)}">
+                ${escapeText(post.post_data.card.title)}
               </a>
             </h5>
             <p class="card-text"><small>${
-              post.post_data.card.description
+              escapeText(post.post_data.card.description)
             }</small></p>
           </div>
           <div class="card-footer pb-3 pt-0">
             <small class="text-muted">
-              ${cardSource}
+              ${escapeText(cardSource || "")}
             </div>
         </div>
         `;
@@ -387,15 +384,15 @@ const renderPost = (post, container) => {
         <div class="card mb-4">
         <div class="card-body pb-1">
             <h5 class="card-title">
-              <a href="${post.post_data.card.url}">
-                ${post.post_data.card.title}
+              <a href="${safeURL(post.post_data.card.url)}">
+                ${escapeText(post.post_data.card.title)}
               </a>
             </h5>
-            <p class="card-text"><small>${post.post_data.card.description}</small></p>
+            <p class="card-text"><small>${escapeText(post.post_data.card.description)}</small></p>
           </div>
           <div class="card-footer pb-3 pt-0">
             <small class="text-muted">
-              ${cardSource}
+              ${escapeText(cardSource || "")}
             </div>
         </div>
         `;
@@ -439,7 +436,7 @@ const renderPost = (post, container) => {
 
           postText += /*html*/ `
             <div class="col-9">
-              <p class="mb-2">${option.title}</p>
+              <p class="mb-2">${escapeText(option.title)}</p>
             </div>
             <div class="col-3 text-end">
               <span class="w-100">${votesPercentage}</span>
@@ -548,7 +545,7 @@ const renderPost = (post, container) => {
       </small>
     `;
     } else {
-      renderedPostHTML += /*html*/ `<a class="text-muted" href="${postUrl}" target="_blank">
+      renderedPostHTML += /*html*/ `<a class="text-muted" href="${safeURL(postUrl)}" target="_blank">
         <small title="${editDate ? editDateText : ""}">
           ${postDateDate} at ${postDateTime}${editDate ? "*" : ""}
         </small>
