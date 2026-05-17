@@ -27,7 +27,8 @@ class Database
             `instance` VARCHAR(500),
             `post_id` BIGINT,
             `post_data` VARCHAR(12000),
-            `last_updated` BIGINT
+            `last_updated` BIGINT,
+            INDEX `instance_post_id` (`instance`(100), `post_id`)
        ) $charset_collate;";
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');

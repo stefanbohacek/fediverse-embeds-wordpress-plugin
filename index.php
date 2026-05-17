@@ -40,3 +40,12 @@ register_activation_hook(__FILE__, function(){
     $db = new Database();
     $db->create_database();
 });
+
+add_action('plugins_loaded', function(){
+    $stored_version = get_option('ftf_fediverse_embeds_version');
+    if ($stored_version !== '1.5.13') {
+        $db = new Database();
+        $db->create_database();
+        update_option('ftf_fediverse_embeds_version', '1.5.13');
+    }
+});
