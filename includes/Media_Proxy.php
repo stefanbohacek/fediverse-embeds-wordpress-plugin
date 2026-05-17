@@ -181,7 +181,7 @@ class Media_Proxy
                     }
                 }
 
-                header("Content-Type: " . $remote_response["headers"]["content-type"]);
+                header("Content-Type: " . $content_type);
                 echo $remote_response["body"];
             }
         }
