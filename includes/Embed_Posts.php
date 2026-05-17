@@ -48,16 +48,15 @@ class Embed_Posts
                         $url = str_replace("/p/", "/", $url);
                     }
 
-                    $url_parts = explode("/", $url);
+                    $parsed   = parse_url($url);
+                    $instance = $parsed["host"] ?? "";
+                    $path_parts = explode("/", trim($parsed["path"] ?? "", "/"));
+                    $username = $path_parts[0] ?? "";
+                    $post_id  = $path_parts[1] ?? "";
 
-                    if (count($url_parts) < 5 || empty($url_parts[2]) || empty($url_parts[4])) {
+                    if (empty($instance) || empty($post_id)) {
                         continue;
                     }
-
-                    $protocol = $url_parts[0];
-                    $instance = $url_parts[2];
-                    $username = $url_parts[3];
-                    $post_id = $url_parts[4];
 
                     // Helpers::log_this("debug:post", array(
                     //     "url" => $url,
