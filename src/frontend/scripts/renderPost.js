@@ -175,27 +175,32 @@ const renderPost = (post, container) => {
       ) {
         // noop
       } else {
-        renderedPostHTML += /*html*/ `
-            <a href="${safeURL(post.post_data.account.url)}" class="text-decoration-none">
-              <img
-                title="Profile image"
-                alt="Profile image of @${escapeText(
-                  post.post_data.account.display_name ||
-                    post.post_data.account.username,
-                )}"
-                loading="lazy"
-                class="post-author-image rounded-circle border"
-                width="48"
-                height="48"
-                onerror="this.src='${window.ftf_fediverse_embeds.plugin_url}../images/images/blank.png'"
-                src="${
-                  window.ftf_fediverse_embeds.blog_url
-                }/wp-json/ftf/media-proxy?url=${window.btoa(
-                  post.post_data.account.avatar_static,
-                )}"
-              >
-            </a>
-        `;
+        let proxiedAvatarSrc = '';
+        try {
+          proxiedAvatarSrc = `${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${window.btoa(post.post_data.account.avatar_static)}`;
+        } catch {
+          // btoa fails on non-Latin1 avatar URLs
+        }
+
+        if (proxiedAvatarSrc) {
+          renderedPostHTML += /*html*/ `
+              <a href="${safeURL(post.post_data.account.url)}" class="text-decoration-none">
+                <img
+                  title="Profile image"
+                  alt="Profile image of @${escapeText(
+                    post.post_data.account.display_name ||
+                      post.post_data.account.username,
+                  )}"
+                  loading="lazy"
+                  class="post-author-image rounded-circle border"
+                  width="48"
+                  height="48"
+                  onerror="this.src='${window.ftf_fediverse_embeds.plugin_url}../images/images/blank.png'"
+                  src="${proxiedAvatarSrc}"
+                >
+              </a>
+          `;
+        }
       }
     }
 
