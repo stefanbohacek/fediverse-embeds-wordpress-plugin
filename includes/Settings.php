@@ -264,6 +264,7 @@ class Settings
             <li>Number of saved posts: <?php echo esc_html(number_format($post_count)); ?></li>
             <li>Size of downloaded media files: <?php echo esc_html($media_dir_size); ?>
                 <code>(<?php echo esc_html($media_dir); ?>)</code>
+                <br><small>This information is cached for up to 5 minutes for performance reasons.</small>
             </li>
         </ul>
 <?php }

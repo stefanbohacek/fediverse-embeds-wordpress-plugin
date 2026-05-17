@@ -85,6 +85,13 @@ class Helpers
 
     public static function get_directory_size($directory)
     {
+        $cache_key = "ftf_dir_size_" . md5($directory);
+        $cached = get_transient($cache_key);
+
+        if ($cached !== false) {
+            return $cached;
+        }
+
         $size = 0;
 
         if (is_dir($directory)) {
@@ -93,7 +100,10 @@ class Helpers
             }
         }
 
-        return self::format_bytes($size);
+        $result = self::format_bytes($size);
+        set_transient($cache_key, $result, 5 * MINUTE_IN_SECONDS);
+
+        return $result;
     }
 
     public static function format_bytes($size, $precision = 2)
