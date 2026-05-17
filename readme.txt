@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.5.15 =
+* Fixed a compatibility issue with the database migration.
+
 = 1.5.14 =
 * Performance improvements to media handling, link previews, and the Settings page.
 
