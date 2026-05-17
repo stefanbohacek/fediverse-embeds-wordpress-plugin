@@ -245,20 +245,20 @@ const renderPost = (post, container) => {
         // console.log('debug:media', media);
 
         if (post.post_data.media_attachments.length === 1) {
-          postText += /*html*/ `<div data-media-type="${media.type}" class="position-relative text-center col-sm-12 col-md-12 col-lg-12">`;
+          postText += /*html*/ `<div data-media-type="${escapeText(media.type)}" class="position-relative text-center col-sm-12 col-md-12 col-lg-12">`;
         } else if (post.post_data.media_attachments.length === 3) {
           if (index === 2) {
-            postText += /*html*/ `<div data-media-type="${media.type}" class="position-relative text-center col-sm-12 col-md-12 col-lg-12">`;
+            postText += /*html*/ `<div data-media-type="${escapeText(media.type)}" class="position-relative text-center col-sm-12 col-md-12 col-lg-12">`;
           } else {
-            postText += /*html*/ `<div data-media-type="${media.type}" class="position-relative text-center col-sm-12 col-md-6 col-lg-6">`;
+            postText += /*html*/ `<div data-media-type="${escapeText(media.type)}" class="position-relative text-center col-sm-12 col-md-6 col-lg-6">`;
           }
         } else if (
           post.post_data.media_attachments.length > 1 &&
           post.post_data.media_attachments.length < 5
         ) {
-          postText += /*html*/ `<div data-media-type="${media.type}" class="position-relative text-center col-sm-12 col-md-6 col-lg-6">`;
+          postText += /*html*/ `<div data-media-type="${escapeText(media.type)}" class="position-relative text-center col-sm-12 col-md-6 col-lg-6">`;
         } else {
-          postText += /*html*/ `<div data-media-type="${media.type}" class="position-relative text-center col-sm-12 col-md-3 col-lg-3">`;
+          postText += /*html*/ `<div data-media-type="${escapeText(media.type)}" class="position-relative text-center col-sm-12 col-md-3 col-lg-3">`;
         }
 
         const altText = escapeText(media.alt_text || media.description || "");
