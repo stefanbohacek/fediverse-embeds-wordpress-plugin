@@ -60,6 +60,10 @@ class Embed_Posts
                         continue;
                     }
 
+                    if (!preg_match('/^[a-zA-Z0-9_-]+$/', $post_id)) {
+                        continue;
+                    }
+
                     // Helpers::log_this("debug:post", array(
                     //     "url" => $url,
                     //     "protocol" => $protocol,
