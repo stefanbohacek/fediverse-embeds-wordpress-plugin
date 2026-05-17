@@ -134,7 +134,7 @@ class Media_Proxy
                     "image/vnd.microsoft.icon",
                     "image/jpeg",
                     "image/png",
-                    "image/svg+xml",
+
                     "image/tiff",
                     "image/webp",
                     "video/x-msvideo",

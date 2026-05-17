@@ -111,6 +111,12 @@ class Embed_Posts
                         //     "post_data" => $post_data,
                         // ));
 
+                        $post_content         = wp_kses_post( $post_content ?: '' );
+                        $account_display_name = esc_html( $account_display_name ?: '' );
+                        $account_username     = esc_html( $account_username ?: '' );
+                        $post_url             = esc_url( $post_url ?: '' );
+                        $post_date            = esc_html( $post_date ?: '' );
+
                         $iframe_html = "";
 
                         if (($post_content || !empty($post_data["media_attachments"])) && $account_display_name && $account_username && $post_url && $post_date) {

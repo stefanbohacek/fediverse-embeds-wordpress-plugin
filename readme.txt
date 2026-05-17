@@ -26,6 +26,9 @@ When making requests to a third party server in general, the server will receive
 
 == Changelog ==
 
+= 1.5.10 =
+* Improved security of embedded post rendering and the media proxy.
+
 = 1.5.9 =
 * Added support for additional media hosting providers.
 

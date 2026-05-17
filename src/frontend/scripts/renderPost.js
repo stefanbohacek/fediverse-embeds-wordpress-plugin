@@ -1,3 +1,5 @@
+import { sanitizeHTML } from "./sanitizeHTML.js";
+
 const renderPost = (post, container) => {
   // console.log(post);
   if (!container) {
@@ -81,7 +83,7 @@ const renderPost = (post, container) => {
       postHasLabels = true;
     }
 
-    let postText = post.post_data.content,
+    let postText = sanitizeHTML(post.post_data.content),
       postUrl = post.post_data.url,
       entities = null;
 
@@ -353,7 +355,7 @@ const renderPost = (post, container) => {
       }
 
       if (post.post_data.card.html) {
-        postText += /*html*/ `<div class="ratio ratio-16x9">${post.post_data.card.html}</div>`;
+        postText += /*html*/ `<div class="ratio ratio-16x9">${sanitizeHTML(post.post_data.card.html, true)}</div>`;
       } else if (post.post_data.card.image) {
         postText += /*html*/ `
         <div class="card mb-4">

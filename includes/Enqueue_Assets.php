@@ -30,10 +30,16 @@ class Enqueue_Assets
             $js_url = $plugin_dir_url . '../dist/js/scripts.js';
             $js_path = $plugin_dir_path . '../dist/js/scripts.js';
 
+            $dompurify_url  = $plugin_dir_url  . '../libs/DOMPurify/purify.min.js';
+            $dompurify_path = $plugin_dir_path . '../libs/DOMPurify/purify.min.js';
+            wp_register_script('dompurify', $dompurify_url, array(), filemtime($dompurify_path), array(
+                'in_footer' => true,
+            ));
+
             $plugin_data = get_file_data(__DIR__ . '/../index.php', array('Version' => 'Version'), false);
             $plugin_version = $plugin_data['Version'];
 
-            wp_register_script('ftf-fediverse-embeds-frontend-js', $js_url, array(), filemtime($js_path), array(
+            wp_register_script('ftf-fediverse-embeds-frontend-js', $js_url, array('dompurify'), filemtime($js_path), array(
                 'strategy'  => 'defer',
                 'in_footer' => true
             ));
