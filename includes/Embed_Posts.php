@@ -79,6 +79,7 @@ class Embed_Posts
                     $instance_html  = esc_html( $instance );
                     $post_id_attr   = esc_attr( $post_id );
                     $username_html  = esc_html( $username );
+                    $theme_data_attribute = "";
 
                     try {
                         $post_content = false;
