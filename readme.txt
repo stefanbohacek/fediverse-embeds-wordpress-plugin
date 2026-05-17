@@ -27,7 +27,10 @@ When making requests to a third party server in general, the server will receive
 == Changelog ==
 
 = 1.6.0 =
-* Added Manage Posts page for managing fediverse posts and downloaded media files.
+* Added tools for managing posts.
+* Added advanced settings for managing allowed domains for loading media files.
+* Added lazy loading when more than four posts are embedded on a page or in a post.
+* Security and performance improvements.
 
 = 1.5.15 =
 * Fixed a compatibility issue with the database migration.
