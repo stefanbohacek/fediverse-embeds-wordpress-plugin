@@ -504,15 +504,23 @@ class Post_Manager
 
             <h2>Media Files</h2>
             <?php
-            $media_dir      = dirname(plugin_dir_path(__FILE__)) . "/media";
+            $media_dir = dirname(plugin_dir_path(__FILE__)) . "/media";
             $media_dir_size = Helpers::get_directory_size($media_dir);
-            $media_files    = array_filter(
+            $media_files = array_filter(
                 glob(trailingslashit($media_dir) . "*") ?: [],
                 function ($f) { return is_file($f) && basename($f) !== ".htaccess"; }
             );
+
+            $media_file_count = count($media_files);
+            
+            if ($media_file_count === 0) {
+                $media_summary = "There are no downloaded media files.";
+            } else {
+                $media_summary = "Downloaded media files: " . number_format($media_file_count) . " file" . ($media_file_count !== 1 ? "s" : "") . ", " . $media_dir_size;
+            }
             ?>
             <p>
-                Size of downloaded media files: <?php echo esc_html($media_dir_size); ?><br>
+                <?php echo esc_html($media_summary); ?><br>
                 <small>This information is cached for up to 5 minutes to improve performance.</small>
             </p>
             <?php if (!empty($media_files)): ?>
