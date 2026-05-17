@@ -257,7 +257,7 @@ class Embed_Posts
                                     );
                                 }
                             } else {
-                                if ($live_post_data["id"] && $live_post_data["created_at"]) {
+                                if (!empty($live_post_data["id"]) && !empty($live_post_data["created_at"])) {
                                     $response = array(
                                         "instance" => $post["instance"],
                                         "post_id" => $post["post_id"],
