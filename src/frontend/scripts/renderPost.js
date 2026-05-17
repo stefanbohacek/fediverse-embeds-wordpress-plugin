@@ -27,6 +27,10 @@ const renderPost = (post, container) => {
   let renderedPost = document.createElement("blockquote");
   let renderedPostHTML = "";
 
+  if (!post.post_data.account) {
+    post.post_data.account = {};
+  }
+
   if (post.post_data.account.bot) {
     accountIsBot = true;
     postHasLabels = true;
