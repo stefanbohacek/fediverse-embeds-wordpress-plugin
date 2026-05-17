@@ -11,7 +11,6 @@ class Settings
         add_action('admin_menu', array($this, 'add_advanced_submenu'), 30);
         add_action('admin_post_ftf_reset_allowlists', array($this, 'reset_allowlists'));
         add_filter('plugin_action_links_fediverse-embeds/index.php', array($this, 'settings_page_link'));
-        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'settings_page_link'));
     }
 
     function add_menu()
