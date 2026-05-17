@@ -351,7 +351,7 @@ class Post_Manager
         $table->prepare_items();
         ?>
         <div class="wrap">
-            <h1>Fediverse Embeds &mdash; Manage Posts</h1>
+            <h1>Fediverse Embeds &rsaquo; Manage Posts</h1>
 
             <?php if ($deleted): ?>
             <div class="notice notice-success is-dismissible">

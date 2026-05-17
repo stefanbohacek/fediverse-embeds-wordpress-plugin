@@ -19,9 +19,18 @@ class Settings
             'Fediverse Embeds',
             'manage_options',
             'ftf-fediverse-embeds',
-            array($this, 'render_settings_page'),
+            array($this, 'render_about_page'),
             'dashicons-excerpt-view',
             80
+        );
+
+        add_submenu_page(
+            'ftf-fediverse-embeds',
+            'About',
+            'About',
+            'manage_options',
+            'ftf-fediverse-embeds',
+            array($this, 'render_about_page')
         );
 
         add_submenu_page(
@@ -29,7 +38,7 @@ class Settings
             'Settings',
             'Settings',
             'manage_options',
-            'ftf-fediverse-embeds',
+            'ftf-fediverse-embeds-settings',
             array($this, 'render_settings_page')
         );
     }
@@ -54,10 +63,51 @@ class Settings
         );
     }
 
+    function render_about_page()
+    { ?>
+        <div class="wrap">
+            <h1>Fediverse Embeds &rsaquo; About the Plugin</h1>
+
+            <p>
+                This plugin lets you embed fediverse posts on your WordPress site while improving your site's performance and your visitors' experience.
+            </p>
+            <p>
+                The plugin will work automatically with the default embed code from fediverse platforms that provide it, which can be added as an <a href="https://wordpress.com/support/wordpress-editor/blocks/custom-html-block/" target="_blank">HTML block</a>.
+            </p>
+            <p>
+                Here's an example for Mastodon. (Click the images to zoom in.)
+            </p>
+
+            <table style="width:840px" class="form-table" role="presentation">
+                <tbody>
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <a alt="A screenshot of a Mastodon post showing how to access the embed code." href="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png" target="_blank">
+                                <img style="max-width: 100%" src="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png">
+                            </a>
+                        </td>
+                        <td style="vertical-align: top;">
+                            <a alt="A screenshot of a custom HTML WordPress block containing the embed code." href="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png" target="_blank">
+                                <img style="max-width: 100%" src="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Please <a href="https://stefanbohacek.com/contact/">visit my contact page</a> if you have any questions or suggestions.</p>
+
+            <p>
+                <a class="button button-primary" href="https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/" target="_blank">Learn more</a>
+                <a class="button" href="https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin" target="_blank">View source</a>
+            </p>
+        </div>
+    <?php }
+
     function render_settings_page()
     { ?>
         <div class="wrap">
-            <h1>Fediverse Embeds</h1>
+            <h1>Fediverse Embeds &rsaquo; Settings</h1>
 
             <form action='options.php' method='post'>
                 <?php
@@ -71,7 +121,6 @@ class Settings
 
     function render_settings_form()
     {
-        /* Customization */
         $theme = get_option('ftf_fediverse_embeds_theme');
         $archival_mode = get_option('ftf_fediverse_embeds_archival_mode');
         $include_bootstrap_styles = get_option('ftf_fediverse_embeds_include_bootstrap_styles', 'on');
@@ -87,43 +136,6 @@ class Settings
         }
     ?>
 
-        <h3 id="about">About the plugin</h3>
-        <p>
-            Directly embed fediverse posts on your WordPress site to improve the vistors' experience.
-        </p>
-        <p>
-            The plugin will work automatically with the default embed code from fediverse platforms that provide it, which can be added as an <a href="https://wordpress.com/support/wordpress-editor/blocks/custom-html-block/" target="_blank">HTML block</a>.
-        </p>
-        <p>
-            Here's an example for Mastodon. (Click the images to zoom in.)
-        </p>
-
-
-        <table style="width:840px" class="form-table" role="presentation">
-            <tbody>
-                <tr>
-                    <td style="vertical-align: top;">
-                        <a alt="A screenshot of a Mastodon post showing how to access the embed code." href="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png" target="_blank">
-                            <img style="max-width: 100%" src="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/mastodon-embed.png">
-                        </a>
-
-                    </td>
-                    <td style="vertical-align: top;">
-                        <a alt="A screenshot of a custom HTML WordPress block containing the embed code." href="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png" target="_blank">
-                            <img style="max-width: 100%" src="<?php echo esc_url(plugin_dir_url(__FILE__)); ?>../images/instructions/add-html-iframe.png">
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p>Please <a href="https://stefanbohacek.com/contact/">visit my contact page</a> if you have any questions or suggestions.</p>
-
-        <p>
-            <a class="button" href="https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/" target="_blank">Learn more</a>
-            <a class="button" href="https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin" target="_blank">View source</a>
-        </p>
-        <h3 id="settings-customization">Customization</h3>
         <table class="form-table" role="presentation">
             <tbody>
                 <tr>
@@ -200,7 +212,7 @@ class Settings
                 </tr>
                 <tr>
                     <th scope="row">
-                        <label for="ftf-fediverse-embeds-show-metrics">Deleted posts</label>
+                        <label for="ftf-fediverse-embeds-deleted-posts">Deleted posts</label>
                     </th>
                     <td>
                         <select name="ftf_fediverse_embeds_deleted_posts" id="ftf-fediverse-embeds-deleted-posts">
@@ -240,7 +252,7 @@ class Settings
                         ><?php echo esc_html($custom_styles); ?></textarea>
                         <p class="description">
                             Add additional CSS styles. <a href="https://jigsaw.w3.org/css-validator/#validate_by_input" target="_blank">Use the CSS validator</a> to make sure your CSS is valid.
-                        </p>                        
+                        </p>
                     </td>
                 </tr>
 -->
@@ -264,7 +276,7 @@ class Settings
     {
         $url = esc_url(add_query_arg(
             'page',
-            'ftf-fediverse-embeds',
+            'ftf-fediverse-embeds-settings',
             get_admin_url() . 'admin.php'
         ));
         $settings_link = "<a href='$url'>" . __('Settings') . '</a>';
