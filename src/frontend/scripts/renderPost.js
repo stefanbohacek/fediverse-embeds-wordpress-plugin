@@ -376,7 +376,7 @@ const renderPost = (post, container) => {
           <div class="card-footer pb-3 pt-0">
             <small class="text-muted">
               ${escapeText(cardSource || "")}
-            </div>
+            </small></div>
         </div>
         `;
       } else {
@@ -393,7 +393,7 @@ const renderPost = (post, container) => {
           <div class="card-footer pb-3 pt-0">
             <small class="text-muted">
               ${escapeText(cardSource || "")}
-            </div>
+            </small></div>
         </div>
         `;
       }
