@@ -67,12 +67,12 @@ class Media_Proxy
         }
 
         if ($this->archival_mode && file_exists($file_path)) {
-            $image_info = getimagesize($file_path);
-            if ($image_info === false) {
+            $cached_mime = mime_content_type($file_path);
+            if ($cached_mime === false) {
                 status_header(500);
                 exit();
             }
-            header("Content-type: {$image_info['mime']}");
+            header("Content-Type: " . $cached_mime);
             echo file_get_contents($file_path);
         } else {
             if (!empty($url)) {
