@@ -2,7 +2,9 @@
 
 namespace FTF_Fediverse_Embeds;
 // require_once __DIR__ . "/../vendor/autoload.php";
-require_once(ABSPATH . "wp-admin/includes/plugin.php");
+if (!function_exists("is_plugin_active")) {
+    require_once(ABSPATH . "wp-admin/includes/plugin.php");
+}
 if (!class_exists("simple_html_dom_node")) {
     require_once __DIR__ . "/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php";
 }
@@ -363,7 +365,7 @@ class Embed_Posts
     function get_post_ajax($post)
     {
         if (array_key_exists("post", $_POST)) {
-            $allow_public_api_access = defined("FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS") ? FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS : false;
+            $allow_public_api_access = defined("FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS") ? \FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS : false;
 
             $response = array();
             $post = sanitize_text_field($_POST["post"]);
