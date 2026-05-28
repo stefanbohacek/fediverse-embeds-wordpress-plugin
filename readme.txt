@@ -2,7 +2,7 @@
 Contributors: fourtonfish
 Tags: fediverse, mastodon, post, toot, embed
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 7.0
 Stable tag: trunk
 Requires PHP: 7.4
 License: MIT
