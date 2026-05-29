@@ -72,7 +72,7 @@ class Settings
 
         add_settings_section(
             'ftf_fediverse_embeds_settings',
-            __('', 'wordpress'),
+            '',
             array($this, 'render_settings_form'),
             'ftf_fediverse_embeds'
         );
@@ -82,7 +82,7 @@ class Settings
 
         add_settings_section(
             'ftf_fediverse_embeds_advanced_settings',
-            __('', 'wordpress'),
+            '',
             array($this, 'render_advanced_form'),
             'ftf_fediverse_embeds_advanced'
         );
@@ -406,7 +406,7 @@ class Settings
     {
         check_admin_referer('ftf_reset_allowlists');
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to perform this action.'));
+            wp_die(__('You do not have permission to perform this action.', 'fediverse-embeds'));
         }
         delete_option('ftf_fediverse_embeds_allowed_domains');
         delete_option('ftf_fediverse_embeds_allowed_suffixes');
@@ -424,7 +424,7 @@ class Settings
             'ftf-fediverse-embeds-settings',
             get_admin_url() . 'admin.php'
         ));
-        $settings_link = "<a href='$url'>" . __('Settings') . '</a>';
+        $settings_link = "<a href='$url'>" . __('Settings', 'fediverse-embeds') . '</a>';
         array_push(
             $links,
             $settings_link
