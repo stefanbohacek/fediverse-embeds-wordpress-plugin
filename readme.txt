@@ -1,7 +1,7 @@
 === Fediverse Embeds ===
 Contributors: fourtonfish
 Tags: fediverse, mastodon, post, toot, embed
-Requires at least: 5.0
+Requires at least: 5.9
 Tested up to: 7.0
 Stable tag: 1.6.4
 Requires PHP: 7.4
