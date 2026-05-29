@@ -5,6 +5,8 @@
  * Description: Embed posts from the fediverse.
  * Version: 1.6.4
  * Author: stefanbohacek
+ * License: GPL-3.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: ftf_fediverse_embeds
  *
  * @package ftf-fediverse-embeds
