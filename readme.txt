@@ -24,6 +24,19 @@ When embedding a post from a fediverse server, the content of the post needs to 
 
 When making requests to a third party server in general, the server will receive and may record the IP address of the server hosting your website. Please consult the privacy details and terms of use of each server you are embedding content from. (Example for mastodon.social: [About Mastodon](https://mastodon.social/privacy-policy), [Privacy policy](https://mastodon.social/privacy-policy))
 
+== Development ==
+
+The complete source code for this plugin, including unminified JavaScript and SCSS files, is publicly available on GitHub:
+
+https://github.com/stefanbohacek/fediverse-embeds-wordpress-plugin
+
+To build the plugin from source you will need Node.js (v18+) and npm. Run the following commands from the plugin root:
+
+1. npm install
+2. npm run dev
+
+The build process uses Gulp with Browserify and Babel to bundle and minify the JavaScript files located in the src directory, and compiles SCSS to CSS. The compiled output is placed in the dist directory.
+
 == Changelog ==
 
 = 1.6.4 =
