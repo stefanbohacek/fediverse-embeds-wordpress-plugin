@@ -40,7 +40,7 @@ The build process uses Gulp with Browserify and Babel to bundle and minify the J
 == Changelog ==
 
 = 1.6.4 =
-* Code cleanup and minor fixes related to internationalization and media cache
+* Code cleanup and minor fixes related to internationalization and media cache.
 * Updated minimum WordPress version.
 * Updated license.
 

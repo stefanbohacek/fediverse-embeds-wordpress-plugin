@@ -276,6 +276,8 @@ class Embed_Posts
                                     );
                                 }
                             }
+                        } else {
+                            $response = $saved_post_data;
                         }
                     } else {
                         $response = $saved_post_data;
