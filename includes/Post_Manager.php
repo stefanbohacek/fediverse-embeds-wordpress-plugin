@@ -287,7 +287,7 @@ class Post_Manager
 
     protected function clear_media_directory()
     {
-        $media_dir = dirname(plugin_dir_path(__FILE__)) . "/media";
+        $media_dir = wp_upload_dir()['basedir'] . '/fediverse-embeds/media';
 
         if (!is_dir($media_dir)) {
             return;
@@ -505,7 +505,7 @@ class Post_Manager
 
             <h2>Media Files</h2>
             <?php
-            $media_dir = dirname(plugin_dir_path(__FILE__)) . "/media";
+            $media_dir = wp_upload_dir()['basedir'] . '/fediverse-embeds/media';
             $media_dir_size = Helpers::get_directory_size($media_dir);
             $media_files = array_filter(
                 glob(trailingslashit($media_dir) . "*") ?: [],

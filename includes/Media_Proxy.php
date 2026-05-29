@@ -40,7 +40,8 @@ class Media_Proxy
                 status_header(400);
                 exit();
             }
-            $dir = plugin_dir_path(__FILE__) . "../$folder_name";
+            $upload_dir = wp_upload_dir();
+            $dir = $upload_dir['basedir'] . '/fediverse-embeds/' . $folder_name;
             $file_name = basename(parse_url($url, PHP_URL_PATH));
             $raw_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
             $allowed_extensions = ["jpg", "jpeg", "png", "gif", "webp", "avif", "bmp", "ico", "tiff", "mp4", "webm", "ogg", "mpeg", "avi", "mp2t", "3gp", "aac", "mp3", "wav", "midi"];
