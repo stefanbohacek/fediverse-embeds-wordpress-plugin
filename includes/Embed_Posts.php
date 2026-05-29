@@ -142,15 +142,19 @@ class Embed_Posts
                                 $theme_data_attribute = 'data-bs-theme="' . esc_attr( $theme ) . '"';
                             }
 
-                            $iframe_html = <<<HTML
-                            <blockquote $theme_data_attribute data-instance="$instance_attr" data-post-id="$post_id_attr" class="ftf-fediverse-post-embed">
-                                $post_content
-                                <p class="ftf-fediverse-post-embed-author">
-                                    &mdash; $account_display_name (@$account_username@$instance_html)
-                                    <a class="ftf-fediverse-post-embed-link" href="$post_url">$post_date</a>
-                                </p>
-                            </blockquote>
-                        HTML;
+                            $iframe_html  = '<blockquote';
+                            if ($theme_data_attribute) {
+                                $iframe_html .= ' ' . $theme_data_attribute;
+                            }
+                            $iframe_html .= ' data-instance="' . $instance_attr . '"';
+                            $iframe_html .= ' data-post-id="' . $post_id_attr . '"';
+                            $iframe_html .= ' class="ftf-fediverse-post-embed">';
+                            $iframe_html .= $post_content;
+                            $iframe_html .= '<p class="ftf-fediverse-post-embed-author">';
+                            $iframe_html .= '&mdash; ' . $account_display_name . ' (@' . $account_username . '@' . $instance_html . ')';
+                            $iframe_html .= '<a class="ftf-fediverse-post-embed-link" href="' . $post_url . '">' . $post_date . '</a>';
+                            $iframe_html .= '</p>';
+                            $iframe_html .= '</blockquote>';
                         }
                         $iframe->outertext = $iframe_html;
                     } catch (\Exception $e) {
