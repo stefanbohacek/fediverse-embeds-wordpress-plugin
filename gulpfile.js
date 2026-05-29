@@ -51,7 +51,7 @@ gulp.task('scripts', function() {
 gulp.task('jslint', function(){
   return gulp.src([
       './src/scripts/**/*.js'
-    ]).pipe(jshint('tests/.jshintrc'))
+    ]).pipe(jshint('.jshintrc'))
     .on('error',gutil.noop)
     .pipe(jshint.reporter(stylish))
     .on('error', swallow_error);
