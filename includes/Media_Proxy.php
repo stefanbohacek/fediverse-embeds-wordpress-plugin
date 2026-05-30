@@ -35,13 +35,13 @@ class Media_Proxy
         $folder_name = "media";
 
         if ($this->archival_mode) {
-            $url = base64_decode(str_replace(' ', '+', $url), true);
+            $url = base64_decode(str_replace(" ", "+", $url), true);
             if ($url === false) {
                 status_header(400);
                 exit();
             }
             $upload_dir = wp_upload_dir();
-            $dir = $upload_dir['basedir'] . '/fediverse-embeds/' . $folder_name;
+            $dir = $upload_dir["basedir"] . "/fediverse-embeds/" . $folder_name;
             $file_name = basename(parse_url($url, PHP_URL_PATH));
             $raw_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
             $allowed_extensions = ["jpg", "jpeg", "png", "gif", "webp", "avif", "bmp", "ico", "tiff", "mp4", "webm", "ogg", "mpeg", "avi", "mp2t", "3gp", "aac", "mp3", "wav", "midi"];
@@ -89,13 +89,11 @@ class Media_Proxy
                 $saved_domains = get_option("ftf_fediverse_embeds_allowed_domains");
                 $saved_suffixes = get_option("ftf_fediverse_embeds_allowed_suffixes");
 
-                // false = option never saved or was reset → fall back to hardcoded defaults.
-                // "" = explicitly cleared by admin → use empty list.
                 $allowed_domains = ($saved_domains === false)
                     ? $default_allowed_domains
                     : array_values(array_filter(array_map(function ($entry) {
                         $entry = trim($entry);
-                        $entry = preg_replace('#^https?://#i', '', $entry);
+                        $entry = preg_replace("#^https?://#i", "", $entry);
                         $entry = explode("/", $entry)[0];
                         return strtolower($entry);
                     }, explode("\n", $saved_domains))));
@@ -123,7 +121,7 @@ class Media_Proxy
 
                 if (!$can_download_media) {
                     // Converting e.g. files.domain.social to domain.social, only strip one leading prefix.
-                    $stripped_domain = preg_replace('/^(cdn|files|media|pool|s3)\./i', '', $domain);
+                    $stripped_domain = preg_replace("/^(cdn|files|media|pool|s3)\./i", "", $domain);
 
                     if ($stripped_domain !== $domain && Helpers::is_safe_host($stripped_domain)) {
                         $remote_response = wp_remote_get("https://$stripped_domain/.well-known/nodeinfo", array(
@@ -212,7 +210,7 @@ class Media_Proxy
 
     private function log_blocked_domain($domain)
     {
-        $blocked = get_option('ftf_fediverse_embeds_blocked_domains', array());
+        $blocked = get_option("ftf_fediverse_embeds_blocked_domains", array());
 
         if (!is_array($blocked)) {
             $blocked = array();
@@ -220,8 +218,8 @@ class Media_Proxy
 
         $found = false;
         foreach ($blocked as &$entry) {
-            if ($entry['domain'] === $domain) {
-                $entry['last_seen'] = time();
+            if ($entry["domain"] === $domain) {
+                $entry["last_seen"] = time();
                 $found = true;
                 break;
             }
@@ -229,17 +227,17 @@ class Media_Proxy
         unset($entry);
 
         if (!$found) {
-            $blocked[] = array('domain' => $domain, 'last_seen' => time());
+            $blocked[] = array("domain" => $domain, "last_seen" => time());
         }
 
         usort($blocked, function ($a, $b) {
-            return $b['last_seen'] - $a['last_seen'];
+            return $b["last_seen"] - $a["last_seen"];
         });
 
         if (count($blocked) > 50) {
             $blocked = array_slice($blocked, 0, 50);
         }
 
-        update_option('ftf_fediverse_embeds_blocked_domains', $blocked);
+        update_option("ftf_fediverse_embeds_blocked_domains", $blocked);
     }
 }

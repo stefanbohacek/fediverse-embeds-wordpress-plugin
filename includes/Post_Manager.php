@@ -26,7 +26,7 @@ class FTF_Posts_List_Table extends \WP_List_Table
     function get_columns()
     {
         return [
-            "cb"           => '<input type="checkbox">',
+            "cb"           => "<input type='checkbox'>",
             "account"      => "Account",
             "content"      => "Content",
             "last_updated" => "Last Synced",
@@ -53,7 +53,7 @@ class FTF_Posts_List_Table extends \WP_List_Table
 
     function column_cb($item)
     {
-        return '<input type="checkbox" name="posts[]" value="' . esc_attr($item["instance"] . "|" . $item["post_id"]) . '">';
+        return "<input type='checkbox' name='posts[]' value='" . esc_attr($item["instance"] . "|" . $item["post_id"]) . "'>";
     }
 
     function column_account($item)
@@ -68,15 +68,15 @@ class FTF_Posts_List_Table extends \WP_List_Table
             return "&mdash;";
         }
 
-        $html  = '<a href="' . esc_url($account_url) . '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;">';
+        $html  = "<a href='" . esc_url($account_url) . "' target='_blank' rel='noopener noreferrer' style='display:inline-flex;align-items:center;gap:6px;'>";
         if ($avatar_url) {
-            $proxy_url    = get_site_url() . '/wp-json/ftf/media-proxy?url=' . base64_encode($avatar_url);
-            $fallback_url = esc_url(plugin_dir_url(__FILE__) . '../images/images/blank.png');
-            $html .= '<img src="' . esc_url($proxy_url) . '" width="32" height="32" style="border-radius:50%;flex-shrink:0;" onerror="this.onerror=null;this.src=\'' . $fallback_url . '\'">';
+            $proxy_url    = get_site_url() . "/wp-json/ftf/media-proxy?url=" . base64_encode($avatar_url);
+            $fallback_url = esc_url(plugin_dir_url(__FILE__) . "../images/images/blank.png");
+            $html .= "<img src='" . esc_url($proxy_url) . "' width='32' height='32' style='border-radius:50%;flex-shrink:0;' onerror='this.onerror=null;this.src=\"" . $fallback_url . "\"'>";
         }
         $html .= esc_html($account_name ?: $account_handle);
-        $html .= '</a>';
-        $html .= '<br><small>@' . esc_html($account_handle . "@" . $item["instance"]) . '</small>';
+        $html .= "</a>";
+        $html .= "<br><small>@" . esc_html($account_handle . "@" . $item["instance"]) . "</small>";
         return $html;
     }
 
@@ -91,14 +91,14 @@ class FTF_Posts_List_Table extends \WP_List_Table
 
         $html = "";
         if ($has_more) {
-            $html .= '<details>';
-            $html .= '<summary style="cursor:pointer"><em>' . esc_html($excerpt) . '</em></summary>';
-            $html .= '<div style="margin-top:6px">' . wp_kses_post($content_html) . '</div>';
-            $html .= '</details>';
+            $html .= "<details>";
+            $html .= "<summary style='cursor:pointer'><em>" . esc_html($excerpt) . "</em></summary>";
+            $html .= "<div style='margin-top:6px'>" . wp_kses_post($content_html) . "</div>";
+            $html .= "</details>";
         } else {
             $html .= esc_html($content_text ?: "—");
         }
-        $html .= '<br><small><a href="' . esc_url($post_url) . '" target="_blank" rel="noopener noreferrer">View post</a></small>';
+        $html .= "<br><small><a href='" . esc_url($post_url) . "' target='_blank' rel='noopener noreferrer'>View post</a></small>";
         return $html;
     }
 
@@ -130,8 +130,8 @@ class FTF_Posts_List_Table extends \WP_List_Table
         $refresh_url = wp_nonce_url(add_query_arg($refresh_args, admin_url("admin.php")), "ftf_refresh_post");
         $delete_url  = wp_nonce_url(add_query_arg($delete_args, admin_url("admin.php")), "ftf_delete_post");
 
-        $html  = '<a href="' . esc_url($refresh_url) . '" class="button button-small">Refresh</a>';
-        $html .= '<a href="' . esc_url($delete_url) . '" class="button-link-delete" style="margin-left:6px" onclick="return confirm(\'' . esc_js("Remove this post from the database?") . '\')">Delete</a>';
+        $html  = "<a href='" . esc_url($refresh_url) . "' class='button button-small'>Refresh</a>";
+        $html .= "<a href='" . esc_url($delete_url) . "' class='button-link-delete' style='margin-left:6px' onclick=\"return confirm('" . esc_js("Remove this post from the database?") . "')\">Delete</a>";
         return $html;
     }
 
@@ -307,7 +307,7 @@ class Post_Manager
 
     protected function clear_media_directory()
     {
-        $media_dir = wp_upload_dir()['basedir'] . '/fediverse-embeds/media';
+        $media_dir = wp_upload_dir()["basedir"] . "/fediverse-embeds/media";
 
         if (!is_dir($media_dir)) {
             return;
@@ -370,60 +370,60 @@ class Post_Manager
 
         $table = new FTF_Posts_List_Table($this->db);
         $table->prepare_items();
-        ?>
+?>
         <div class="wrap">
             <h1>Fediverse Embeds &rsaquo; Manage Posts</h1>
 
-            <?php if ($deleted): ?>
-            <div class="notice notice-success is-dismissible">
-                <p><?php echo esc_html($deleted === 1 ? "1 post removed." : "$deleted posts removed."); ?></p>
-            </div>
-            <?php endif; ?>
+            <?php if ($deleted) { ?>
+                <div class="notice notice-success is-dismissible">
+                    <p><?php echo esc_html($deleted === 1 ? "1 post removed." : "$deleted posts removed."); ?></p>
+                </div>
+            <?php } ?>
 
-            <?php if ($refreshed): ?>
-            <div class="notice notice-success is-dismissible">
-                <p>Post data refreshed.</p>
-            </div>
-            <?php endif; ?>
+            <?php if ($refreshed) { ?>
+                <div class="notice notice-success is-dismissible">
+                    <p>Post data refreshed.</p>
+                </div>
+            <?php } ?>
 
-            <?php if ($hard_deleted): ?>
-            <div class="notice notice-success is-dismissible">
-                <p>Post permanently deleted.</p>
-            </div>
-            <?php endif; ?>
+            <?php if ($hard_deleted) { ?>
+                <div class="notice notice-success is-dismissible">
+                    <p>Post permanently deleted.</p>
+                </div>
+            <?php } ?>
 
-            <?php if ($hard_deleted_all): ?>
-            <div class="notice notice-success is-dismissible">
-                <p>All removed posts permanently deleted.</p>
-            </div>
-            <?php endif; ?>
+            <?php if ($hard_deleted_all) { ?>
+                <div class="notice notice-success is-dismissible">
+                    <p>All removed posts permanently deleted.</p>
+                </div>
+            <?php } ?>
 
-            <?php if ($restored): ?>
-            <div class="notice notice-success is-dismissible">
-                <p>Post restored.</p>
-            </div>
-            <?php endif; ?>
+            <?php if ($restored) { ?>
+                <div class="notice notice-success is-dismissible">
+                    <p>Post restored.</p>
+                </div>
+            <?php } ?>
 
-            <?php if ($media_cleared): ?>
-            <div class="notice notice-success is-dismissible">
-                <p>Downloaded media files cleared.</p>
-            </div>
-            <?php endif; ?>
+            <?php if ($media_cleared) { ?>
+                <div class="notice notice-success is-dismissible">
+                    <p>Downloaded media files cleared.</p>
+                </div>
+            <?php } ?>
 
             <form method="get">
                 <input type="hidden" name="page" value="ftf-fediverse-embeds-posts">
                 <select name="instance_filter">
                     <option value="">All instances</option>
-                    <?php foreach ($instances as $inst): ?>
-                    <option value="<?php echo esc_attr($inst); ?>" <?php selected($instance_filter, $inst); ?>>
-                        <?php echo esc_html($inst); ?>
-                    </option>
-                    <?php endforeach; ?>
+                    <?php foreach ($instances as $inst) { ?>
+                        <option value="<?php echo esc_attr($inst); ?>" <?php selected($instance_filter, $inst); ?>>
+                            <?php echo esc_html($inst); ?>
+                        </option>
+                    <?php } ?>
                 </select>
                 <?php submit_button("Filter", "secondary", "submit", false); ?>
-                <?php if ($instance_filter): ?>
-                <a class="button" href="<?php echo esc_url(admin_url("admin.php?page=ftf-fediverse-embeds-posts")); ?>">Clear</a>
-                <?php endif; ?>
+                <?php if ($instance_filter) { ?>
+                    <a class="button" href="<?php echo esc_url(admin_url("admin.php?page=ftf-fediverse-embeds-posts")); ?>">Clear</a>
+                <?php } ?>
             </form>
 
             <form method="post">
@@ -431,102 +431,103 @@ class Post_Manager
                 <?php $table->display(); ?>
             </form>
 
-            <?php if (!empty($removed_posts)): ?>
-            <h2>Removed Posts</h2>
-            <p>These posts have been deleted and will not be re-fetched. If you have also removed them from any pages and articles, you can delete this information to free up some space.</p>
+            <?php if (!empty($removed_posts)) { ?>
+                <h2>Removed Posts</h2>
+                <p>These posts have been deleted and will not be re-fetched. If you have also removed them from any pages and articles, you can delete this information to free up some space.</p>
 
-            <table class="wp-list-table widefat fixed striped">
-                <thead>
-                    <tr>
-                        <th>Account</th>
-                        <th>Content</th>
-                        <th>Last Synced</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($removed_posts as $post):
-                        $post_data      = json_decode($post["post_data"], true);
-                        $post_url       = $post_data["url"] ?? ("https://" . $post["instance"]);
-                        $account_url    = $post_data["account"]["url"] ?? ("https://" . $post["instance"]);
-                        $account_name   = $post_data["account"]["display_name"] ?? $post_data["account"]["username"] ?? "";
-                        $account_handle = $post_data["account"]["username"] ?? "";
-                        $avatar_url     = $post_data["account"]["avatar"] ?? "";
-                        $last_updated   = date_i18n(get_option("date_format") . " " . get_option("time_format"), $post["last_updated"]);
-                        $content_html   = $post_data["content"] ?? "";
-                        $content_text   = wp_strip_all_tags($content_html);
-                        $excerpt        = mb_strimwidth($content_text, 0, 120, "...");
-                        $has_more       = mb_strlen($content_text) > 120;
+                <table class="wp-list-table widefat fixed striped">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Content</th>
+                            <th>Last Synced</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($removed_posts as $post) {
+                            $post_data      = json_decode($post["post_data"], true);
+                            $post_url       = $post_data["url"] ?? ("https://" . $post["instance"]);
+                            $account_url    = $post_data["account"]["url"] ?? ("https://" . $post["instance"]);
+                            $account_name   = $post_data["account"]["display_name"] ?? $post_data["account"]["username"] ?? "";
+                            $account_handle = $post_data["account"]["username"] ?? "";
+                            $avatar_url     = $post_data["account"]["avatar"] ?? "";
+                            $last_updated   = date_i18n(get_option("date_format") . " " . get_option("time_format"), $post["last_updated"]);
+                            $content_html   = $post_data["content"] ?? "";
+                            $content_text   = wp_strip_all_tags($content_html);
+                            $excerpt        = mb_strimwidth($content_text, 0, 120, "...");
+                            $has_more       = mb_strlen($content_text) > 120;
 
-                        $hard_delete_url = wp_nonce_url(
-                            add_query_arg([
-                                "page"     => "ftf-fediverse-embeds-posts",
-                                "action"   => "hard_delete",
-                                "instance" => $post["instance"],
-                                "post_id"  => $post["post_id"],
-                            ], admin_url("admin.php")),
-                            "ftf_hard_delete_post"
-                        );
+                            $hard_delete_url = wp_nonce_url(
+                                add_query_arg([
+                                    "page"     => "ftf-fediverse-embeds-posts",
+                                    "action"   => "hard_delete",
+                                    "instance" => $post["instance"],
+                                    "post_id"  => $post["post_id"],
+                                ], admin_url("admin.php")),
+                                "ftf_hard_delete_post"
+                            );
 
-                        $restore_url = wp_nonce_url(
-                            add_query_arg([
-                                "page"     => "ftf-fediverse-embeds-posts",
-                                "action"   => "restore",
-                                "instance" => $post["instance"],
-                                "post_id"  => $post["post_id"],
-                            ], admin_url("admin.php")),
-                            "ftf_restore_post"
-                        );
-                    ?>
-                    <tr style="opacity:0.65">
-                        <td>
-                            <?php if ($account_handle): ?>
-                            <a href="<?php echo esc_url($account_url); ?>" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;">
-                                <?php if ($avatar_url): ?>
-                                <?php $fallback_url = esc_url(plugin_dir_url(__FILE__) . '../images/images/blank.png'); ?>
-                                <img src="<?php echo esc_url(get_site_url() . '/wp-json/ftf/media-proxy?url=' . base64_encode($avatar_url)); ?>" width="32" height="32" style="border-radius:50%;flex-shrink:0;" onerror="this.onerror=null;this.src='<?php echo $fallback_url; ?>'">
-                                <?php endif; ?>
-                                <?php echo esc_html($account_name ?: $account_handle); ?>
-                            </a>
-                            <br><small>@<?php echo esc_html($account_handle . "@" . $post["instance"]); ?></small>
-                            <?php else: ?>
-                            &mdash;
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <?php if ($has_more): ?>
-                            <details>
-                                <summary style="cursor:pointer"><em><?php echo esc_html($excerpt); ?></em></summary>
-                                <div style="margin-top:6px"><?php echo wp_kses_post($content_html); ?></div>
-                            </details>
-                            <?php else: ?>
-                            <?php echo esc_html($content_text ?: "—"); ?>
-                            <?php endif; ?>
-                            <br><small><a href="<?php echo esc_url($post_url); ?>" target="_blank" rel="noopener noreferrer">View post</a></small>
-                        </td>
-                        <td><?php echo esc_html($last_updated); ?></td>
-                        <td>
-                            <a href="<?php echo esc_url($restore_url); ?>" class="button button-small">Restore</a>
-                            <a href="<?php echo esc_url($hard_delete_url); ?>" class="button-link-delete" style="margin-left:6px" onclick="return confirm('<?php echo esc_js("Permanently delete this post?"); ?>')">Delete permanently</a>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                            $restore_url = wp_nonce_url(
+                                add_query_arg([
+                                    "page"     => "ftf-fediverse-embeds-posts",
+                                    "action"   => "restore",
+                                    "instance" => $post["instance"],
+                                    "post_id"  => $post["post_id"],
+                                ], admin_url("admin.php")),
+                                "ftf_restore_post"
+                            );
+                        ?>
+                            <tr style="opacity:0.65">
+                                <td>
+                                    <?php if ($account_handle) { ?>
+                                        <a href="<?php echo esc_url($account_url); ?>" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;">
+                                            <?php
+                                            if ($avatar_url) {
+                                                $fallback_url = esc_url(plugin_dir_url(__FILE__) . "../images/images/blank.png"); ?>
+                                                <img src="<?php echo esc_url(get_site_url() . "/wp-json/ftf/media-proxy?url=" . base64_encode($avatar_url)); ?>" width="32" height="32" style="border-radius:50%;flex-shrink:0;" onerror="this.onerror=null;this.src='<?php echo $fallback_url; ?>'">
+                                            <?php } ?>
+                                            <?php echo esc_html($account_name ?: $account_handle); ?>
+                                        </a>
+                                        <br><small>@<?php echo esc_html($account_handle . "@" . $post["instance"]); ?></small>
+                                    <?php } else { ?>
+                                        &mdash;
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <?php if ($has_more) { ?>
+                                        <details>
+                                            <summary style="cursor:pointer"><em><?php echo esc_html($excerpt); ?></em></summary>
+                                            <div style="margin-top:6px"><?php echo wp_kses_post($content_html); ?></div>
+                                        </details>
+                                    <?php } else { ?>
+                                        <?php echo esc_html($content_text ?: "—"); ?>
+                                    <?php } ?>
+                                    <br><small><a href="<?php echo esc_url($post_url); ?>" target="_blank" rel="noopener noreferrer">View post</a></small>
+                                </td>
+                                <td><?php echo esc_html($last_updated); ?></td>
+                                <td>
+                                    <a href="<?php echo esc_url($restore_url); ?>" class="button button-small">Restore</a>
+                                    <a href="<?php echo esc_url($hard_delete_url); ?>" class="button-link-delete" style="margin-left:6px" onclick="return confirm('<?php echo esc_js("Permanently delete this post?"); ?>')">Delete permanently</a>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
 
-            <br>
-            <form method="post">
-                <?php wp_nonce_field("ftf_hard_delete_all_removed"); ?>
-                <input type="hidden" name="page" value="ftf-fediverse-embeds-posts">
-                <button type="submit" name="hard_delete_all_removed" class="button-link-delete" onclick="return confirm('<?php echo esc_js("Permanently delete all removed posts?"); ?>')">
-                    Delete all removed posts
-                </button>
-            </form>
-            <?php endif; ?>
+                <br>
+                <form method="post">
+                    <?php wp_nonce_field("ftf_hard_delete_all_removed"); ?>
+                    <input type="hidden" name="page" value="ftf-fediverse-embeds-posts">
+                    <button type="submit" name="hard_delete_all_removed" class="button-link-delete" onclick="return confirm('<?php echo esc_js("Permanently delete all removed posts?"); ?>')">
+                        Delete all removed posts
+                    </button>
+                </form>
+            <?php } ?>
 
             <h2>Media Files</h2>
             <?php
-            $media_dir = wp_upload_dir()['basedir'] . '/fediverse-embeds/media';
+            $media_dir = wp_upload_dir()["basedir"] . "/fediverse-embeds/media";
             $media_dir_size = Helpers::get_directory_size($media_dir);
             $media_files = array_filter(
                 glob(trailingslashit($media_dir) . "*") ?: [],
@@ -537,7 +538,7 @@ class Post_Manager
             );
 
             $media_file_count = count($media_files);
-            
+
             if ($media_file_count === 0) {
                 $media_summary = "There are no downloaded media files.";
             } else {
@@ -548,17 +549,17 @@ class Post_Manager
                 <?php echo esc_html($media_summary); ?><br>
                 <small>This information is cached for up to 5 minutes to improve performance.</small>
             </p>
-            <?php if (!empty($media_files)): ?>
-            <form method="post">
-                <?php wp_nonce_field("ftf_clear_media"); ?>
-                <input type="hidden" name="page" value="ftf-fediverse-embeds-posts">
-                <button type="submit" name="clear_media" class="button-link-delete" onclick="return confirm('<?php echo esc_js("Delete all downloaded media files?"); ?>')">
-                    Clear downloaded files
-                </button>
-            </form>
-            <?php endif; ?>
+            <?php if (!empty($media_files)) { ?>
+                <form method="post">
+                    <?php wp_nonce_field("ftf_clear_media"); ?>
+                    <input type="hidden" name="page" value="ftf-fediverse-embeds-posts">
+                    <button type="submit" name="clear_media" class="button-link-delete" onclick="return confirm('<?php echo esc_js("Delete all downloaded media files?"); ?>')">
+                        Clear downloaded files
+                    </button>
+                </form>
+            <?php } ?>
 
         </div>
-        <?php
+<?php
     }
 }

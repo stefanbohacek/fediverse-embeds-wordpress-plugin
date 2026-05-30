@@ -7,13 +7,13 @@
     return div.innerHTML;
   };
 
-  if (window.ftf_admin && window.ftf_admin.settings_url) {
+  if (window.ftf_fediverse_embeds && window.ftf_fediverse_embeds.admin) {
     document.addEventListener(
       "error",
       (ev) => {
         if (ev.target.tagName === "IMG") {
           const embed = ev.target.closest(".fediverse-post");
-          if (embed && !embed.dataset.ftfMediaError) {
+          if (embed && !embed.dataset.ftfMediaError && !embed.dataset.postDeleted) {
             let domain = "";
             try {
               const proxyUrl = new URL(ev.target.src);
@@ -22,7 +22,19 @@
                 domain = new URL(atob(encoded.replace(/ /g, "+"))).hostname;
               }
             } catch (err) {}
-            const domainHtml = domain
+
+            if (domain && window.ftf_fediverse_embeds.admin.allowed_domains && window.ftf_fediverse_embeds.admin.allowed_suffixes) {
+              if (window.ftf_fediverse_embeds.admin.allowed_domains.includes(domain)) {
+                return;
+              }
+              for (const suffix of window.ftf_fediverse_embeds.admin.allowed_suffixes) {
+                if (domain.endsWith(suffix)) {
+                  return;
+                }
+              }
+            }
+
+            const domainHTML = domain
               ? ` from <code>${escapeHTML(domain)}</code>`
               : "";
             const cardBody = document.createElement("div");
@@ -30,9 +42,9 @@
             cardBody.innerHTML = /* html */ `
                 <h6 class="card-title mb-1">Admin note</h6>
                 <p class="card-text mt-0 mb-2">
-                    <small>Media${domainHtml} could not be loaded.</small>
+                    <small>Media${domainHTML} was blocked.</small>
                 </p>
-                <a href="${escapeHTML(window.ftf_admin.settings_url)}" target="_blank" rel="noopener noreferrer"><small>Update settings</small></a>
+                <a href="${escapeHTML(window.ftf_fediverse_embeds.admin.settings_url)}" target="_blank" rel="noopener noreferrer"><small>Update settings</small></a>
             `;
             const notice = document.createElement("div");
             notice.className =

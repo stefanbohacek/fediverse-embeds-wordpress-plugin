@@ -1,33 +1,33 @@
 <?php
 
 namespace FTF_Fediverse_Embeds;
-// require_once __DIR__ . '/../vendor/autoload.php';
-if (!class_exists('simple_html_dom_node')) {
-    require_once __DIR__ . '/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php';
+// require_once __DIR__ . "/../vendor/autoload.php";
+if (!class_exists("simple_html_dom_node")) {
+    require_once __DIR__ . "/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php";
 }
 
 class Site_Info
 {
     function __construct()
     {
-        add_action('wp_ajax_ftf_get_site_info', array($this, 'get_site_info'), 1000);
-        add_action('wp_ajax_nopriv_ftf_get_site_info', array($this, 'get_site_info'), 1000);
+        add_action("wp_ajax_ftf_get_site_info", array($this, "get_site_info"), 1000);
+        add_action("wp_ajax_nopriv_ftf_get_site_info", array($this, "get_site_info"), 1000);
     }
 
     function get_site_info()
     {
-        $allow_public_api_access = defined('FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS') ? \FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS : false;
-        $site_url = sanitize_text_field($_POST['url'] ?? '');
-        $nonce = sanitize_text_field($_POST['nonce'] ?? '');
+        $allow_public_api_access = defined("FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS") ? \FTF_FEDIVERSE_EMBEDS_PUBLIC_ACCESS : false;
+        $site_url = sanitize_text_field($_POST["url"] ?? "");
+        $nonce = sanitize_text_field($_POST["nonce"] ?? "");
 
-        if ($allow_public_api_access || wp_verify_nonce($nonce, 'ftf-fediverse-embeds-nonce')) {
+        if ($allow_public_api_access || wp_verify_nonce($nonce, "ftf-fediverse-embeds-nonce")) {
 
             $cache_key = "ftf_site_data_" . md5($site_url);
             $site_data = get_transient($cache_key);
 
-            $image = '';
-            $title = '';
-            $description = '';
+            $image = "";
+            $title = "";
+            $description = "";
 
             if ($site_data === false) {
                 if (!Helpers::is_safe_url($site_url)) {
@@ -49,45 +49,45 @@ class Site_Info
                 $site_html = str_get_html(wp_remote_retrieve_body($remote_response));
 
                 if ($site_html) {
-                    $meta_image = $site_html->find('meta[name="twitter:image"]');
+                    $meta_image = $site_html->find("meta[name='twitter:image']");
 
                     if (!empty($meta_image)) {
                         $image = $meta_image[0]->content;
                     } else {
-                        $meta_image = $site_html->find('meta[property="og:image"]');
+                        $meta_image = $site_html->find("meta[property='og:image']");
                         if (!empty($meta_image)) {
                             $image = $meta_image[0]->content;
                         }
                     }
 
-                    $meta_title = $site_html->find('meta[name="title"]');
+                    $meta_title = $site_html->find("meta[name='title']");
 
                     if (!empty($meta_title)) {
                         $title = $meta_title[0]->content;
                     } else {
-                        $meta_title = $site_html->find('meta[name="twitter:title"]');
+                        $meta_title = $site_html->find("meta[name='twitter:title']");
 
                         if (!empty($meta_title)) {
                             $title = $meta_title[0]->content;
                         } else {
-                            $meta_title = $site_html->find('meta[property="og:title"]');
+                            $meta_title = $site_html->find("meta[property='og:title']");
                             if (!empty($meta_title)) {
                                 $title = $meta_title[0]->content;
                             }
                         }
                     }
 
-                    $meta_description = $site_html->find('meta[name="description"]');
+                    $meta_description = $site_html->find("meta[name='description']");
 
                     if (!empty($meta_description)) {
                         $description = $meta_description[0]->content;
                     } else {
-                        $meta_description = $site_html->find('meta[name="twitter:description"]');
+                        $meta_description = $site_html->find("meta[name='twitter:description']");
 
                         if (!empty($meta_description)) {
                             $description = $meta_description[0]->content;
                         } else {
-                            $meta_description = $site_html->find('meta[property="og:description"]');
+                            $meta_description = $site_html->find("meta[property='og:description']");
                             if (!empty($meta_description)) {
                                 $description = $meta_description[0]->content;
                             }
@@ -96,14 +96,14 @@ class Site_Info
                 }
 
                 $site_data = array(
-                    'url' => $site_url,
-                    'image' => $image,
-                    'title' => $title,
-                    'description' => $description
+                    "url" => $site_url,
+                    "image" => $image,
+                    "title" => $title,
+                    "description" => $description
                 );
 
-                // Helpers::log_this('debug:get_site_info', array(
-                //     'site_data' => $site_data,
+                // Helpers::log_this("debug:get_site_info", array(
+                //     "site_data" => $site_data,
                 // ));
 
                 set_transient($cache_key, $site_data, HOUR_IN_SECONDS);

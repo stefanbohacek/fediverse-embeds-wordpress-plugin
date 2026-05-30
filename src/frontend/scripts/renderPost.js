@@ -568,6 +568,10 @@ const renderPost = (post, container) => {
     renderedPostHTML += /*html*/ "</small></div></div>";
   }
 
+  if (postIsDeleted) {
+    renderedPost.dataset.postDeleted = "1";
+  }
+
   renderedPost.innerHTML = renderedPostHTML;
 
   let lastUrl = "";

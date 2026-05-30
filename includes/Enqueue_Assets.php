@@ -1,74 +1,103 @@
 <?php
 
 namespace FTF_Fediverse_Embeds;
-// require_once __DIR__ . '/../vendor/autoload.php';
-if (!class_exists('simple_html_dom_node')) {
-    require_once __DIR__ . '/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php';
+// require_once __DIR__ . "/../vendor/autoload.php";
+if (!class_exists("simple_html_dom_node")) {
+    require_once __DIR__ . "/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php";
 }
 
 class Enqueue_Assets
 {
     function __construct()
     {
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
-        add_action('wp_footer', array($this, 'enqueue_styles'));
-        add_action('script_loader_tag', array($this, 'add_type_attribute'), 10, 3);
+        add_action("wp_enqueue_scripts", array($this, "enqueue_scripts"));
+        add_action("wp_footer", array($this, "enqueue_styles"));
+        add_action("script_loader_tag", array($this, "add_type_attribute"), 10, 3);
     }
 
     function enqueue_scripts()
     {
 
         if (Helpers::should_embed_assets()) {
-            $theme = get_option('ftf_fediverse_embeds_theme', 'on');
-            $show_metrics = get_option('ftf_fediverse_embeds_show_metrics', 'on');
-            $show_post_labels = get_option('ftf_fediverse_embeds_show_post_labels', 'on');
-            $deleted_posts = get_option('ftf_fediverse_embeds_deleted_posts', 'keep');
+            $theme = get_option("ftf_fediverse_embeds_theme", "on");
+            $show_metrics = get_option("ftf_fediverse_embeds_show_metrics", "on");
+            $show_post_labels = get_option("ftf_fediverse_embeds_show_post_labels", "on");
+            $deleted_posts = get_option("ftf_fediverse_embeds_deleted_posts", "keep");
 
             $plugin_dir_url = plugin_dir_url(__FILE__);
             $plugin_dir_path = plugin_dir_path(__FILE__);
 
-            $js_url = $plugin_dir_url . '../dist/js/scripts.js';
-            $js_path = $plugin_dir_path . '../dist/js/scripts.js';
+            $js_url = $plugin_dir_url . "../dist/js/scripts.js";
+            $js_path = $plugin_dir_path . "../dist/js/scripts.js";
 
-            $dompurify_url  = $plugin_dir_url  . '../libs/DOMPurify/purify.min.js';
-            $dompurify_path = $plugin_dir_path . '../libs/DOMPurify/purify.min.js';
-            wp_register_script('dompurify', $dompurify_url, array(), filemtime($dompurify_path), array(
-                'in_footer' => true,
+            $dompurify_url  = $plugin_dir_url  . "../libs/DOMPurify/purify.min.js";
+            $dompurify_path = $plugin_dir_path . "../libs/DOMPurify/purify.min.js";
+            wp_register_script("dompurify", $dompurify_url, array(), filemtime($dompurify_path), array(
+                "in_footer" => true,
             ));
 
-            $plugin_data = get_file_data(__DIR__ . '/../index.php', array('Version' => 'Version'), false);
-            $plugin_version = $plugin_data['Version'];
+            $plugin_data = get_file_data(__DIR__ . "/../index.php", array("Version" => "Version"), false);
+            $plugin_version = $plugin_data["Version"];
 
-            wp_register_script('ftf-fediverse-embeds-frontend-js', $js_url, array('dompurify'), filemtime($js_path), array(
-                'strategy'  => 'defer',
-                'in_footer' => true
+            wp_register_script("ftf-fediverse-embeds-frontend-js", $js_url, array("dompurify"), filemtime($js_path), array(
+                "strategy"  => "defer",
+                "in_footer" => true
             ));
 
-            wp_localize_script('ftf-fediverse-embeds-frontend-js', 'ftf_fediverse_embeds', array(
-                'ajax_url' => admin_url('admin-ajax.php'),
-                'blog_url' => get_site_url(),
-                'plugin_url' => plugin_dir_url(__FILE__),
-                'nonce' => wp_create_nonce('ftf-fediverse-embeds-nonce'),
-                'config' => array(
-                    'theme' => $theme,
-                    'show_metrics' => $show_metrics === 'on',
-                    'show_post_labels' => $show_post_labels === 'on',
-                    'deleted_posts' => $deleted_posts
+            $localize_data = array(
+                "ajax_url" => admin_url("admin-ajax.php"),
+                "blog_url" => get_site_url(),
+                "plugin_url" => plugin_dir_url(__FILE__),
+                "nonce" => wp_create_nonce("ftf-fediverse-embeds-nonce"),
+                "config" => array(
+                    "theme" => $theme,
+                    "show_metrics" => $show_metrics === "on",
+                    "show_post_labels" => $show_post_labels === "on",
+                    "deleted_posts" => $deleted_posts
                 ),
-                'version' => $plugin_version
-            ));
+                "version" => $plugin_version
+            );
 
-            wp_enqueue_script('ftf-fediverse-embeds-frontend-js');
+            if (current_user_can("manage_options")) {
+                $saved_domains = get_option("ftf_fediverse_embeds_allowed_domains");
+                $saved_suffixes = get_option("ftf_fediverse_embeds_allowed_suffixes");
 
-            if (current_user_can('manage_options')) {
-                $admin_notice_url  = $plugin_dir_url  . '../dist/js/adminNotice.js';
-                $admin_notice_path = $plugin_dir_path . '../dist/js/adminNotice.js';
-                wp_enqueue_script('ftf-admin-notice', $admin_notice_url, array(), filemtime($admin_notice_path), array(
-                    'in_footer' => true,
-                    'strategy'  => 'defer',
-                ));
-                wp_localize_script('ftf-admin-notice', 'ftf_admin', array(
-                    'settings_url' => admin_url('admin.php?page=ftf-fediverse-embeds-advanced'),
+                $admin_allowed_domains = ($saved_domains === false)
+                    ? Helpers::get_default_allowed_domains()
+                    : array_values(array_filter(array_map(function ($entry) {
+                        $entry = trim($entry);
+                        $entry = preg_replace("#^https?://#i", "", $entry);
+                        $entry = explode("/", $entry)[0];
+                        return strtolower($entry);
+                    }, explode("\n", $saved_domains))));
+
+                $admin_allowed_suffixes = ($saved_suffixes === false)
+                    ? Helpers::get_default_allowed_suffixes()
+                    : array_values(array_filter(array_map(function ($entry) {
+                        $entry = strtolower(trim($entry));
+                        if ($entry !== "" && $entry[0] !== ".") {
+                            $entry = "." . $entry;
+                        }
+                        return $entry;
+                    }, explode("\n", $saved_suffixes))));
+
+                $localize_data["admin"] = array(
+                    "settings_url"    => admin_url("admin.php?page=ftf-fediverse-embeds-advanced"),
+                    "allowed_domains" => $admin_allowed_domains,
+                    "allowed_suffixes" => $admin_allowed_suffixes,
+                );
+            }
+
+            wp_localize_script("ftf-fediverse-embeds-frontend-js", "ftf_fediverse_embeds", $localize_data);
+
+            wp_enqueue_script("ftf-fediverse-embeds-frontend-js");
+
+            if (current_user_can("manage_options")) {
+                $admin_notice_url  = $plugin_dir_url  . "../dist/js/adminNotice.js";
+                $admin_notice_path = $plugin_dir_path . "../dist/js/adminNotice.js";
+                wp_enqueue_script("ftf-admin-notice", $admin_notice_url, array(), filemtime($admin_notice_path), array(
+                    "in_footer" => true,
+                    "strategy"  => "defer",
                 ));
             }
         }
@@ -77,28 +106,28 @@ class Enqueue_Assets
     function enqueue_styles()
     {
         if (Helpers::should_embed_assets()) {
-            $include_bootstrap_styles = get_option('ftf_fediverse_embeds_include_bootstrap_styles', 'on');
+            $include_bootstrap_styles = get_option("ftf_fediverse_embeds_include_bootstrap_styles", "on");
             $plugin_dir_url = plugin_dir_url(__FILE__);
             $plugin_dir_path = plugin_dir_path(__FILE__);
 
-            if ($include_bootstrap_styles === 'on') {
-                $css_url = $plugin_dir_url . '../dist/css/styles-bs.min.css';
-                $css_path = $plugin_dir_path . '../dist/css/styles-bs.min.css';
+            if ($include_bootstrap_styles === "on") {
+                $css_url = $plugin_dir_url . "../dist/css/styles-bs.min.css";
+                $css_path = $plugin_dir_path . "../dist/css/styles-bs.min.css";
             } else {
-                $css_url = $plugin_dir_url . '../dist/css/styles.min.css';
-                $css_path = $plugin_dir_path . '../dist/css/styles.min.css';
+                $css_url = $plugin_dir_url . "../dist/css/styles.min.css";
+                $css_path = $plugin_dir_path . "../dist/css/styles.min.css";
             }
 
-            wp_enqueue_style('ftf-fediverse-embeds-frontend-styles', $css_url, array(), filemtime($css_path));
+            wp_enqueue_style("ftf-fediverse-embeds-frontend-styles", $css_url, array(), filemtime($css_path));
         }
     }
 
     function add_type_attribute($tag, $handle, $src)
     {
-        if ('ftf-fediverse-embeds-frontend-js' !== $handle) {
+        if ("ftf-fediverse-embeds-frontend-js" !== $handle) {
             return $tag;
         }
-        $tag = '<script type="module" src="' . esc_url($src) . '" defer="defer"></script>';
+        $tag = "<script type=\"module\" src=\"" . esc_url($src) . "\" defer=\"defer\"></script>";
         return $tag;
     }
 }

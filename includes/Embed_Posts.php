@@ -60,7 +60,7 @@ class Embed_Posts
                         continue;
                     }
 
-                    if (!preg_match('/^[a-zA-Z0-9_-]+$/', $post_id)) {
+                    if (!preg_match("/^[a-zA-Z0-9_-]+$/", $post_id)) {
                         continue;
                     }
 
@@ -128,33 +128,33 @@ class Embed_Posts
                         //     "post_data" => $post_data,
                         // ));
 
-                        $post_content         = wp_kses_post( $post_content ?: '' );
-                        $account_display_name = esc_html( $account_display_name ?: '' );
-                        $account_username     = esc_html( $account_username ?: '' );
-                        $post_url             = esc_url( $post_url ?: '' );
-                        $post_date            = esc_html( $post_date ?: '' );
+                        $post_content         = wp_kses_post( $post_content ?: "" );
+                        $account_display_name = esc_html( $account_display_name ?: "" );
+                        $account_username     = esc_html( $account_username ?: "" );
+                        $post_url             = esc_url( $post_url ?: "" );
+                        $post_date            = esc_html( $post_date ?: "" );
 
                         $iframe_html = "";
 
                         if (($post_content || !empty($post_data["media_attachments"])) && $account_display_name && $account_username && $post_url && $post_date) {
                             $theme_data_attribute = "";
                             if ($theme !== "automatic") {
-                                $theme_data_attribute = 'data-bs-theme="' . esc_attr( $theme ) . '"';
+                                $theme_data_attribute = "data-bs-theme=\"" . esc_attr( $theme ) . "\"";
                             }
 
-                            $iframe_html  = '<blockquote';
+                            $iframe_html  = "<blockquote";
                             if ($theme_data_attribute) {
-                                $iframe_html .= ' ' . $theme_data_attribute;
+                                $iframe_html .= " " . $theme_data_attribute;
                             }
-                            $iframe_html .= ' data-instance="' . $instance_attr . '"';
-                            $iframe_html .= ' data-post-id="' . $post_id_attr . '"';
-                            $iframe_html .= ' class="ftf-fediverse-post-embed">';
+                            $iframe_html .= " data-instance=\"" . $instance_attr . "\"";
+                            $iframe_html .= " data-post-id=\"" . $post_id_attr . "\"";
+                            $iframe_html .= " class=\"ftf-fediverse-post-embed\">";
                             $iframe_html .= $post_content;
-                            $iframe_html .= '<p class="ftf-fediverse-post-embed-author">';
-                            $iframe_html .= '&mdash; ' . $account_display_name . ' (@' . $account_username . '@' . $instance_html . ')';
-                            $iframe_html .= '<a class="ftf-fediverse-post-embed-link" href="' . $post_url . '">' . $post_date . '</a>';
-                            $iframe_html .= '</p>';
-                            $iframe_html .= '</blockquote>';
+                            $iframe_html .= "<p class=\"ftf-fediverse-post-embed-author\">";
+                            $iframe_html .= "&mdash; " . $account_display_name . " (@" . $account_username . "@" . $instance_html . ")";
+                            $iframe_html .= "<a class=\"ftf-fediverse-post-embed-link\" href=\"" . $post_url . "\">" . $post_date . "</a>";
+                            $iframe_html .= "</p>";
+                            $iframe_html .= "</blockquote>";
                         }
                         $iframe->outertext = $iframe_html;
                     } catch (\Exception $e) {
@@ -384,7 +384,7 @@ class Embed_Posts
             if ($allow_public_api_access || wp_verify_nonce($nonce, "ftf-fediverse-embeds-nonce")) {
                 if (!empty($post)) {
                     $post = json_decode(wp_unslash($post), true);
-                    if (!is_array($post) || empty($post['instance']) || empty($post['post_id'])) {
+                    if (!is_array($post) || empty($post["instance"]) || empty($post["post_id"])) {
                         wp_send_json_error();
                         return;
                     }

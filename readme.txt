@@ -3,7 +3,7 @@ Contributors: fourtonfish
 Tags: fediverse, mastodon, post, toot, embed
 Requires at least: 5.9
 Tested up to: 7.0
-Stable tag: 1.6.6
+Stable tag: 1.6.7
 Requires PHP: 7.4
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -38,6 +38,10 @@ To build the plugin from source you will need Node.js (v18+) and npm. Run the fo
 The build process uses Gulp with Browserify and Babel to bundle and minify the JavaScript files located in the src directory, and compiles SCSS to CSS. The compiled output is placed in the dist directory.
 
 == Changelog ==
+
+= 1.6.7 =
+
+Don't show admin notice about disallowed domains for media files for deleted posts. Overall code cleanup.
 
 = 1.6.6 =
 Include mastodon.social and mastodon.nz in the default domain allow-list.

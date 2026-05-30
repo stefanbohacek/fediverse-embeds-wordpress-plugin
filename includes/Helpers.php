@@ -1,9 +1,9 @@
 <?php
 
 namespace FTF_Fediverse_Embeds;
-// require_once __DIR__ . '/../vendor/autoload.php';
-if (!class_exists('simple_html_dom_node')) {
-    require_once __DIR__ . '/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php';
+// require_once __DIR__ . "/../vendor/autoload.php";
+if (!class_exists("simple_html_dom_node")) {
+    require_once __DIR__ . "/../vendor/simplehtmldom/simplehtmldom/simple_html_dom.php";
 }
 
 class Helpers
@@ -46,15 +46,15 @@ class Helpers
         $platform = false;
 
         if (is_string($content)) {
-            if (str_contains($content, 'class="pixelfed__embed"')) {
+            if (str_contains($content, "class=\"pixelfed__embed\"")) {
                 // TODO handle Pixelfed embeds
-                // $platform = 'pixelfed';
+                // $platform = "pixelfed";
             } elseif (
-                str_contains($content, 'class="mastodon-embed"') ||
-                // str_contains($content, '/embed.js') ||
-                str_contains($content, 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms')
+                str_contains($content, "class=\"mastodon-embed\"") ||
+                // str_contains($content, "/embed.js") ||
+                str_contains($content, "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms")
             ) {
-                $platform = 'mastodon';
+                $platform = "mastodon";
             }
         }
 
@@ -108,12 +108,12 @@ class Helpers
 
     public static function format_bytes($size, $precision = 2)
     {
-        $size_formatted = '0KB';
+        $size_formatted = "0KB";
 
         if (is_numeric($size) && $size > 0) {
             $base = log($size, 1024);
-            $suffixes = array('', 'KB', 'MB', 'GB', 'TB');
-            $size_formatted = round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
+            $suffixes = array("", "KB", "MB", "GB", "TB");
+            $size_formatted = round(pow(1024, $base - floor($base)), $precision) . " " . $suffixes[floor($base)];
         }
 
         return $size_formatted;
@@ -121,7 +121,7 @@ class Helpers
 
     public static function is_safe_host(string $host): bool
     {
-        $host = trim($host, '[]');
+        $host = trim($host, "[]");
 
         if (filter_var($host, FILTER_VALIDATE_IP)) {
             return (bool) filter_var(
@@ -167,12 +167,12 @@ class Helpers
     {
         $parsed = parse_url($url);
 
-        if (!in_array($parsed['scheme'] ?? '', ['http', 'https'], true)) {
+        if (!in_array($parsed["scheme"] ?? "", ["http", "https"], true)) {
             return false;
         }
 
-        $host = $parsed['host'] ?? '';
-        if ($host === '') {
+        $host = $parsed["host"] ?? "";
+        if ($host === "") {
             return false;
         }
 
@@ -203,9 +203,9 @@ class Helpers
 
     public static function generate_random_string($length = 10)
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $characters_length = strlen($characters);
-        $random_string = '';
+        $random_string = "";
 
         for ($i = 0; $i < $length; $i++) {
             $random_string .= $characters[random_int(0, $characters_length - 1)];
