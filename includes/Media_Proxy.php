@@ -137,6 +137,9 @@ class Media_Proxy
                 }
 
                 if (!$can_download_media) {
+                    if (!empty($domain)) {
+                        $this->log_blocked_domain($domain);
+                    }
                     status_header(403);
                     exit();
                 }
@@ -205,5 +208,38 @@ class Media_Proxy
             }
         }
         exit();
+    }
+
+    private function log_blocked_domain($domain)
+    {
+        $blocked = get_option('ftf_fediverse_embeds_blocked_domains', array());
+
+        if (!is_array($blocked)) {
+            $blocked = array();
+        }
+
+        $found = false;
+        foreach ($blocked as &$entry) {
+            if ($entry['domain'] === $domain) {
+                $entry['last_seen'] = time();
+                $found = true;
+                break;
+            }
+        }
+        unset($entry);
+
+        if (!$found) {
+            $blocked[] = array('domain' => $domain, 'last_seen' => time());
+        }
+
+        usort($blocked, function ($a, $b) {
+            return $b['last_seen'] - $a['last_seen'];
+        });
+
+        if (count($blocked) > 50) {
+            $blocked = array_slice($blocked, 0, 50);
+        }
+
+        update_option('ftf_fediverse_embeds_blocked_domains', $blocked);
     }
 }

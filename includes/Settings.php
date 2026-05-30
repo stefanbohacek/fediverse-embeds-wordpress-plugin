@@ -10,6 +10,7 @@ class Settings
         add_action('admin_menu', array($this, 'add_menu'), 10);
         add_action('admin_menu', array($this, 'add_advanced_submenu'), 30);
         add_action('admin_post_ftf_reset_allowlists', array($this, 'reset_allowlists'));
+        add_action('admin_post_ftf_clear_blocked_domains', array($this, 'clear_blocked_domains'));
         add_filter('plugin_action_links_fediverse-embeds/index.php', array($this, 'settings_page_link'));
     }
 
@@ -340,8 +341,6 @@ class Settings
                 ?>
             </form>
 
-            <hr>
-
             <h2>Reset to Defaults</h2>
             <p>Restore the built-in default allowlists. Unlike saving empty fields (which blocks all CDN domains), this re-enables the default list of trusted domains and suffixes.</p>
             <form method='post' action='<?php echo esc_url(admin_url('admin-post.php')); ?>'>
@@ -349,6 +348,58 @@ class Settings
                 <?php wp_nonce_field('ftf_reset_allowlists'); ?>
                 <?php submit_button('Reset to Defaults', 'secondary', 'submit', false); ?>
             </form>
+
+            <h2>Blocked Domains</h2>
+            <?php
+            $blocked_domains = get_option('ftf_fediverse_embeds_blocked_domains', array());
+            if (!is_array($blocked_domains)) {
+                $blocked_domains = array();
+            }
+
+            $current_domains  = array_filter(array_map('trim', explode("\n", get_option('ftf_fediverse_embeds_allowed_domains', implode("\n", Helpers::get_default_allowed_domains())))));
+            $current_suffixes = array_filter(array_map('trim', explode("\n", get_option('ftf_fediverse_embeds_allowed_suffixes', implode("\n", Helpers::get_default_allowed_suffixes())))));
+
+            $blocked_domains = array_values(array_filter($blocked_domains, function ($entry) use ($current_domains, $current_suffixes) {
+                $domain = $entry['domain'];
+                if (in_array($domain, $current_domains, true)) {
+                    return false;
+                }
+                foreach ($current_suffixes as $suffix) {
+                    $suffix = $suffix[0] !== '.' ? '.' . $suffix : $suffix;
+                    if (str_ends_with($domain, $suffix)) {
+                        return false;
+                    }
+                }
+                return true;
+            }));
+            ?>
+            <p>Domains that were blocked by the media proxy because they are not on the allowlist. Add any of these to the allowed domains list above if they should be permitted.</p>
+            <?php if (empty($blocked_domains)): ?>
+                <p>No blocked domains recorded.</p>
+            <?php else: ?>
+                <table class="widefat striped" style="max-width: 600px;">
+                    <thead>
+                        <tr>
+                            <th>Domain</th>
+                            <th>Last seen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($blocked_domains as $entry): ?>
+                            <tr>
+                                <td><code><?php echo esc_html($entry['domain']); ?></code></td>
+                                <td><?php echo esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $entry['last_seen'])); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <br>
+                <form method='post' action='<?php echo esc_url(admin_url('admin-post.php')); ?>'>
+                    <input type='hidden' name='action' value='ftf_clear_blocked_domains'>
+                    <?php wp_nonce_field('ftf_clear_blocked_domains'); ?>
+                    <?php submit_button('Clear List', 'secondary', 'submit', false); ?>
+                </form>
+            <?php endif; ?>
         </div>
         <?php
     }
@@ -412,6 +463,20 @@ class Settings
         delete_option('ftf_fediverse_embeds_allowed_suffixes');
         wp_redirect(add_query_arg(
             array('page' => 'ftf-fediverse-embeds-advanced', 'reset' => '1'),
+            admin_url('admin.php')
+        ));
+        exit();
+    }
+
+    function clear_blocked_domains()
+    {
+        check_admin_referer('ftf_clear_blocked_domains');
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have permission to perform this action.', 'fediverse-embeds'));
+        }
+        delete_option('ftf_fediverse_embeds_blocked_domains');
+        wp_redirect(add_query_arg(
+            array('page' => 'ftf-fediverse-embeds-advanced'),
             admin_url('admin.php')
         ));
         exit();

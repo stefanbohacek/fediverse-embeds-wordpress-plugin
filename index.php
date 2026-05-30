@@ -3,7 +3,7 @@
  * Plugin Name: Fediverse Embeds
  * Plugin URI: https://stefanbohacek.com/project/wordpress-plugin-for-fediverse-embeds/
  * Description: Embed posts from the fediverse.
- * Version: 1.6.4
+ * Version: 1.6.5
  * Author: stefanbohacek
  * License: GPL-3.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -15,7 +15,7 @@
 
 defined('ABSPATH') || exit;
 
-define('FTF_FEDIVERSE_EMBEDS_VERSION', '1.6.4');
+define('FTF_FEDIVERSE_EMBEDS_VERSION', '1.6.5');
 
 if (!defined('FTF_SHOW_ADVANCED_SETTINGS')) {
     define('FTF_SHOW_ADVANCED_SETTINGS', true);

@@ -70,7 +70,9 @@ class FTF_Posts_List_Table extends \WP_List_Table
 
         $html  = '<a href="' . esc_url($account_url) . '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;">';
         if ($avatar_url) {
-            $html .= '<img src="' . esc_url($avatar_url) . '" width="32" height="32" style="border-radius:50%;flex-shrink:0;">';
+            $proxy_url    = get_site_url() . '/wp-json/ftf/media-proxy?url=' . base64_encode($avatar_url);
+            $fallback_url = esc_url(plugin_dir_url(__FILE__) . '../images/images/blank.png');
+            $html .= '<img src="' . esc_url($proxy_url) . '" width="32" height="32" style="border-radius:50%;flex-shrink:0;" onerror="this.onerror=null;this.src=\'' . $fallback_url . '\'">';
         }
         $html .= esc_html($account_name ?: $account_handle);
         $html .= '</a>';
@@ -107,25 +109,26 @@ class FTF_Posts_List_Table extends \WP_List_Table
 
     function column_actions($item)
     {
-        $refresh_url = wp_nonce_url(
-            add_query_arg([
-                "page"     => "ftf-fediverse-embeds-posts",
-                "action"   => "refresh",
-                "instance" => $item["instance"],
-                "post_id"  => $item["post_id"],
-            ], admin_url("admin.php")),
-            "ftf_refresh_post"
-        );
+        $instance_filter = sanitize_text_field($_GET["instance_filter"] ?? "");
 
-        $delete_url = wp_nonce_url(
-            add_query_arg([
-                "page"     => "ftf-fediverse-embeds-posts",
-                "action"   => "delete",
-                "instance" => $item["instance"],
-                "post_id"  => $item["post_id"],
-            ], admin_url("admin.php")),
-            "ftf_delete_post"
-        );
+        $refresh_args = array_filter([
+            "page"            => "ftf-fediverse-embeds-posts",
+            "action"          => "refresh",
+            "instance"        => $item["instance"],
+            "post_id"         => $item["post_id"],
+            "instance_filter" => $instance_filter,
+        ]);
+
+        $delete_args = array_filter([
+            "page"            => "ftf-fediverse-embeds-posts",
+            "action"          => "delete",
+            "instance"        => $item["instance"],
+            "post_id"         => $item["post_id"],
+            "instance_filter" => $instance_filter,
+        ]);
+
+        $refresh_url = wp_nonce_url(add_query_arg($refresh_args, admin_url("admin.php")), "ftf_refresh_post");
+        $delete_url  = wp_nonce_url(add_query_arg($delete_args, admin_url("admin.php")), "ftf_delete_post");
 
         $html  = '<a href="' . esc_url($refresh_url) . '" class="button button-small">Refresh</a>';
         $html .= '<a href="' . esc_url($delete_url) . '" class="button-link-delete" style="margin-left:6px" onclick="return confirm(\'' . esc_js("Remove this post from the database?") . '\')">Delete</a>';
@@ -194,7 +197,8 @@ class Post_Manager
             return;
         }
 
-        $action = sanitize_text_field($_GET["action"] ?? "");
+        $action          = sanitize_text_field($_GET["action"] ?? "");
+        $instance_filter = sanitize_text_field($_GET["instance_filter"] ?? "");
 
         if ($action === "delete") {
             check_admin_referer("ftf_delete_post");
@@ -205,7 +209,11 @@ class Post_Manager
                 $this->db->soft_delete_post($instance, $post_id);
             }
 
-            wp_redirect(admin_url("admin.php?page=ftf-fediverse-embeds-posts&deleted=1"));
+            wp_redirect(add_query_arg(array_filter([
+                "page"            => "ftf-fediverse-embeds-posts",
+                "deleted"         => "1",
+                "instance_filter" => $instance_filter,
+            ]), admin_url("admin.php")));
             exit;
         }
 
@@ -218,7 +226,11 @@ class Post_Manager
                 $this->db->restore_post($instance, $post_id);
             }
 
-            wp_redirect(admin_url("admin.php?page=ftf-fediverse-embeds-posts&restored=1"));
+            wp_redirect(add_query_arg(array_filter([
+                "page"            => "ftf-fediverse-embeds-posts",
+                "restored"        => "1",
+                "instance_filter" => $instance_filter,
+            ]), admin_url("admin.php")));
             exit;
         }
 
@@ -231,7 +243,11 @@ class Post_Manager
                 $this->db->hard_delete_post($instance, $post_id);
             }
 
-            wp_redirect(admin_url("admin.php?page=ftf-fediverse-embeds-posts&hard_deleted=1"));
+            wp_redirect(add_query_arg(array_filter([
+                "page"            => "ftf-fediverse-embeds-posts",
+                "hard_deleted"    => "1",
+                "instance_filter" => $instance_filter,
+            ]), admin_url("admin.php")));
             exit;
         }
 
@@ -244,7 +260,11 @@ class Post_Manager
                 $this->refresh_post($instance, $post_id);
             }
 
-            wp_redirect(admin_url("admin.php?page=ftf-fediverse-embeds-posts&refreshed=1"));
+            wp_redirect(add_query_arg(array_filter([
+                "page"            => "ftf-fediverse-embeds-posts",
+                "refreshed"       => "1",
+                "instance_filter" => $instance_filter,
+            ]), admin_url("admin.php")));
             exit;
         }
 
@@ -463,7 +483,8 @@ class Post_Manager
                             <?php if ($account_handle): ?>
                             <a href="<?php echo esc_url($account_url); ?>" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;">
                                 <?php if ($avatar_url): ?>
-                                <img src="<?php echo esc_url($avatar_url); ?>" width="32" height="32" style="border-radius:50%;flex-shrink:0;">
+                                <?php $fallback_url = esc_url(plugin_dir_url(__FILE__) . '../images/images/blank.png'); ?>
+                                <img src="<?php echo esc_url(get_site_url() . '/wp-json/ftf/media-proxy?url=' . base64_encode($avatar_url)); ?>" width="32" height="32" style="border-radius:50%;flex-shrink:0;" onerror="this.onerror=null;this.src='<?php echo $fallback_url; ?>'">
                                 <?php endif; ?>
                                 <?php echo esc_html($account_name ?: $account_handle); ?>
                             </a>

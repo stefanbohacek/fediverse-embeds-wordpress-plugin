@@ -59,6 +59,18 @@ class Enqueue_Assets
             ));
 
             wp_enqueue_script('ftf-fediverse-embeds-frontend-js');
+
+            if (current_user_can('manage_options')) {
+                $admin_notice_url  = $plugin_dir_url  . '../dist/js/adminNotice.js';
+                $admin_notice_path = $plugin_dir_path . '../dist/js/adminNotice.js';
+                wp_enqueue_script('ftf-admin-notice', $admin_notice_url, array(), filemtime($admin_notice_path), array(
+                    'in_footer' => true,
+                    'strategy'  => 'defer',
+                ));
+                wp_localize_script('ftf-admin-notice', 'ftf_admin', array(
+                    'settings_url' => admin_url('admin.php?page=ftf-fediverse-embeds-advanced'),
+                ));
+            }
         }
     }
 

@@ -182,6 +182,7 @@ class Helpers
     public static function get_default_allowed_domains(): array
     {
         return array(
+            "files.mastodon.social",
             "cdn.masto.host",
             "pool.jortage.com",
             "social-cdn.vivaldi.net",
