@@ -182,19 +182,23 @@ class Helpers
     public static function get_default_allowed_domains(): array
     {
         return array(
-            "mastodon.social",
-            "files.mastodon.social",
             "cdn.masto.host",
             "pool.jortage.com",
+            "s3.masto.ai",
             "social-cdn.vivaldi.net",
-            "cdn.hosted.spacebear.ee",
-            "m.f-h.co",
+            "media.beige.party",
+            "cdn.fosstodon.org",
+            "media.mementomori.social",
+            "media.hachyderm.io",
+            "files.botsin.space",
+            "stefanbohacek.online",
         );
     }
 
     public static function get_default_allowed_suffixes(): array
     {
         return array(
+            ".mastodon.social",
             ".files.fedi.monster",
             ".digitaloceanspaces.com",
             ".mastodon.nz",

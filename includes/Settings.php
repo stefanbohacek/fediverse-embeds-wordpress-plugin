@@ -9,8 +9,9 @@ class Settings
         add_action("admin_init", array($this, "settings_init"));
         add_action("admin_menu", array($this, "add_menu"), 10);
         add_action("admin_menu", array($this, "add_advanced_submenu"), 30);
-        add_action("admin_post_ftf_reset_allowlists", array($this, "reset_allowlists"));
-        add_action("admin_post_ftf_clear_blocked_domains", array($this, "clear_blocked_domains"));
+        add_action("admin_post_ftf_fe_reset_allowlists", array($this, "reset_allowlists"));
+        add_action("admin_post_ftf_fe_clear_blocked_domains", array($this, "clear_blocked_domains"));
+        add_action("admin_post_ftf_fe_scan_blocked_domains", array($this, "scan_blocked_domains"));
         add_filter("plugin_action_links_fediverse-embeds/index.php", array($this, "settings_page_link"));
     }
 
@@ -301,6 +302,7 @@ class Settings
     function render_advanced_page()
     {
         $reset = isset($_GET["reset"]) && $_GET["reset"] === "1";
+        $scanned = isset($_GET["scanned"]) && $_GET["scanned"] === "1";
         $saved_domains = get_option("ftf_fediverse_embeds_allowed_domains");
         $saved_suffixes = get_option("ftf_fediverse_embeds_allowed_suffixes");
         $domains_empty = $saved_domains !== false && trim($saved_domains) === "";
@@ -309,25 +311,31 @@ class Settings
         <div class="wrap">
             <h1>Fediverse Embeds &rsaquo; Advanced</h1>
 
-            <?php if ($reset): ?>
+            <?php if ($reset) { ?>
             <div class="notice notice-success is-dismissible">
                 <p>Allowlists have been reset to defaults.</p>
             </div>
-            <?php endif; ?>
+            <?php } ?>
 
-            <?php if ($domains_empty || $suffixes_empty): ?>
+            <?php if ($scanned) { ?>
+            <div class="notice notice-success is-dismissible">
+                <p>Scan complete. The blocked domains list has been updated.</p>
+            </div>
+            <?php } ?>
+
+            <?php if ($domains_empty || $suffixes_empty) { ?>
             <div class="notice notice-info">
                 <p>
-                    <?php if ($domains_empty && $suffixes_empty): ?>
+                    <?php if ($domains_empty && $suffixes_empty) { ?>
                         <strong>Note:</strong> Both allowlists are empty. Only media from automatically detected fediverse servers will be loaded; CDN and shared media hosting domains will be blocked.
-                    <?php elseif ($domains_empty): ?>
+                    <?php } elseif ($domains_empty) { ?>
                         <strong>Note:</strong> The allowed domains list is empty. Only suffixes and automatically detected fediverse servers will be used to allow media.
-                    <?php else: ?>
+                    <?php } else { ?>
                         <strong>Note:</strong> The allowed suffixes list is empty. Only exact domains and automatically detected fediverse servers will be used to allow media.
-                    <?php endif; ?>
+                    <?php } ?>
                 </p>
             </div>
-            <?php endif; ?>
+            <?php } ?>
 
             <div class="notice notice-warning">
                 <p><strong>Warning:</strong> Incorrect changes to these settings can introduce security vulnerabilities or break media loading. Only modify these settings if you know what you're doing.</p>
@@ -344,8 +352,8 @@ class Settings
             <h2>Reset to Defaults</h2>
             <p>Restore the built-in default allowlists. Unlike saving empty fields (which blocks all CDN domains), this re-enables the default list of trusted domains and suffixes.</p>
             <form method="post" action="<?php echo esc_url(admin_url("admin-post.php")); ?>">
-                <input type="hidden" name="action" value="ftf_reset_allowlists">
-                <?php wp_nonce_field("ftf_reset_allowlists"); ?>
+                <input type="hidden" name="action" value="ftf_fe_reset_allowlists">
+                <?php wp_nonce_field("ftf_fe_reset_allowlists"); ?>
                 <?php submit_button("Reset to Defaults", "secondary", "submit", false); ?>
             </form>
 
@@ -374,9 +382,16 @@ class Settings
             }));
             ?>
             <p>Domains that were blocked by the media proxy because they are not on the allowlist. Add any of these to the allowed domains list above if they should be permitted.</p>
-            <?php if (empty($blocked_domains)): ?>
+            <form method="post" action="<?php echo esc_url(admin_url("admin-post.php")); ?>">
+                <input type="hidden" name="action" value="ftf_fe_scan_blocked_domains">
+                <?php wp_nonce_field("ftf_fe_scan_blocked_domains"); ?>
+                <?php submit_button("Scan Posts", "secondary", "submit", false); ?>
+                <p class="description">This may be slow if you have a lot of posts.</p>
+            </form>
+            <br>
+            <?php if (empty($blocked_domains)) { ?>
                 <p>No blocked domains recorded.</p>
-            <?php else: ?>
+            <?php } else { ?>
                 <table class="widefat striped" style="max-width: 600px;">
                     <thead>
                         <tr>
@@ -385,21 +400,21 @@ class Settings
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($blocked_domains as $entry): ?>
+                        <?php foreach ($blocked_domains as $entry) { ?>
                             <tr>
                                 <td><code><?php echo esc_html($entry["domain"]); ?></code></td>
                                 <td><?php echo esc_html(date_i18n(get_option("date_format") . " " . get_option("time_format"), $entry["last_seen"])); ?></td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </tbody>
                 </table>
                 <br>
                 <form method="post" action="<?php echo esc_url(admin_url("admin-post.php")); ?>">
-                    <input type="hidden" name="action" value="ftf_clear_blocked_domains">
-                    <?php wp_nonce_field("ftf_clear_blocked_domains"); ?>
+                    <input type="hidden" name="action" value="ftf_fe_clear_blocked_domains">
+                    <?php wp_nonce_field("ftf_fe_clear_blocked_domains"); ?>
                     <?php submit_button("Clear List", "secondary", "submit", false); ?>
                 </form>
-            <?php endif; ?>
+            <?php } ?>
         </div>
         <?php
     }
@@ -455,7 +470,7 @@ class Settings
 
     function reset_allowlists()
     {
-        check_admin_referer("ftf_reset_allowlists");
+        check_admin_referer("ftf_fe_reset_allowlists");
         if (!current_user_can("manage_options")) {
             wp_die(__("You do not have permission to perform this action.", "fediverse-embeds"));
         }
@@ -470,13 +485,122 @@ class Settings
 
     function clear_blocked_domains()
     {
-        check_admin_referer("ftf_clear_blocked_domains");
+        check_admin_referer("ftf_fe_clear_blocked_domains");
         if (!current_user_can("manage_options")) {
             wp_die(__("You do not have permission to perform this action.", "fediverse-embeds"));
         }
         delete_option("ftf_fediverse_embeds_blocked_domains");
         wp_redirect(add_query_arg(
             array("page" => "ftf-fediverse-embeds-advanced"),
+            admin_url("admin.php")
+        ));
+        exit();
+    }
+
+    function scan_blocked_domains()
+    {
+        check_admin_referer("ftf_fe_scan_blocked_domains");
+        if (!current_user_can("manage_options")) {
+            wp_die(__("You do not have permission to perform this action.", "fediverse-embeds"));
+        }
+
+        $db = new Database();
+
+        $saved_domains = get_option("ftf_fediverse_embeds_allowed_domains");
+        $saved_suffixes = get_option("ftf_fediverse_embeds_allowed_suffixes");
+
+        $allowed_domains = ($saved_domains === false)
+            ? Helpers::get_default_allowed_domains()
+            : array_values(array_filter(array_map(function ($entry) {
+                $entry = trim($entry);
+                $entry = preg_replace("#^https?://#i", "", $entry);
+                $entry = explode("/", $entry)[0];
+                return strtolower($entry);
+            }, explode("\n", $saved_domains))));
+
+        $allowed_suffixes = ($saved_suffixes === false)
+            ? Helpers::get_default_allowed_suffixes()
+            : array_values(array_filter(array_map(function ($entry) {
+                $entry = strtolower(trim($entry));
+                if ($entry !== "" && $entry[0] !== ".") {
+                    $entry = "." . $entry;
+                }
+                return $entry;
+            }, explode("\n", $saved_suffixes))));
+
+        $page = 1;
+        $per_page = 100;
+        $seen_domains = [];
+
+        while (true) {
+            $posts = $db->get_all_posts($page, $per_page);
+            if (empty($posts)) {
+                break;
+            }
+
+            foreach ($posts as $post) {
+                $post_data = json_decode($post["post_data"], true);
+                if (!is_array($post_data)) {
+                    continue;
+                }
+
+                $urls = [];
+
+                if (!empty($post_data["account"]["avatar_static"])) {
+                    $urls[] = $post_data["account"]["avatar_static"];
+                }
+                if (!empty($post_data["account"]["avatar"])) {
+                    $urls[] = $post_data["account"]["avatar"];
+                }
+                foreach ($post_data["media_attachments"] ?? [] as $media) {
+                    if (!empty($media["url"])) {
+                        $urls[] = $media["url"];
+                    }
+                    if (!empty($media["preview_url"])) {
+                        $urls[] = $media["preview_url"];
+                    }
+                }
+                if (!empty($post_data["card"]["image"])) {
+                    $urls[] = $post_data["card"]["image"];
+                }
+                foreach ($post_data["emojis"] ?? [] as $emoji) {
+                    if (!empty($emoji["url"])) {
+                        $urls[] = $emoji["url"];
+                    }
+                }
+
+                foreach ($urls as $url) {
+                    $parsed = parse_url($url);
+                    $domain = strtolower($parsed["host"] ?? "");
+                    if (!$domain || isset($seen_domains[$domain])) {
+                        continue;
+                    }
+                    $seen_domains[$domain] = true;
+
+                    $allowed = in_array($domain, $allowed_domains);
+                    if (!$allowed) {
+                        foreach ($allowed_suffixes as $suffix) {
+                            if (str_ends_with($domain, $suffix)) {
+                                $allowed = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!$allowed) {
+                        Media_Proxy::log_blocked_domain($domain);
+                    }
+                }
+            }
+
+            if (count($posts) < $per_page) {
+                break;
+            }
+            $page++;
+        }
+
+        wp_redirect(add_query_arg(
+            array("page" => "ftf-fediverse-embeds-advanced", "scanned" => "1"),
             admin_url("admin.php")
         ));
         exit();

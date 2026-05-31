@@ -135,8 +135,8 @@ class Media_Proxy
                 }
 
                 if (!$can_download_media) {
-                    if (!empty($domain)) {
-                        $this->log_blocked_domain($domain);
+                    if (!empty($domain) && current_user_can("manage_options")) {
+                        Media_Proxy::log_blocked_domain($domain);
                     }
                     status_header(403);
                     exit();
@@ -208,7 +208,7 @@ class Media_Proxy
         exit();
     }
 
-    private function log_blocked_domain($domain)
+    public static function log_blocked_domain(string $domain)
     {
         $blocked = get_option("ftf_fediverse_embeds_blocked_domains", array());
 
