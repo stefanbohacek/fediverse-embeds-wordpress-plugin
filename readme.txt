@@ -41,7 +41,7 @@ The build process uses Gulp with Browserify and Babel to bundle and minify the J
 
 = 1.7.0 =
 
-Support for quoted posts.
+Added support for quoted posts.
 
 = 1.6.8 =
 
