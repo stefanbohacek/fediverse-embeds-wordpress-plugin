@@ -175,7 +175,7 @@ const renderPost = (post, container) => {
       ) {
         // noop
       } else {
-        let proxiedAvatarSrc = '';
+        let proxiedAvatarSrc = "";
         try {
           proxiedAvatarSrc = `${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${window.btoa(post.post_data.account.avatar_static)}`;
         } catch {
@@ -246,6 +246,66 @@ const renderPost = (post, container) => {
 
     if (post.post_data.card) {
       // console.log('debug:post.post_data.card', post.post_data.card);
+    }
+
+    if (post.post_data.quote) {
+      const quoteData = post.post_data.quote;
+      const quotedPost = quoteData.quoted_status || {};
+
+      if (
+        quoteData.state === "accepted" &&
+        (quotedPost.content || quotedPost.account)
+      ) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = postText;
+        tempDiv.querySelectorAll("p.quote-inline").forEach((el) => el.remove());
+        postText = tempDiv.innerHTML;
+
+        const quotedAccount = quotedPost.account || {};
+        const quotedContent = sanitizeHTML(quotedPost.content || "");
+        const quotedUrl = safeURL(quotedPost.url || "");
+
+        let quotedAvatarHtml = "";
+        if (quotedAccount.avatar_static) {
+          let quotedAvatarSrc = "";
+          try {
+            quotedAvatarSrc = `${window.ftf_fediverse_embeds.blog_url}/wp-json/ftf/media-proxy?url=${window.btoa(quotedAccount.avatar_static)}`;
+          } catch {
+            // noop
+          }
+          if (quotedAvatarSrc) {
+            quotedAvatarHtml = `<img class="rounded-circle border me-2" loading="lazy" width="20" height="20" src="${quotedAvatarSrc}" onerror="this.src='${window.ftf_fediverse_embeds.plugin_url}../images/images/blank.png'">`;
+          }
+        }
+
+        let quotedInstance = "";
+        if (quotedAccount.url) {
+          try {
+            quotedInstance = new URL(quotedAccount.url).hostname;
+          } catch {
+            // noop
+          }
+        }
+
+        const quotedDate = quotedPost.created_at
+          ? new Date(quotedPost.created_at).toLocaleDateString(
+              navigator.language,
+              { month: "long", year: "numeric", day: "numeric" },
+            )
+          : "";
+
+        postText += /*html*/ `<div class="fediverse-post-quote card mt-3 mb-2">
+        <div class="card-body py-2 px-3">
+          <div class="d-flex align-items-center mb-1">
+            ${quotedAvatarHtml}
+            <strong class="me-1">${escapeText(quotedAccount.display_name || quotedAccount.username || "")}</strong>
+            <span class="text-muted fs-6">@${escapeText(quotedAccount.username || "")}${quotedInstance ? "@" + escapeText(quotedInstance) : ""}</span>
+          </div>
+          <div class="quote-body">${quotedContent}</div>
+          ${quotedUrl && quotedDate ? `<a class="text-muted" href="${quotedUrl}" target="_blank" rel="noopener noreferrer"><small>${quotedDate}</small></a>` : ""}
+        </div>
+      </div>`;
+      }
     }
 
     if (
