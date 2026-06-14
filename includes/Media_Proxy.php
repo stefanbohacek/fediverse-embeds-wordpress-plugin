@@ -75,6 +75,7 @@ class Media_Proxy
                 status_header(500);
                 exit();
             }
+            header("Cache-Control: public, max-age=31536000");
             header("Content-Type: " . $cached_mime);
             echo file_get_contents($file_path);
         } else {
@@ -201,6 +202,7 @@ class Media_Proxy
                     rename($file_path_hashed, $file_path);
                 }
 
+                header("Cache-Control: public, max-age=31536000");
                 header("Content-Type: " . $content_type_base);
                 echo $remote_response["body"];
             }
